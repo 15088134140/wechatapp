@@ -7,12 +7,17 @@
 }
 
 .w-step .w-step-item {
-	padding: 8px 0;
+	// padding: 8px 0;
 }
 
 .w-step .w-step-item .w-step-item-right>div{
-	line-height: 1;
-	padding: 8px 0 0 8px;
+  line-height: 1;
+  padding: 8px 0 0 8px;
+}
+
+.w-step .w-step-item .w-step-item-right .icon-box__title{
+	color: #0bb20c;
+  font-size: .9em;
 }
 
 /* 借款项 */

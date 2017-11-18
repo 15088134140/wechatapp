@@ -36,7 +36,7 @@
 			<div class="w-main weui-panel__bd">
 				<div class="weui-media-box weui-media-box_small-appmsg" v-if="!isLoading">
 					<div class="weui-cells w-borrow-list">
-						<a v-for="item in tableData" class="weui-cell weui-cell_access w-borrow-list-item" href="/borrowBillDetail.html">
+						<a v-for="item in tableData" class="weui-cell weui-cell_access w-borrow-list-item" :href="'/borrowBillDetail.html?billid=' + item.billid + '&pk_billtype=' + item.pk_billtype">
 							<div class="weui-cell__bd w-borrow-list-item-left">
 								<div class="w-borrow-list-item-dsc" flex="box:last">
 									<span>{{ item.sendermanName }}的{{ item.billtypeName }}</span>
@@ -66,6 +66,7 @@
 			data: function(){
 				return {
 					isLoading: false,
+					hasError: false,
 					dateRange: 1,
 					queryCondition: {
 						ischeck: 'N',
@@ -95,11 +96,13 @@
 					vm.queryCondition.startDate = startDate.Format('yyyy-MM-dd');
 					vm.queryCondition.endDate = endDate.Format('yyyy-MM-dd');
 					vm.isLoading = true;
+					vm.hasError = false;
 					$.getJSON('/modules/wechat/ydsp/Wddb_WbYb', this.queryCondition).then(function(rsp) {
 						if (rsp.result === 'Y') {
 							vm.tableData = rsp.rsData;
+							vm.hasError = true;	
 						} else {
-							
+							vm.hasError = true;	
 						}
 						vm.isLoading = false;
 					});

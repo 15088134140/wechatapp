@@ -1,6 +1,12 @@
 [v-cloak] {
   display: none;
 }
+
+.weui-icon-download {
+	transform: rotate(180deg);
+	color: #FFBE00;
+}
+
 .w-container {
 	height: 100vh;
 }
