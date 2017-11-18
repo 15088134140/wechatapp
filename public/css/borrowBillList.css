@@ -1,0 +1,19 @@
+.w-container .w-top .w-top-search>select {
+	width: 100%;
+	text-align: center;
+	color: #999;
+}
+.w-container .w-top .w-top-search .weui-icon-search {
+	height: 44px;
+	line-height: 44px;
+	padding-right: 15px;
+}
+.w-borrow-list-item-left {
+	font-size: .9em;
+	color: #999;
+}
+
+.w-borrow-list-item-left .w-borrow-list-item-dsc>span:first-child {
+	color: #000;
+	font-size: 1.1em;
+}

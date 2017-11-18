@@ -1,0 +1,43 @@
+[v-cloak] {
+  display: none;
+}
+.w-container {
+	height: 100vh;
+}
+
+// .weui-form-preview__bd .weui-form-preview__value {
+// 	color: #000;
+// }
+
+.w-container .w-top .w-top-panel {
+	width: 100%;
+}
+
+.w-container .w-top .w-top-panel>.panel-item {
+	font-size: 1.1em;
+	width: 50%;
+	text-align: center;
+	box-sizing: border-box;
+	padding: 4px;
+}
+.w-container .w-top .w-top-panel>.panel-item.active {
+	background-color: #10AEFF;
+	color: #FFFFFF;
+}
+
+.w-container .w-main {
+	overflow-y: auto;
+}
+
+.w-operation{
+	position: fixed !important;
+}
+
+/* 基础样式	*/
+.hide {
+	display: none;
+}
+
+.w-bold: {
+	font-weight: 800;
+}

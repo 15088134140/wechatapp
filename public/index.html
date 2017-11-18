@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>我的待办</title>
+	<meta id="viewport" name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" type="text/css" href="https://res.wx.qq.com/open/libs/weui/1.1.0/weui.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/flex.css">
+	<link rel="stylesheet" type="text/css" href="./css/bass.css">
+	<link rel="stylesheet" type="text/css" href="./css/borrowBillList.css">
+	<script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./js/base.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./js/vue.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+	<div id="app" v-cloak>
+		<div class="w-container" flex="box:justify dir:top">
+			<div class="w-top">
+				<div class="w-top-panel" flex="main:left">
+					<div :class="['panel-item', 'panel-left', {active: (queryCondition.ischeck == 'N')}]" @click="handleTabClick('N')">待审</div>
+					<div :class="['panel-item', 'panel-right', {active: (queryCondition.ischeck == 'Y')}]" @click="handleTabClick('Y')">已审</div>
+				</div>
+				<div class="w-top-search" flex="main:left">
+					<select class="weui-select" v-model="dateRange" @change="getMainList">
+            <option :value="1">查询一个月内的数据</option>
+            <option :value="2">查询两个月内的数据</option>
+            <option :value="3">查询三个月内的数据</option>
+            <option :value="0">查询全部的数据</option>
+          </select>
+					<i class="weui-icon-search"></i>
+				</div>
+			</div>
+			<!-- 主区域 start -->
+			<div class="w-main weui-panel__bd">
+				<div class="weui-media-box weui-media-box_small-appmsg" v-if="!isLoading">
+					<div class="weui-cells w-borrow-list">
+						<a v-for="item in tableData" class="weui-cell weui-cell_access w-borrow-list-item" href="/borrowBillDetail.html">
+							<div class="weui-cell__bd w-borrow-list-item-left">
+								<div class="w-borrow-list-item-dsc" flex="box:last">
+									<span>{{ item.sendermanName }}的{{ item.billtypeName }}</span>
+									<span>单号:{{ item.billno }}</span>
+								</div>
+								<div class="w-borrow-list-item-title">{{ item.senddate }}</div>
+							</div>
+							<div class="weui-cell__ft"></div>
+						</a>
+					</div>
+				</div>
+				<div class="weui-loadmore" v-else>
+          <i class="weui-loading"></i>
+          <span class="weui-loadmore__tips">正在加载</span>
+        </div>
+			</div>
+			<!-- 主区域 end -->
+			<div class="w-footer weui-form-preview__ft">
+				<a class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)">关闭</a>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		new Vue({
+			el: '#app',
+			data: function(){
+				return {
+					isLoading: false,
+					dateRange: 1,
+					queryCondition: {
+						ischeck: 'N',
+						openId: '1341311',
+						startDate: '',
+						endDate: '',
+					},
+					tableData: [],
+				}
+			},
+
+			mounted: function () {
+				FastClick.attach(document.body);
+				this.getMainList();
+			},
+
+			methods: {
+				getMainList: function() {
+					var vm = this, endDate = new Date(), startDate = new Date(endDate.getTime());
+					if (vm.dateRange === 0) {
+						startDate.setMonth(0);
+						startDate.setDate(1);
+					} else {
+						startDate.setMonth(endDate.getMonth() - vm.dateRange);
+					}
+
+					vm.queryCondition.startDate = startDate.Format('yyyy-MM-dd');
+					vm.queryCondition.endDate = endDate.Format('yyyy-MM-dd');
+					vm.isLoading = true;
+					$.getJSON('/modules/wechat/ydsp/Wddb_WbYb', this.queryCondition).then(function(rsp) {
+						if (rsp.result === 'Y') {
+							vm.tableData = rsp.rsData;
+						} else {
+							
+						}
+						vm.isLoading = false;
+					});
+				},
+
+				handleTabClick: function(ischeck){
+					this.queryCondition.ischeck = ischeck;
+					this.getMainList();
+				}
+			}
+		})
+	</script>
+</body>
+</html>
