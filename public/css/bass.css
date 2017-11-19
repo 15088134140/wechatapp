@@ -44,6 +44,31 @@
 	display: none;
 }
 
-.w-bold: {
+.w-bold {
 	font-weight: 800;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.w-table {
+	width: 100%;
+	text-align: center;
+	border-collapse: collapse; 
+}
+
+.w-table tr:nth-of-type(odd) { 
+  background: #eee; 
+}
+
+.w-table th { 
+  background: #333; 
+  color: white; 
+  font-weight: bold; 
+}
+
+.w-table td, th { 
+  padding: 6px; 
+  border: 1px solid #ccc; 
 }

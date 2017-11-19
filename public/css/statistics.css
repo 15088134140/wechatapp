@@ -1,0 +1,9 @@
+.w-section + .w-section {
+	margin-top: 10px;
+}
+
+.w-section .w-section-title {
+	font-weight: bolder;
+	padding: 5px;
+	font-size: 18px;
+}

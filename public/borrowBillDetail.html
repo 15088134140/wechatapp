@@ -20,68 +20,262 @@
       <!-- 主区域 start -->
       <div class="w-main">
         <div class="weui-form-preview">
-              <div class="weui-form-preview__hd">
-                  <div class="weui-form-preview__item">
-                      <label class="weui-form-preview__label">借款总额</label>
-                      <em class="weui-form-preview__value">¥{{ formData.bbje }}</em>
-                  </div>
+
+          <!-- 销售订单 -->
+          <template v-if="billType === '30'">
+            <div>
+              销售订单
+            </div>
+          </template>
+
+          <!-- 费用报销单 -->
+          <template v-else-if="billType === '264X-01'">
+            <div class="weui-form-preview__hd">
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">费用报销总额</label>
+                <em class="weui-form-preview__value">¥{{ formData.bbje }}</em>
               </div>
-              <div class="weui-form-preview__bd">
-                  <div class="weui-form-preview__item">
-                      <label class="weui-form-preview__label">单号</label>
-                      <span class="weui-form-preview__value">{{ formData.djbh }}</span>
-                  </div>
-                  <div class="weui-form-preview__item">
-                      <label class="weui-form-preview__label">日期</label>
-                      <span class="weui-form-preview__value">{{ formData.djrq }}</span>
-                  </div>
-                  <div class="weui-form-preview__item">
-                      <label class="weui-form-preview__label">承担公司</label>
-                      <span class="weui-form-preview__value">{{ formData.fydwmc }}</span>
-                  </div>
-                  <div class="weui-form-preview__item">
-                      <label class="weui-form-preview__label">承担部门</label>
-                      <span class="weui-form-preview__value">{{ formData.deptname }}</span>
-                  </div>
-                  <div class="weui-form-preview__item">
-                      <label class="weui-form-preview__label">借款人</label>
-                      <span class="weui-form-preview__value">{{ formData.psnname }}</span>
-                  </div>
+            </div>
+            <div class="weui-form-preview__bd">
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">单号</label>
+                <span class="weui-form-preview__value">{{ formData.djbh }}</span>
               </div>
-              <!-- 借款项 s-->
-              <div class="weui-form-preview__bd w-borrow-list">
-                <div class="w-borrow-list-item" v-for="item in formData.details">
-                  <div class="weui-form-preview__item">
-                      <label class="weui-form-preview__label">金额</label>
-                      <span class="weui-form-preview__value">{{ item.amount }}</span>
-                  </div>
-                  <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">事由</label>
-                    <span class="weui-form-preview__value">{{ item.defitem2 }}</span>
-                  </div>
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">日期</label>
+                <span class="weui-form-preview__value">{{ formData.djrq }}</span>
+              </div>
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">承担公司</label>
+                <span class="weui-form-preview__value">{{ formData.fydwmc }}</span>
+              </div>
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">承担部门</label>
+                <span class="weui-form-preview__value">{{ formData.deptname }}</span>
+              </div>
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">报销人</label>
+                <span class="weui-form-preview__value">{{ formData.psnname }}</span>
+              </div>
+            </div>
+
+            <!-- 报销明细 s-->
+            <div class="weui-form-preview__bd w-borrow-list">
+              <div class="w-borrow-list-item" v-for="item in formData.details">
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">收支项目</label>
+                    <span class="weui-form-preview__value">{{ item.szxmmc }}</span>
                 </div>
-                <!-- 借款项 e-->
-              </div>
-              <!-- 审批流程 s-->
-              <div class="weui-form-preview__ft w-step" flex="dir:top">
-                <div class="icon-box w-step-item" flex="dir:left box:first" v-for="item in formData.spqks">
-                  <div class="w-step-item-left">
-                    <i :class="getStepClass(item.approveresult)"></i>
-                  </div>
-                  <div class="w-step-item-right">
-                    <div class="icon-box__desc" flex="dir:left main:justify">
-                      <span>{{ item.checkmanName }}</span><span>{{ item.dealdate }}</span>
-                    </div>
-                    <div class="icon-box__title w-bold">{{ item.checknote || '未审批' }}</div>
-                  </div>
+                <div class="weui-form-preview__item" v-if="item.defitem14">
+                  <label class="weui-form-preview__label">办公费</label>
+                  <span class="weui-form-preview__value">¥{{ item.defitem14 }}</span>
+                </div>
+                <div class="weui-form-preview__item" v-if="item.defitem15">
+                  <label class="weui-form-preview__label">招待费</label>
+                  <span class="weui-form-preview__value">¥{{ item.defitem15 }}</span>
+                </div>
+                <div class="weui-form-preview__item" v-if="item.defitem16">
+                  <label class="weui-form-preview__label">交通费</label>
+                  <span class="weui-form-preview__value">¥{{ item.defitem16 }}</span>
+                </div>
+                <div class="weui-form-preview__item" v-if="item.defitem17">
+                  <label class="weui-form-preview__label">汽车费</label>
+                  <span class="weui-form-preview__value">¥{{ item.defitem17 }}</span>
+                </div>
+                <div class="weui-form-preview__item" v-if="item.defitem18">
+                  <label class="weui-form-preview__label">业务宣传费</label>
+                  <span class="weui-form-preview__value">¥{{ item.defitem18 }}</span>
+                </div>
+                <div class="weui-form-preview__item" v-if="item.defitem19">
+                  <label class="weui-form-preview__label">运费</label>
+                  <span class="weui-form-preview__value">¥{{ item.defitem19 }}</span>
+                </div>
+                <div class="weui-form-preview__item" v-if="item.defitem21">
+                  <label class="weui-form-preview__label">电话费</label>
+                  <span class="weui-form-preview__value">¥{{ item.defitem21 }}</span>
+                </div>
+                <div class="weui-form-preview__item" v-if="item.defitem6">>
+                  <label class="weui-form-preview__label"其它费用</label>
+                  <span class="weui-form-preview__value">¥{{ item.defitem6 }}</span>
+                </div>
+                <div class="weui-form-preview__item" v-if="item.defitem49">
+                  <label class="weui-form-preview__label">交通费标准</label>
+                  <span class="weui-form-preview__value">¥{{ item.defitem49 }}</span>
+                </div>
+                <div class="weui-form-preview__item" v-if="item.defitem50">
+                  <label class="weui-form-preview__label">出差补贴标准</label>
+                  <span class="weui-form-preview__value">¥{{ item.defitem50 }}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">报销金额</label>
+                  <span class="weui-form-preview__value">¥{{ item.amount }}</span>
                 </div>
               </div>
-              <!-- 审批流程 s-->
+            </div>
+            <!-- 报销明细 e-->
+          </template>
+
+          <!-- 差旅费报销单 ok-->
+          <template v-else-if="billType === '2641'">
+            <div class="weui-form-preview__hd">
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">差旅费报销总额</label>
+                <em class="weui-form-preview__value">¥{{ formData.bbje }}</em>
+              </div>
+            </div>
+            <div class="weui-form-preview__bd">
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">单号</label>
+                <span class="weui-form-preview__value">{{ formData.djbh }}</span>
+              </div>
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">日期</label>
+                <span class="weui-form-preview__value">{{ formData.djrq }}</span>
+              </div>
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">承担公司</label>
+                <span class="weui-form-preview__value">{{ formData.fydwmc }}</span>
+              </div>
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">承担部门</label>
+                <span class="weui-form-preview__value">{{ formData.deptname }}</span>
+              </div>
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">报销人</label>
+                <span class="weui-form-preview__value">{{ formData.psnname }}</span>
+              </div>
+            </div>
+
+            <!-- 报销明细 s-->
+            <div class="weui-form-preview__bd w-borrow-list">
+              <div class="w-borrow-list-item" v-for="item in formData.details">
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">收支项目</label>
+                    <span class="weui-form-preview__value">{{ item.szxmmc }}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">日期</label>
+                  <span class="weui-form-preview__value">{{ item.defitem1 }} 至 {{ item.defitem5 }}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">地点</label>
+                  <span class="weui-form-preview__value">{{ item.defitem4 }} 至 {{ item.defitem8 }}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">天数</label>
+                  <span class="weui-form-preview__value">{{ item.defitem9 }}天</span>
+                </div>
+                <div class="weui-form-preview__item" v-if="item.defitem10">
+                  <label class="weui-form-preview__label">机票费</label>
+                  <span class="weui-form-preview__value">¥{{ item.defitem10 }}</span>
+                </div>
+                <div class="weui-form-preview__item" v-if="item.defitem11">
+                  <label class="weui-form-preview__label">车船费</label>
+                  <span class="weui-form-preview__value">¥{{ item.defitem11 }}</span>
+                </div>
+                <div class="weui-form-preview__item" v-if="item.defitem12">
+                  <label class="weui-form-preview__label">市内交通费</label>
+                  <span class="weui-form-preview__value">¥{{ item.defitem12 }}</span>
+                </div>
+                <div class="weui-form-preview__item" v-if="item.defitem13">
+                  <label class="weui-form-preview__label">住宿费</label>
+                  <span class="weui-form-preview__value">¥{{ item.defitem13 }}</span>
+                </div>
+                <div class="weui-form-preview__item" v-if="item.defitem2">
+                  <label class="weui-form-preview__label">出差补助</label>
+                  <span class="weui-form-preview__value">¥{{ item.defitem2 }}</span>
+                </div>
+                <div class="weui-form-preview__item" v-if="item.defitem3">
+                  <label class="weui-form-preview__label">住宿节约补助</label>
+                  <span class="weui-form-preview__value">¥{{ item.defitem3 }}</span>
+                </div>
+                <div class="weui-form-preview__item" v-if="item.defitem6">
+                  <label class="weui-form-preview__label">其他费用</label>
+                  <span class="weui-form-preview__value">¥{{ item.defitem6 }}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">报销金额</label>
+                  <span class="weui-form-preview__value">¥{{ item.amount }}</span>
+                </div>
+              </div>
+            </div>
+            <!-- 报销明细 e-->
+          </template>
+
+          <!-- 借款单 ok-->
+          <template v-else-if="billType === '263X-01'">
+            <div class="weui-form-preview__hd">
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">借款单总额</label>
+                <em class="weui-form-preview__value">¥{{ formData.bbje }}</em>
+              </div>
+            </div>
+            <div class="weui-form-preview__bd">
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">单号</label>
+                <span class="weui-form-preview__value">{{ formData.djbh }}</span>
+              </div>
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">日期</label>
+                <span class="weui-form-preview__value">{{ formData.djrq }}</span>
+              </div>
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">承担公司</label>
+                <span class="weui-form-preview__value">{{ formData.fydwmc }}</span>
+              </div>
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">承担部门</label>
+                <span class="weui-form-preview__value">{{ formData.deptname }}</span>
+              </div>
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">借款人</label>
+                <span class="weui-form-preview__value">{{ formData.psnname }}</span>
+              </div>
+            </div>
+            <!-- 借款项 s-->
+            <div class="weui-form-preview__bd w-borrow-list">
+              <div class="w-borrow-list-item" v-for="item in formData.details">
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">金额</label>
+                    <span class="weui-form-preview__value">¥{{ item.amount }}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">事由</label>
+                  <span class="weui-form-preview__value">{{ item.defitem2 }}</span>
+                </div>
+              </div>
+            </div>
+            <!-- 借款项 e-->
+          </template>
+
+          <!-- 未知类型 -->
+          <template v-else>
+            <div>
+              未知类型
+            </div>
+          </template>
+          
+          <!-- 审批流程 s-->
+          <div class="weui-form-preview__ft w-step" flex="dir:top">
+            <div class="icon-box w-step-item" flex="dir:left box:first" v-for="item in formData.spqks">
+              <div class="w-step-item-left">
+                <i :class="getStepClass(item.approveresult)"></i>
+              </div>
+              <div class="w-step-item-right">
+                <div class="icon-box__desc" flex="dir:left main:justify">
+                  <span>{{ item.checkmanName }}</span><span>{{ item.dealdate }}</span>
+                </div>
+                <div class="icon-box__title w-bold">{{ item.checknote || '未审批' }}</div>
+              </div>
+            </div>
           </div>
+          <!-- 审批流程 s-->
+        </div>
       </div>
       <!-- 主区域 end -->
       <div class="w-footer weui-form-preview__ft">
-        <a v-if="!isLoading" class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="isOperationShow = true">操作</a>
+        <a v-if="!isLoading && !hasError" class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="isOperationShow = true">操作</a>
+        <a v-else-if="hasError" href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading" @click="getDetail"><i class="weui-icon-warn"></i>请求错误，点击这里重试</a>
         <a v-else href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading"><i class="weui-loading"></i>数据加载中</a>
       </div>
     </div>
@@ -117,11 +311,13 @@
     new Vue({
       el: '#app',
       data: function(){
+        var billType = Utils.getQueryString('pk_billtype');
         return {
           isLoading: false,
           hasError: false,
           isOperationShow: false,
           isOperationDlgShow: false,
+          billType: billType,
           formData: {
             bbje: "--",
             deptname: "--",
@@ -171,6 +367,7 @@
           if (billid && pk_billtype) {
             // url参数正常 请求数据
             vm.isLoading = true;
+            vm.hasError = false;
 
             $.getJSON('/modules/wechat/ydsp/BillDetail', {
               billid: billid,
@@ -182,11 +379,13 @@
               console.log(rsp);
               if (rsp.result === 'Y') {
                 vm.formData = rsp.rsData;
-                vm.hasError = true; 
+                vm.hasError = false; 
               } else {
                 vm.hasError = true; 
               }
               vm.isLoading = false;
+            }, function() {
+              vm.hasError = true;
             });
           } else {
             vm.hasError = true;
