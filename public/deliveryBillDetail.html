@@ -103,10 +103,37 @@
         </div>
       </div>
       <!-- 主区域 end -->
+
       <div class="w-footer weui-form-preview__ft">
-        <a v-if="!isLoading && !hasError" class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="isOperationShow = true">确认出库</a>
+        <template v-if="!isLoading && !hasError">
+          <a v-if="pageType === 'confirm'" class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="isOperationShow = true">确认出库</a>
+          <a v-else class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="handleShowDlgBtnClick">确认签收</a>
+        </template>
+
         <a v-else-if="hasError" href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading" @click="getDetail"><i class="weui-icon-warn"></i>请求错误，点击这里重试</a>
         <a v-else href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading"><i class="weui-loading"></i>数据加载中</a>
+      </div>
+    </div>
+
+    <div class="w-js-dialog" v-if="isOperationDlgShow">
+      <div class="weui-mask"></div>
+      <div class="weui-dialog">
+          <div class="weui-dialog__hd"><strong class="weui-dialog__title">图片上传</strong></div>
+          <div class="weui-dialog__bd">
+            <div class="weui-uploader__bd" flex="dir:left">
+              <div class="weui-uploader__input-box">
+                <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="">
+              </div>
+              <div>
+                <img src="./img/pic_160.png" width="79px" height="79px" alt="">
+              </div>
+            </div>
+            <div class="weui-cells__tips text-left no-margin no-padding">请一张上传带客户签名的清晰照片</div>
+          </div>
+          <div class="weui-dialog__ft">
+              <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default" @click="handleDlgBtnCancelClick">取消</a>
+              <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary" @click="handleDlgBtnConfirmClick">确认</a>
+          </div>
       </div>
     </div>
 
@@ -116,13 +143,15 @@
     new Vue({
       el: '#app',
       data: function(){
-        var billType = Utils.getQueryString('pk_billtype');
+        var billType = Utils.getQueryString('pk_billtype'),
+            pageType = Utils.getQueryString('pageType') || 'confirm';
         return {
           isLoading: false,
           hasError: false,
           isOperationShow: false,
           isOperationDlgShow: false,
           billType: billType,
+          pageType: pageType, // confirm 出库单出库  sign 签收
           formData: {
             bbje: "--",
             deptname: "--",
@@ -149,20 +178,6 @@
       },
 
       methods: {
-        getStepClass: function(state){
-          var className = '';
-          switch(state) {
-          case 'Y':
-            className = 'weui-icon-success';
-            break;
-          case 'R':
-            className = 'weui-icon-download';
-            break;
-          default:
-            className = 'weui-icon-circle';
-          }
-          return className;
-        },
 
         getDetail: function(){
           var billid = Utils.getQueryString('billid'),
@@ -197,11 +212,8 @@
           }
         },
 
-        handleOptBtnClick: function(state){
-          this.isOperationShow = false;
+        handleShowDlgBtnClick: function(){
           this.isOperationDlgShow = true;
-          this.opinionData.state = state;
-          console.log('state', state);
         },
 
         handleDlgBtnConfirmClick: function(){
