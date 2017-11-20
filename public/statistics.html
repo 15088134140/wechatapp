@@ -49,7 +49,7 @@
       </div>
       <!-- 主区域 end -->
       <div class="w-footer weui-form-preview__ft">
-        <a v-if="!isLoading && !hasError" class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="">关闭</a>
+        <a v-if="!isLoading && !hasError" class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="/index.html" @click="">关闭</a>
         <a v-else-if="hasError" href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading" @click="getDetail"><i class="weui-icon-warn"></i>请求错误，点击这里重试</a>
         <a v-else href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading"><i class="weui-loading"></i>数据加载中</a>
       </div>
