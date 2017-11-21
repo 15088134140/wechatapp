@@ -8,7 +8,8 @@
 	<link rel="stylesheet" type="text/css" href="https://res.wx.qq.com/open/libs/weui/1.1.0/weui.min.css">
 	<link rel="stylesheet" type="text/css" href="./css/flex.css">
 	<link rel="stylesheet" type="text/css" href="./css/bass.css">
-	<script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./js/jquery.validate.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/base.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/vue.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/fastclick.js" type="text/javascript" charset="utf-8"></script>
@@ -19,48 +20,47 @@
       <!-- 主区域 start -->
       <div class="w-main">
         <div class="weui-cells__title">签收注册</div>
-
-        <div class="weui-cells weui-cells_form">
-          <div class="weui-cell weui-cell_warn">
-            <div class="weui-cell__hd"><label class="weui-label">物流公司</label></div>
+        <form class="weui-cells weui-cells_form" id="signRegisterForm">
+          <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label" for="companyName">物流公司</label></div>
             <div class="weui-cell__bd">
-              <input v-model="formData.companyName" class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入物流公司">
+              <input v-model="formData.companyName" name="companyName" class="weui-input" placeholder="请输入物流公司">
             </div>
             <div class="weui-cell__ft">
               <i class="weui-icon-warn"></i>
             </div>
           </div>
           <div class="weui-cell">
-            <div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
+            <div class="weui-cell__hd"><label class="weui-label" for="userName">真实姓名</label></div>
             <div class="weui-cell__bd">
-              <input v-model="formData.userName" class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入姓名">
+              <input v-model="formData.userName" name="userName" class="weui-input" placeholder="请输入姓名">
             </div>
           </div>
           <div class="weui-cell weui-cell_vcode">
             <div class="weui-cell__hd">
-              <label class="weui-label">手机号</label>
+              <label class="weui-label" for="mobilePhone">手机号码</label>
             </div>
             <div class="weui-cell__bd">
-              <input v-model="formData.mobilePhone" class="weui-input" type="tel" placeholder="请输入手机号">
+              <input v-model="formData.mobilePhone" name="mobilePhone" class="weui-input" placeholder="请输入手机号">
             </div>
             <div class="weui-cell__ft">
-              <button v-if="!countDown" class="weui-vcode-btn" @click="handleVcodeBtnClick">获取验证码</button>
-              <button v-else class="weui-vcode-btn weui-btn_disabled" disabled="true">{{ countDown }}秒后重新获取</button>
+              <button v-if="!countDown" class="weui-vcode-btn" @click.prevent="handleVcodeBtnClick">获取验证码</button>
+              <button v-else class="weui-vcode-btn weui-btn_disabled" disabled>{{ countDown }}秒后重新获取</button>
             </div>
           </div>
           <div class="weui-cell">
-            <div class="weui-cell__hd"><label class="weui-label">验证码</label></div>
+            <div class="weui-cell__hd"><label class="weui-label" for="validCode">验证码</label></div>
             <div class="weui-cell__bd">
-              <input v-model="formData.validCode" class="weui-input" type="number" placeholder="请输入验证码">
+              <input v-model="formData.validCode" name="validCode" class="weui-input" type="number" placeholder="请输入验证码">
             </div>
           </div>
-        </div>
+        </form>
 
         <div class="weui-cells__tips">请填写真实信息注册后再进行签收操作</div>
       </div>
       <!-- 主区域 end -->
       <div class="w-footer weui-form-preview__ft">
-        <a v-if="!isLoading && !hasError" class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="">确认注册</a>
+        <a v-if="!isLoading && !hasError" class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="handleRegBtnClick">确认注册</a>
         <a v-else-if="hasError" href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading" @click="getDetail"><i class="weui-icon-warn"></i>请求错误，点击这里重试</a>
         <a v-else href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading"><i class="weui-loading"></i>请稍后</a>
       </div>
@@ -86,7 +86,23 @@
         }
       },
 
-      mounted: function () {},
+      mounted: function () {
+        $("#signRegisterForm").validate({
+          errorClass: 'weui-cell_warn',
+          rules: {
+            companyName: 'required',
+            userName: 'required',
+            mobilePhone: 'required',
+            validCode: 'required',
+          },
+          messages: {
+            companyName: "请输入物流公司！",
+            userName: "请输入真实姓名！",
+            mobilePhone: "请输入手机号码！",
+            validCode: "请输入手机验证码！",
+          }
+        });
+      },
 
       methods: {
         handleVcodeBtnClick: function() {
@@ -96,6 +112,13 @@
             vm.countDown--;
             vm.countDown === 0 && clearInterval(intervalId);
           }, 1000);
+        },
+
+        handleRegBtnClick: function () {
+          var $form = $('#signRegisterForm');
+          if ($form.valid()) {
+            $form.submit();
+          }
         }
       }
     });

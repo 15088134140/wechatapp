@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>我的待办</title>
+	<title></title>
 	<meta id="viewport" name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<link rel="stylesheet" type="text/css" href="https://res.wx.qq.com/open/libs/weui/1.1.0/weui.min.css">
@@ -18,10 +18,6 @@
 	<div id="app" v-cloak>
 		<div class="w-container" flex="box:justify dir:top">
 			<div class="w-top">
-				<div class="w-top-panel" flex="main:left">
-					<div :class="['panel-item', 'panel-left', {active: (queryCondition.ischeck == 'N')}]" @click="handleTabClick('N')">待审</div>
-					<div :class="['panel-item', 'panel-right', {active: (queryCondition.ischeck == 'Y')}]" @click="handleTabClick('Y')">已审</div>
-				</div>
 				<div class="w-top-search" flex="main:left">
 					<select class="weui-select" v-model="dateRange" @change="getMainList">
             <option :value="1">查询一个月内的数据</option>
@@ -30,6 +26,10 @@
             <option :value="0">查询全部的数据</option>
           </select>
 					<i class="weui-icon-search"></i>
+				</div>
+				<div class="w-top-panel" flex="main:left">
+					<div :class="['panel-item', 'panel-left', {active: (queryCondition.ischeck == 'N')}]" @click="handleTabClick('N')">待审</div>
+					<div :class="['panel-item', 'panel-right', {active: (queryCondition.ischeck == 'Y')}]" @click="handleTabClick('Y')">已审</div>
 				</div>
 			</div>
 			<!-- 主区域 start -->
@@ -71,6 +71,9 @@
 	</div>
 
 	<script>
+		var pageType = Utils.getQueryString('pageType');
+		$('head title').text(pageType === 'employee' ? '我发起的' : '我的待办');
+
 		new Vue({
 			el: '#app',
 			data: function(){
@@ -78,6 +81,7 @@
 					isLoading: false,
 					hasError: false,
 					dateRange: 1,
+					pageType: pageType, // employee 我发起的  boss 我的审批
 					queryCondition: {
 						ischeck: 'N',
 						openId: '1341311',

@@ -19,29 +19,13 @@ button.weui-btn_disabled {
 	top: 1px;
 }
 
+label.weui-cell_warn {
+	font-size: 14px;
+}
+
 /* 布局基础样式 */
 .w-container {
 	height: 100vh;
-}
-
-// .weui-form-preview__bd .weui-form-preview__value {
-// 	color: #000;
-// }
-
-.w-container .w-top .w-top-panel {
-	width: 100%;
-}
-
-.w-container .w-top .w-top-panel>.panel-item {
-	font-size: 1.1em;
-	width: 50%;
-	text-align: center;
-	box-sizing: border-box;
-	padding: 4px;
-}
-.w-container .w-top .w-top-panel>.panel-item.active {
-	background-color: #10AEFF;
-	color: #FFFFFF;
 }
 
 .w-container .w-main {
