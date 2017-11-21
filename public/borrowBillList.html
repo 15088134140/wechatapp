@@ -36,11 +36,11 @@
 			<div class="w-main weui-panel__bd">
 				<div class="weui-media-box weui-media-box_small-appmsg" v-if="!isLoading && !hasError">
 					<div class="weui-cells w-borrow-list" v-if="tableData.length !== 0">
-						<a v-for="item in tableData" class="weui-cell weui-cell_access w-borrow-list-item" :href="'./borrowBillDetail.html?billid=' + item.billid + '&pk_billtype=' + item.pk_billtype">
+						<a v-for="item in tableData" class="weui-cell weui-cell_access w-borrow-list-item" :href="'./borrowBillDetail.html?ischeck=' + item.ischeck + '&pageType=' + pageType + '&billid=' + item.billid + '&pk_billtype=' + item.pk_billtype">
 							<div class="weui-cell__bd w-borrow-list-item-left">
 								<div class="w-borrow-list-item-dsc" flex="box:last">
 									<span>{{ item.sendermanName }}的{{ item.billtypeName }}</span>
-									<span>单号:{{ item.billno }}</span>
+									<span>{{ item.billno }}</span>
 								</div>
 								<div class="w-borrow-list-item-title">{{ item.senddate }}</div>
 							</div>
@@ -99,7 +99,10 @@
 
 			methods: {
 				getMainList: function() {
-					var vm = this, endDate = new Date(), startDate = new Date(endDate.getTime());
+					// 员工接口地址 /modules/wechat/ydsp/Wfqd_DsYs
+					// 老板接口地址 /modules/wechat/ydsp/Wddb_WbYb
+					var vm = this, endDate = new Date(), startDate = new Date(endDate.getTime()),
+							url = '/modules/wechat/ydsp/' + (pageType === 'employee' ? 'Wfqd_DsYs' : 'Wddb_WbYb');
 					if (vm.dateRange === 0) {
 						startDate.setMonth(0);
 						startDate.setDate(1);
@@ -111,7 +114,8 @@
 					vm.queryCondition.endDate = endDate.Format('yyyy-MM-dd');
 					vm.isLoading = true;
 					vm.hasError = false;
-					$.getJSON('/modules/wechat/ydsp/Wddb_WbYb', this.queryCondition).then(function(rsp) {
+
+					$.getJSON(url, this.queryCondition).then(function(rsp) {
 						if (rsp.result === 'Y') {
 							vm.tableData = rsp.rsData || [];
 							vm.hasError = false;	

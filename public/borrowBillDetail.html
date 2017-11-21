@@ -23,9 +23,118 @@
 
           <!-- 销售订单 -->
           <template v-if="billType === '30'">
-            <div>
-              销售订单
+            <div class="weui-form-preview__hd">
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">销售总额</label>
+                <em class="weui-form-preview__value">¥{{ formData.bbje || 0 }}</em>
+              </div>
             </div>
+
+            <div class="weui-form-preview__bd">
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">单号</label>
+                <span class="weui-form-preview__value">{{ formData.vreceiptcode }}</span>
+              </div>
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">客户名称</label>
+                <span class="weui-form-preview__value">{{ formData.ccustomerName }}</span>
+              </div>
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">部门名称</label>
+                <span class="weui-form-preview__value">{{ formData.cdeptName }}</span>
+              </div>
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">业务员名称</label>
+                <span class="weui-form-preview__value">{{ formData.cemployeeName }}</span>
+              </div>
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">自编订单号</label>
+                <span class="weui-form-preview__value">{{ formData.zbddh }}</span>
+              </div>
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">收货人信息</label>
+                <span class="weui-form-preview__value">{{ formData.shrxx }}</span>
+              </div>
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">物流公司</label>
+                <span class="weui-form-preview__value">{{ formData.wlgs }}</span>
+              </div>
+              <div class="weui-form-preview__item" v-if="formData.vnote">
+                <label class="weui-form-preview__label">备注</label>
+                <span class="weui-form-preview__value">{{ formData.vnote }}</span>
+              </div>
+            </div>
+
+            <!-- 明细 s-->
+            <div class="weui-form-preview__bd w-borrow-list">
+              <div class="w-borrow-list-item" v-for="item in formData.details">
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">存货编码</label>
+                    <span class="weui-form-preview__value">{{ item.invcode }}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">存货名称</label>
+                  <span class="weui-form-preview__value">{{ item.invName }}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">规格</label>
+                  <span class="weui-form-preview__value">{{ item.invspec }}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">主单位名称</label>
+                  <span class="weui-form-preview__value">{{ item.cunitName }}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">辅单位名称</label>
+                  <span class="weui-form-preview__value">{{ item.cpackunitName }}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">换算率</label>
+                  <span class="weui-form-preview__value">{{ item.hsl }}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">数量</label>
+                  <span class="weui-form-preview__value">{{ item.nnumber }}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">辅数量</label>
+                  <span class="weui-form-preview__value">{{ item.npacknumber }}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">税率</label>
+                  <span class="weui-form-preview__value">{{ item.ntaxrate }}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">含税净价</label>
+                  <span class="weui-form-preview__value">¥{{ item.ntaxnetprice }}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">无税金额</label>
+                  <span class="weui-form-preview__value">¥{{ item.nmny }}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">税额</label>
+                  <span class="weui-form-preview__value">¥{{ item.ntaxmny }}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">价税合计</label>
+                  <span class="weui-form-preview__value">¥{{ item.nsummny }}</span>
+                </div>
+                <div class="weui-form-preview__item" v-if="item.seka">
+                  <label class="weui-form-preview__label">色卡</label>
+                  <span class="weui-form-preview__value">{{ item.seka }}</span>
+                </div>
+                <div class="weui-form-preview__item" v-if="item.tconsigntime">
+                  <label class="weui-form-preview__label">计划发货日期</label>
+                  <span class="weui-form-preview__value">{{ item.tconsigntime }}</span>
+                </div>
+                <div class="weui-form-preview__item" v-if="item.frownote">
+                  <label class="weui-form-preview__label">行备注</label>
+                  <span class="weui-form-preview__value">{{ item.frownote }}</span>
+                </div>
+              </div>
+            </div>
+            <!-- 明细 e-->
           </template>
 
           <!-- 费用报销单 -->
@@ -94,7 +203,7 @@
                   <label class="weui-form-preview__label">电话费</label>
                   <span class="weui-form-preview__value">¥{{ item.defitem21 }}</span>
                 </div>
-                <div class="weui-form-preview__item" v-if="item.defitem6">>
+                <div class="weui-form-preview__item" v-if="item.defitem6">
                   <label class="weui-form-preview__label"其它费用</label>
                   <span class="weui-form-preview__value">¥{{ item.defitem6 }}</span>
                 </div>
@@ -265,7 +374,7 @@
                 <div class="icon-box__desc" flex="dir:left main:justify">
                   <span>{{ item.checkmanName }}</span><span>{{ item.dealdate }}</span>
                 </div>
-                <div class="icon-box__title w-bold">{{ item.checknote || '未审批' }}</div>
+                <div class="icon-box__title">{{ item.checknote || '未审批' }}</div>
               </div>
             </div>
           </div>
@@ -274,7 +383,11 @@
       </div>
       <!-- 主区域 end -->
       <div class="w-footer weui-form-preview__ft">
-        <a v-if="!isLoading && !hasError" class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="isOperationShow = true">操作</a>
+        <template v-if="!isLoading && !hasError">
+          <a v-if="pageType === 'boss' && ischeck === 'N'" class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="isOperationShow = true">操作</a>
+
+          <a v-else class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="/index.html">关闭</a>
+        </template>
         <a v-else-if="hasError" href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading" @click="getDetail"><i class="weui-icon-warn"></i>请求错误，点击这里重试</a>
         <a v-else href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading"><i class="weui-loading"></i>数据加载中</a>
       </div>
@@ -311,13 +424,17 @@
     new Vue({
       el: '#app',
       data: function(){
-        var billType = Utils.getQueryString('pk_billtype');
+        var billType = Utils.getQueryString('pk_billtype'),
+            ischeck = Utils.getQueryString('ischeck'),
+            pageType = Utils.getQueryString('pageType');
         return {
           isLoading: false,
           hasError: false,
           isOperationShow: false,
           isOperationDlgShow: false,
           billType: billType,
+          pageType: pageType,
+          ischeck: ischeck,
           formData: {
             bbje: "--",
             deptname: "--",

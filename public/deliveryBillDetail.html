@@ -23,19 +23,19 @@
           <div class="weui-form-preview__hd">
             <div class="weui-form-preview__item">
               <label class="weui-form-preview__label">出库单号</label>
-              <em class="weui-form-preview__value">232323232323</em>
+              <em class="weui-form-preview__value">{{ formData.vbillcode }}</em>
             </div>
           </div>
 
           <div class="weui-form-preview__bd">
             <div class="weui-form-preview__item">
               <label class="weui-form-preview__label">客户</label>
-              <span class="weui-form-preview__value">广州众星软件</span>
+              <span class="weui-form-preview__value">{{ formData.ccustomerName }}</span>
             </div>
-            <div class="weui-form-preview__item">
+            <!-- <div class="weui-form-preview__item">
               <label class="weui-form-preview__label">日期</label>
               <span class="weui-form-preview__value">2017-11-19 12:11:10</span>
-            </div>
+            </div> -->
             <div class="weui-form-preview__item">
               <label class="weui-form-preview__label">出货仓库</label>
               <span class="weui-form-preview__value">广州仓</span>
@@ -143,27 +143,21 @@
     new Vue({
       el: '#app',
       data: function(){
-        var billType = Utils.getQueryString('pk_billtype'),
-            pageType = Utils.getQueryString('pageType') || 'confirm';
+        var pageType = Utils.getQueryString('pageType') || 'confirm';
         return {
           isLoading: false,
           hasError: false,
           isOperationShow: false,
           isOperationDlgShow: false,
-          billType: billType,
           pageType: pageType, // confirm 出库单出库  sign 签收
           formData: {
-            bbje: "--",
-            deptname: "--",
-            details: [{szxmmc: 'test'}],
-            djbh: "--",
-            djrq: "--",
-            fydeptid: "--",
-            fydwbm: "--",
-            fydwmc: "--",
-            jkbxr: "--",
-            psnname: "--",
-            spqks: [],
+            ccustomerName: "--",
+            ccustomerid: "--",
+            cdeptName: "--",
+            cdeptid: "--",
+            cgeneralhid: "--",
+            vbillcode: "--",
+            details: [],
           },
           opinionData: {
             state: 'Y', //'Y'批准 'R'驳回
@@ -174,27 +168,24 @@
 
       mounted: function () {
         FastClick.attach(document.body);
-        // this.getDetail();
+        this.getDetail();
       },
 
       methods: {
 
         getDetail: function(){
           var billid = Utils.getQueryString('billid'),
-              pk_billtype = Utils.getQueryString('pk_billtype'),
               vm = this;
 
-          if (billid && pk_billtype) {
+          if (billid) {
             // url参数正常 请求数据
             vm.isLoading = true;
             vm.hasError = false;
 
-            $.getJSON('/modules/wechat/ydsp/BillDetail', {
+            $.getJSON('/modules/wechat/saleck/BillDetail', {
               billid: billid,
-              // billid: '1001A1100000000FTGOB',
-              openId: '1341311',
-              pk_billtype: pk_billtype,
-              // pk_billtype: '263X-01',
+              // billid: '1001A910000000002N6R',
+              openId: '1341311'
             }).then(function(rsp) {
               console.log(rsp);
               if (rsp.result === 'Y') {

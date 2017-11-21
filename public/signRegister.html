@@ -106,18 +106,21 @@
 
       methods: {
         handleVcodeBtnClick: function() {
-          var vm = this, intervalId;
-          this.countDown = 60;
-          intervalId = setInterval(function (){
-            vm.countDown--;
-            vm.countDown === 0 && clearInterval(intervalId);
-          }, 1000);
+          if ($("#signRegisterForm").validate().element($('input[name="mobilePhone"]'))) {
+            var vm = this, intervalId;
+            this.countDown = 60;
+            intervalId = setInterval(function (){
+              vm.countDown--;
+              vm.countDown === 0 && clearInterval(intervalId);
+            }, 1000);
+          }
+            
         },
 
         handleRegBtnClick: function () {
           var $form = $('#signRegisterForm');
           if ($form.valid()) {
-            $form.submit();
+            console.log($form);
           }
         }
       }

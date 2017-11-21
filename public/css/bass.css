@@ -23,6 +23,10 @@ label.weui-cell_warn {
 	font-size: 14px;
 }
 
+label.weui-label {
+	width: 80px;
+}
+
 /* 布局基础样式 */
 .w-container {
 	height: 100vh;
