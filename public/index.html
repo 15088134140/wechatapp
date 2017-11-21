@@ -6,6 +6,7 @@
 	<meta id="viewport" name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<link rel="stylesheet" type="text/css" href="https://res.wx.qq.com/open/libs/weui/1.1.0/weui.min.css">
+	<script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
 	<style>
 		div{
 			line-height: 2em;
@@ -16,14 +17,25 @@
 </head>
 <body>
 	本页面连接各前端页面，用于界面演示，无其它实际作用。
-	<div><a href="./borrowBillList.html">列表页面</a></div>
-	<div><a href="./borrowBillDetail.html?billid=1001A1100000000F1AJ5&pk_billtype=264X-01">费用单</a></div>
-	<div><a href="./borrowBillDetail.html?billid=1001A1100000000GVE2Y&pk_billtype=263X-01">借款单</a></div>
-	<div><a href="./borrowBillDetail.html?billid=1001A1100000000FTD73&pk_billtype=2641">差旅费</a></div>
-	<div><a href="./statistics.html">收入汇款单</a></div>
-	<div><a href="./profits.html">利润表</a></div>
-	<div><a href="./deliveryBillDetail.html?pageType=sign">出库签收单</a></div>
-	<div><a href="./deliveryBillDetail.html?pageType=comfirm">出库确认单</a></div>
-	<div><a href="./signRegister.html">签收注册</a></div>
+	<div><a href="./borrowBillList.html">移动审核——【我的待办】列表</a></div>
+	<div><a href="#">移动审批——【我发起的】列表</a>(功能开发中)</div>
+	<div><a href="./borrowBillDetail.html?billid=1001A1100000000F1AJ5&pk_billtype=264X-01">移动审批——【费用报销单】详情
+</a></div>
+	<div><a href="./borrowBillDetail.html?billid=1001A1100000000GVE2Y&pk_billtype=263X-01">移动审批——【借款单】详情</a></div>
+	<div><a href="./borrowBillDetail.html?billid=1001A1100000000FTD73&pk_billtype=2641">移动审批——【差旅费报销单】详情</a></div>
+	<div><a href="#">移动审批——【销售订单】详情</a>(功能开发中)</div>
+	<div><a href="./statistics.html">经营分析中心——【收入回款日报表】</a></div>
+	<div><a href="./profits.html">经营分析中心——【利润表】</a></div>
+	<div><a href="./deliveryBillDetail.html?pageType=sign">销售出库——【客户签收扫描确认】</a></div>
+	<div><a href="./deliveryBillDetail.html?pageType=comfirm">销售出库——【仓库出库扫描确认】</a></div>
+	<div><a href="#">微信推送——【客户应收对账单】</a>(功能开发中)</div>
+	<div><a href="#">微信推送——【销售发票签收单】</a>(功能开发中)</div>
+	<div><a href="#">人力资源中心——【工资条推送】</a>(功能开发中)</div>
 </body>
+
+<script type="text/javascript">
+	$('a[href="#"]').click(function(){
+		alert('功能开发中！');
+	});
+</script>
 </html>
