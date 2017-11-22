@@ -28,8 +28,8 @@
 					<i class="weui-icon-search"></i>
 				</div>
 				<div class="w-top-panel" flex="main:left">
-					<div :class="['panel-item', 'panel-left', {active: (queryCondition.ischeck == 'N')}]" @click="handleTabClick('N')">待审</div>
-					<div :class="['panel-item', 'panel-right', {active: (queryCondition.ischeck == 'Y')}]" @click="handleTabClick('Y')">已审</div>
+					<div :class="['panel-item', 'panel-left', {active: (queryCondition.ischeck == 'N')}]" @click="handleTabClick('N')">{{ pageType === 'employee' ? '未办' : '待审' }}</div>
+					<div :class="['panel-item', 'panel-right', {active: (queryCondition.ischeck == 'Y')}]" @click="handleTabClick('Y')">{{ pageType === 'employee' ? '已办' : '已审' }}</div>
 				</div>
 			</div>
 			<!-- 主区域 start -->
@@ -47,10 +47,9 @@
 							<div class="weui-cell__ft"></div>
 						</a>
 					</div>
-					<div class="weui-loadmore" v-else>
-	          <i class="weui-icon-info-circle"></i>
-	          <span class="weui-loadmore__tips" @click="getMainList">暂无数据</span>
-	        </div>
+					<div v-else class="weui-loadmore weui-loadmore_line">
+            <span class="weui-loadmore__tips">暂无数据</span>
+        	</div>
 				</div>
 
 				<div class="weui-loadmore" v-else-if="hasError">

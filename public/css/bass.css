@@ -8,6 +8,19 @@
 	color: #FFBE00;
 }
 
+.weui-form-preview__bd {
+	color: #000;
+}
+
+.weui-dialog__btn_primary {
+	color: #092e85;
+}
+
+.weui-form-preview__btn_primary {
+  color: #ffffff;
+  background-color: #092e85;
+}
+
 button.weui-btn_disabled {
 	color: #ccc;
 	font-size: 14px;
@@ -80,7 +93,7 @@ label.weui-label {
 	border-collapse: collapse; 
 }
 
-.w-table tr:nth-of-type(odd) { 
+.w-table tr:nth-of-type(even) { 
   background: #eee; 
 }
 

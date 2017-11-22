@@ -22,29 +22,34 @@
       <div class="w-main">
         <div class="w-section">
           <div class="w-section-title w-bold">
-            月度统计表
+            广州集泰化工股份有限公司{{ (new Date()).Format('yyyy年MM月dd日') }}
           </div>
-          <table class="w-table statistics-table">
-            <thead>
-              <tr>
-                <th>区间</th> <th>收入</th> <th>回款</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>当日</td> <td>121212</td> <td>121212</td>
-              </tr>
-              <tr>
-                <td>本月</td> <td>12121</td> <td>121212</td>
-              </tr>
-              <tr>
-                <td>本年</td> <td>1212</td> <td>121212</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="w-section-body">
+            <table class="w-table statistics-table">
+              <thead>
+                <tr>
+                  <th>区间</th> <th>收入(万元)</th> <th>回款(万元)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>当日</td> <td>57345.00</td> <td>45677.00</td>
+                </tr>
+                <tr>
+                  <td>本月</td> <td>782255.00</td> <td>51255.00</td>
+                </tr>
+                <tr>
+                  <td>本年</td> <td>697525.00</td> <td>457578.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div class="w-section">
-          <div id="main" style="width: 100%; height:300px;"></div>
+          <div class="w-section-title w-bold canvas-title"> 近一年统计情况 </div>
+          <div class="w-section-body">
+            <div id="main" style="width: 100%; height:300px;"></div>
+          </div>
         </div>
       </div>
       <!-- 主区域 end -->
@@ -74,10 +79,10 @@
 
         // 指定图表的配置项和数据
         var option = {
-          title: {
-            text: '收入回款图',
-            top: '15px'
-          },
+          // title: {
+            // text: '近一年统计情况',
+            // top: '15px'
+          // },
           tooltip: {
             trigger: 'axis'
           },
@@ -86,34 +91,27 @@
             right: '10px',
             top: '15px'
           },
-          grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-          },
           xAxis: {
             type: 'category',
-            data: ['2016-11','2017-01','2017-02','2017-03','2017-04','2017-05','2017-06'],
-            axisLabel: {
-              // 'margin-right': '8px',
-            }
+            name: '月',
+            data: ['11','12','1','2','3','4','5','6','7','8','9','10','11']
           },
           yAxis: {
-            type: 'value'
+            type: 'value',
+            name: '万元',
           },
           series: [
-            {
-              name:'收入',
-              type:'line',
-              stack: '金额',
-              data:[120, 132, 101, 134, 90, 230, 210]
-            },
             {
               name:'回款',
               type:'line',
               stack: '金额',
-              data:[220, 182, 191, 234, 290, 330, 310]
+              data:[120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230]
+            },
+            {
+              name:'收入',
+              type:'line',
+              stack: '金额',
+              data:[220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234, 290, 330]
             }
           ]
       };
