@@ -12,13 +12,22 @@
 	color: #000;
 }
 
-.weui-dialog__btn_primary {
+.weui-dialog__btn_primary, .weui-vcode-btn {
 	color: #092e85;
+}
+
+.weui-vcode-btn:active {
+	color: #092e85;
+	opacity: .8;
 }
 
 .weui-form-preview__btn_primary {
   color: #ffffff;
   background-color: #092e85;
+}
+
+.weui-form-preview__btn:active {
+	background-color: #092ea8;
 }
 
 button.weui-btn_disabled {
