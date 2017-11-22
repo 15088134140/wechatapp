@@ -19,8 +19,8 @@
 		<div class="w-container" flex="box:justify dir:top">
 			<div class="w-top">
 				<div class="w-top-panel" flex="main:left">
-					<div :class="['panel-item', 'panel-left', {active: (queryCondition.ischeck == 'N')}]" @click="handleTabClick('N')">{{ pageType === 'employee' ? '未办' : '待审' }}</div>
-					<div :class="['panel-item', 'panel-right', {active: (queryCondition.ischeck == 'Y')}]" @click="handleTabClick('Y')">{{ pageType === 'employee' ? '已办' : '已审' }}</div>
+					<div :class="['panel-item', 'panel-left', {active: (queryCondition.ischeck == 'N')}]" @click="handleTabClick('N')">{{ pageType === 'employee' ? '待审' : '未办' }}</div>
+					<div :class="['panel-item', 'panel-right', {active: (queryCondition.ischeck == 'Y')}]" @click="handleTabClick('Y')">{{ pageType === 'employee' ? '已审' : '已办' }}</div>
 				</div>
 				<div class="w-top-search" flex="main:left">
 					<div class="w-select-label w-bold">日期区间：</div>
