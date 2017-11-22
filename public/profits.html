@@ -21,62 +21,62 @@
       <div class="w-main">
         <div class="w-section">
           <div class="w-section-title w-bold">
-            利润表
+            {{ (new Date()).Format('yyyy年MM月') }}利润表
           </div>
-          <div class="w-section-body w-bold">
-            <table class="w-table statistics-table">
+          <div class="w-section-body">
+            <table class="w-table profits-table">
               <thead>
                 <tr>
-                  <th>项目</th> <th>行</th> <th>本月</th><th>本年</th>
+                  <th>项目</th> <th>本月</th><th>本年</th>
                 </tr>
               </thead>
               <tbody>
+                <tr class="tr-gap-color">
+                  <td>一、主营业务收入</td> <td>1,800</td> <td>1,800</td>              </tr>
                 <tr>
-                  <td>一、主营业务收入</td> <td>1</td> <td>1,800</td> <td>1,800</td>              </tr>
-                <tr>
-                  <td class="w-padding-left-1x">减:主营业务成本</td> <td>4</td> <td>1,800</td> <td>1,800</td>
+                  <td class="w-padding-left-1x">减:主营业务成本</td> <td>1,800</td> <td>1,800</td>
                 </tr>
                 <tr>
-                  <td class="w-padding-left-2x">主营业务税金及附和</td> <td>5</td> <td>1,800</td> <td>1,800</td>
+                  <td class="w-padding-left-2x">主营业务税金及附和</td> <td>1,800</td> <td>1,800</td>
+                </tr>
+                <tr class="tr-gap-color">
+                  <td>二、主营业务利润(亏损以“-”填列)</td> <td>1,800</td> <td>1,800</td>
                 </tr>
                 <tr>
-                  <td>二、主营业务利润(亏损以“-”填列)</td> <td>10</td> <td>1,800</td> <td>1,800</td>
+                  <td class="w-padding-left-1x">加:其他业务利润(亏损以“-”填列)</td> <td>1,800</td> <td>1,800</td>
                 </tr>
                 <tr>
-                  <td class="w-padding-left-1x">加:其他业务利润(亏损以“-”填列)</td> <td>11</td> <td>1,800</td> <td>1,800</td>
+                  <td class="w-padding-left-1x">减:营业费用</td> <td>1,800</td> <td>1,800</td>
                 </tr>
                 <tr>
-                  <td class="w-padding-left-1x">减:营业费用</td> <td>13</td> <td>1,800</td> <td>1,800</td>
+                  <td class="w-padding-left-2x">管理费用</td> <td>1,800</td> <td>1,800</td>
                 </tr>
                 <tr>
-                  <td class="w-padding-left-2x">管理费用</td> <td>14</td> <td>1,800</td> <td>1,800</td>
+                  <td class="w-padding-left-2x">财务费用</td> <td>1,800</td> <td>1,800</td>
+                </tr>
+                <tr class="tr-gap-color">
+                  <td>三、营业利润(亏损以“-”填列)</td> <td>1,800</td> <td>1,800</td>
                 </tr>
                 <tr>
-                  <td class="w-padding-left-2x">财务费用</td> <td>15</td> <td>1,800</td> <td>1,800</td>
+                  <td class="w-padding-left-1x">加:投资收益(亏损以“-”填列)</td> <td>1,800</td> <td>1,800</td>
                 </tr>
                 <tr>
-                  <td>三、营业利润(亏损以“-”填列)</td> <td>18</td> <td>1,800</td> <td>1,800</td>
+                  <td class="w-padding-left-2x">补贴收入</td> <td>1,800</td> <td>1,800</td>
                 </tr>
                 <tr>
-                  <td class="w-padding-left-1x">加:投资收益(亏损以“-”填列)</td> <td>19</td> <td>1,800</td> <td>1,800</td>
+                  <td class="w-padding-left-2x">营业外收入</td> <td>1,800</td> <td>1,800</td>
                 </tr>
                 <tr>
-                  <td class="w-padding-left-2x">补贴收入</td> <td>22</td> <td>1,800</td> <td>1,800</td>
+                  <td class="w-padding-left-1x">减:营业外支出</td> <td>1,800</td> <td>1,800</td>
+                </tr>
+                <tr class="tr-gap-color">
+                  <td>四、利润总额(亏损以“-”填列)</td> <td>1,800</td> <td>1,800</td>
                 </tr>
                 <tr>
-                  <td class="w-padding-left-2x">营业外收入</td> <td>23</td> <td>1,800</td> <td>1,800</td>
+                  <td class="w-padding-left-1x">减:所得税</td> <td>1,800</td> <td>1,800</td>
                 </tr>
-                <tr>
-                  <td class="w-padding-left-1x">减:营业外支出</td> <td>25</td> <td>1,800</td> <td>1,800</td>
-                </tr>
-                <tr>
-                  <td>四、利润总额(亏损以“-”填列)</td> <td>27</td> <td>1,800</td> <td>1,800</td>
-                </tr>
-                <tr>
-                  <td class="w-padding-left-1x">减:所得税</td> <td>28</td> <td>1,800</td> <td>1,800</td>
-                </tr>
-                <tr>
-                  <td>五、净利润(亏损以“-”填列)</td> <td>30</td> <td>1,800</td> <td>1,800</td>
+                <tr class="tr-gap-color">
+                  <td>五、净利润(亏损以“-”填列)</td> <td>1,800</td> <td>1,800</td>
                 </tr>
               </tbody>
             </table>
