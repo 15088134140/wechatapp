@@ -19,7 +19,7 @@
     <div class="w-container" flex="box:last dir:top">
       <!-- 主区域 start -->
       <div class="w-main">
-        <div class="weui-cells__title">签收注册</div>
+        <!-- <div class="weui-cells__title">签收注册</div> -->
         <form class="weui-cells weui-cells_form" id="signRegisterForm">
           <div class="weui-cell">
             <div class="weui-cell__hd"><label class="weui-label" for="companyName">物流公司</label></div>
@@ -106,18 +106,21 @@
 
       methods: {
         handleVcodeBtnClick: function() {
-          var vm = this, intervalId;
-          this.countDown = 60;
-          intervalId = setInterval(function (){
-            vm.countDown--;
-            vm.countDown === 0 && clearInterval(intervalId);
-          }, 1000);
+          if ($("#signRegisterForm").validate().element($('input[name="mobilePhone"]'))) {
+            var vm = this, intervalId;
+            this.countDown = 60;
+            intervalId = setInterval(function (){
+              vm.countDown--;
+              vm.countDown === 0 && clearInterval(intervalId);
+            }, 1000);
+          }
+            
         },
 
         handleRegBtnClick: function () {
           var $form = $('#signRegisterForm');
           if ($form.valid()) {
-            $form.submit();
+            console.log($form);
           }
         }
       }

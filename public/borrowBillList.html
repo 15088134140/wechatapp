@@ -18,39 +18,39 @@
 	<div id="app" v-cloak>
 		<div class="w-container" flex="box:justify dir:top">
 			<div class="w-top">
-				<div class="w-top-search" flex="main:left">
-					<select class="weui-select" v-model="dateRange" @change="getMainList">
-            <option :value="1">查询一个月内的数据</option>
-            <option :value="2">查询两个月内的数据</option>
-            <option :value="3">查询三个月内的数据</option>
-            <option :value="0">查询全部的数据</option>
-          </select>
-					<i class="weui-icon-search"></i>
-				</div>
 				<div class="w-top-panel" flex="main:left">
-					<div :class="['panel-item', 'panel-left', {active: (queryCondition.ischeck == 'N')}]" @click="handleTabClick('N')">待审</div>
-					<div :class="['panel-item', 'panel-right', {active: (queryCondition.ischeck == 'Y')}]" @click="handleTabClick('Y')">已审</div>
+					<div :class="['panel-item', 'panel-left', {active: (queryCondition.ischeck == 'N')}]" @click="handleTabClick('N')">{{ pageType === 'employee' ? '待审' : '未办' }}</div>
+					<div :class="['panel-item', 'panel-right', {active: (queryCondition.ischeck == 'Y')}]" @click="handleTabClick('Y')">{{ pageType === 'employee' ? '已审' : '已办' }}</div>
+				</div>
+				<div class="w-top-search" flex="main:left">
+					<div class="w-select-label w-bold">日期区间：</div>
+					<select class="w-select" v-model="dateRange" @change="getMainList">
+            <option :value="1">近一个月</option>
+            <option :value="2">近两个月</option>
+            <option :value="3">近三个月</option>
+            <option :value="0">全部</option>
+          </select>
+					<!-- <i class="weui-icon-search"></i> -->
 				</div>
 			</div>
 			<!-- 主区域 start -->
 			<div class="w-main weui-panel__bd">
 				<div class="weui-media-box weui-media-box_small-appmsg" v-if="!isLoading && !hasError">
 					<div class="weui-cells w-borrow-list" v-if="tableData.length !== 0">
-						<a v-for="item in tableData" class="weui-cell weui-cell_access w-borrow-list-item" :href="'./borrowBillDetail.html?billid=' + item.billid + '&pk_billtype=' + item.pk_billtype">
+						<a v-for="item in tableData" class="weui-cell weui-cell_access w-borrow-list-item" :href="'./borrowBillDetail.html?ischeck=' + item.ischeck + '&pageType=' + pageType + '&billid=' + item.billid + '&pk_billtype=' + item.pk_billtype">
 							<div class="weui-cell__bd w-borrow-list-item-left">
 								<div class="w-borrow-list-item-dsc" flex="box:last">
 									<span>{{ item.sendermanName }}的{{ item.billtypeName }}</span>
-									<span>单号:{{ item.billno }}</span>
+									<span>{{ item.billno }}</span>
 								</div>
 								<div class="w-borrow-list-item-title">{{ item.senddate }}</div>
 							</div>
 							<div class="weui-cell__ft"></div>
 						</a>
 					</div>
-					<div class="weui-loadmore" v-else>
-	          <i class="weui-icon-info-circle"></i>
-	          <span class="weui-loadmore__tips" @click="getMainList">暂无数据</span>
-	        </div>
+					<div v-else class="weui-loadmore weui-loadmore_line">
+            <span class="weui-loadmore__tips">暂无数据</span>
+        	</div>
 				</div>
 
 				<div class="weui-loadmore" v-else-if="hasError">
@@ -99,7 +99,10 @@
 
 			methods: {
 				getMainList: function() {
-					var vm = this, endDate = new Date(), startDate = new Date(endDate.getTime());
+					// 员工接口地址 /modules/wechat/ydsp/Wfqd_DsYs
+					// 老板接口地址 /modules/wechat/ydsp/Wddb_WbYb
+					var vm = this, endDate = new Date(), startDate = new Date(endDate.getTime()),
+							url = '/modules/wechat/ydsp/' + (pageType === 'employee' ? 'Wfqd_DsYs' : 'Wddb_WbYb');
 					if (vm.dateRange === 0) {
 						startDate.setMonth(0);
 						startDate.setDate(1);
@@ -111,7 +114,8 @@
 					vm.queryCondition.endDate = endDate.Format('yyyy-MM-dd');
 					vm.isLoading = true;
 					vm.hasError = false;
-					$.getJSON('/modules/wechat/ydsp/Wddb_WbYb', this.queryCondition).then(function(rsp) {
+
+					$.getJSON(url, this.queryCondition).then(function(rsp) {
 						if (rsp.result === 'Y') {
 							vm.tableData = rsp.rsData || [];
 							vm.hasError = false;	
