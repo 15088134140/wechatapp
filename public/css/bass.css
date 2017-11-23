@@ -30,6 +30,7 @@ label.weui-cell_warn {
 
 .w-container .w-main {
 	overflow-y: auto;
+	-webkit-overflow-scrolling:touch;
 }
 
 .w-operation{
