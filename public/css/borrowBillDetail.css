@@ -22,11 +22,11 @@
 
 /* 借款项 */
 .w-borrow-list .w-borrow-list-item{
-	position: relative;
-	padding: 5px 0;
+  position: relative;
+  padding: 5px 0;
 }
-.w-borrow-list .w-borrow-list-item:before {
-	content: " ";
+.w-borrow-list .w-borrow-list-item:before{
+  content: " ";
   position: absolute;
   left: 0;
   right: 0;
@@ -36,4 +36,11 @@
   border-top: 1px solid #d9d9d9;
   transform-origin: 0 0;
   transform: scaleY(.5);
+}
+
+.w-borrow-list .w-borrow-list-item .w-item-loadmore{
+  text-align: left;
+  position: relative;
+  margin-top: 5px;
+  // padding: 5px 0;
 }

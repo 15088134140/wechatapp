@@ -66,71 +66,78 @@
             </div>
 
             <!-- 明细 s-->
-            <div class="weui-form-preview__bd w-borrow-list">
+            <div class="weui-form-preview__bd w-borrow-list" v-if="formData.details.length">
               <div class="w-borrow-list-item" v-for="item in formData.details">
-                <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">存货编码</label>
-                    <span class="weui-form-preview__value">{{ item.invcode }}</span>
+                <div class="w-borrow-list-item-main">
+                  <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">存货名称</label>
+                    <span class="weui-form-preview__value">{{ item.invName }}</span>
+                  </div>
+                  <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">数量</label>
+                    <span class="weui-form-preview__value">{{ item.nnumber }}</span>
+                  </div>
+                  <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">价税合计</label>
+                    <span class="weui-form-preview__value">¥{{ item.nsummny }}</span>
+                  </div>
+                  <div class="w-item-loadmore weui-cell_link" @click="handleShowOtherClick(item)">
+                    {{ item.isShowOther ? '收起' : '展开' }}更多
+                  </div>
                 </div>
-                <div class="weui-form-preview__item">
-                  <label class="weui-form-preview__label">存货名称</label>
-                  <span class="weui-form-preview__value">{{ item.invName }}</span>
-                </div>
-                <div class="weui-form-preview__item">
-                  <label class="weui-form-preview__label">规格</label>
-                  <span class="weui-form-preview__value">{{ item.invspec }}</span>
-                </div>
-                <div class="weui-form-preview__item">
-                  <label class="weui-form-preview__label">主单位名称</label>
-                  <span class="weui-form-preview__value">{{ item.cunitName }}</span>
-                </div>
-                <div class="weui-form-preview__item">
-                  <label class="weui-form-preview__label">辅单位名称</label>
-                  <span class="weui-form-preview__value">{{ item.cpackunitName }}</span>
-                </div>
-                <div class="weui-form-preview__item">
-                  <label class="weui-form-preview__label">换算率</label>
-                  <span class="weui-form-preview__value">{{ item.hsl }}</span>
-                </div>
-                <div class="weui-form-preview__item">
-                  <label class="weui-form-preview__label">数量</label>
-                  <span class="weui-form-preview__value">{{ item.nnumber }}</span>
-                </div>
-                <div class="weui-form-preview__item">
-                  <label class="weui-form-preview__label">辅数量</label>
-                  <span class="weui-form-preview__value">{{ item.npacknumber }}</span>
-                </div>
-                <div class="weui-form-preview__item">
-                  <label class="weui-form-preview__label">税率</label>
-                  <span class="weui-form-preview__value">{{ item.ntaxrate }}</span>
-                </div>
-                <div class="weui-form-preview__item">
-                  <label class="weui-form-preview__label">含税净价</label>
-                  <span class="weui-form-preview__value">¥{{ item.ntaxnetprice }}</span>
-                </div>
-                <div class="weui-form-preview__item">
-                  <label class="weui-form-preview__label">无税金额</label>
-                  <span class="weui-form-preview__value">¥{{ item.nmny }}</span>
-                </div>
-                <div class="weui-form-preview__item">
-                  <label class="weui-form-preview__label">税额</label>
-                  <span class="weui-form-preview__value">¥{{ item.ntaxmny }}</span>
-                </div>
-                <div class="weui-form-preview__item">
-                  <label class="weui-form-preview__label">价税合计</label>
-                  <span class="weui-form-preview__value">¥{{ item.nsummny }}</span>
-                </div>
-                <div class="weui-form-preview__item" v-if="item.seka">
-                  <label class="weui-form-preview__label">色卡</label>
-                  <span class="weui-form-preview__value">{{ item.seka }}</span>
-                </div>
-                <div class="weui-form-preview__item" v-if="item.tconsigntime">
-                  <label class="weui-form-preview__label">计划发货日期</label>
-                  <span class="weui-form-preview__value">{{ item.tconsigntime }}</span>
-                </div>
-                <div class="weui-form-preview__item" v-if="item.frownote">
-                  <label class="weui-form-preview__label">行备注</label>
-                  <span class="weui-form-preview__value">{{ item.frownote }}</span>
+                <div class="w-borrow-list-item-other" v-show="item.isShowOther">
+                  <div class="weui-form-preview__item">
+                      <label class="weui-form-preview__label">存货编码</label>
+                      <span class="weui-form-preview__value">{{ item.invcode }}</span>
+                  </div>
+                  <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">规格</label>
+                    <span class="weui-form-preview__value">{{ item.invspec }}</span>
+                  </div>
+                  <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">主单位名称</label>
+                    <span class="weui-form-preview__value">{{ item.cunitName }}</span>
+                  </div>
+                  <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">辅单位名称</label>
+                    <span class="weui-form-preview__value">{{ item.cpackunitName }}</span>
+                  </div>
+                  <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">换算率</label>
+                    <span class="weui-form-preview__value">{{ item.hsl }}</span>
+                  </div>
+                  <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">辅数量</label>
+                    <span class="weui-form-preview__value">{{ item.npacknumber }}</span>
+                  </div>
+                  <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">税率</label>
+                    <span class="weui-form-preview__value">{{ item.ntaxrate }}</span>
+                  </div>
+                  <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">含税净价</label>
+                    <span class="weui-form-preview__value">¥{{ item.ntaxnetprice }}</span>
+                  </div>
+                  <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">无税金额</label>
+                    <span class="weui-form-preview__value">¥{{ item.nmny }}</span>
+                  </div>
+                  <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">税额</label>
+                    <span class="weui-form-preview__value">¥{{ item.ntaxmny }}</span>
+                  </div>
+                  <div class="weui-form-preview__item" v-if="item.seka">
+                    <label class="weui-form-preview__label">色卡</label>
+                    <span class="weui-form-preview__value">{{ item.seka }}</span>
+                  </div>
+                  <div class="weui-form-preview__item" v-if="item.tconsigntime">
+                    <label class="weui-form-preview__label">计划发货日期</label>
+                    <span class="weui-form-preview__value">{{ item.tconsigntime }}</span>
+                  </div>
+                  <div class="weui-form-preview__item" v-if="item.frownote">
+                    <label class="weui-form-preview__label">行备注</label>
+                    <span class="weui-form-preview__value">{{ item.frownote }}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -169,7 +176,7 @@
             </div>
 
             <!-- 报销明细 s-->
-            <div class="weui-form-preview__bd w-borrow-list">
+            <div class="weui-form-preview__bd w-borrow-list" v-if="formData.details.length">
               <div class="w-borrow-list-item" v-for="item in formData.details">
                 <div class="weui-form-preview__item">
                     <label class="weui-form-preview__label">收支项目</label>
@@ -256,7 +263,7 @@
             </div>
 
             <!-- 报销明细 s-->
-            <div class="weui-form-preview__bd w-borrow-list">
+            <div class="weui-form-preview__bd w-borrow-list" v-if="formData.details.length">
               <div class="w-borrow-list-item" v-for="item in formData.details">
                 <div class="weui-form-preview__item">
                     <label class="weui-form-preview__label">收支项目</label>
@@ -342,7 +349,7 @@
               </div>
             </div>
             <!-- 借款项 s-->
-            <div class="weui-form-preview__bd w-borrow-list">
+            <div class="weui-form-preview__bd w-borrow-list" v-if="formData.details.length">
               <div class="w-borrow-list-item" v-for="item in formData.details">
                 <div class="weui-form-preview__item">
                   <label class="weui-form-preview__label">事由</label>
@@ -411,11 +418,20 @@
       <div class="weui-mask"></div>
       <div class="weui-dialog">
           <div class="weui-dialog__hd"><strong class="weui-dialog__title">意见</strong></div>
-          <div class="weui-dialog__bd"><textarea v-model="opinionData.content" class="weui-textarea" placeholder="请输入意见" rows="2"></textarea></div>
+          <div class="weui-dialog__bd"><textarea v-model="opinionData.checkNote" class="weui-textarea" placeholder="请输入意见" rows="2"></textarea></div>
           <div class="weui-dialog__ft">
               <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default" @click="handleDlgBtnCancelClick">取消</a>
-              <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary" @click="handleDlgBtnConfirmClick">确认</a>
+              <a v-if="!opinionData.isLoading" href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary" @click="handleDlgBtnConfirmClick">确认</a>
+              <a v-else href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default weui-btn_loading"><i class="weui-loading"></i>审核中</a>
           </div>
+      </div>
+    </div>
+
+    <div id="toast" style="display: none;">
+      <div class="weui-mask_transparent"></div>
+      <div class="weui-toast">
+          <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+          <p class="weui-toast__content">审批成功</p>
       </div>
     </div>
   </div>
@@ -424,17 +440,16 @@
     new Vue({
       el: '#app',
       data: function(){
-        var billType = Utils.getQueryString('pk_billtype'),
-            ischeck = Utils.getQueryString('ischeck'),
-            pageType = Utils.getQueryString('pageType');
         return {
           isLoading: false,
           hasError: false,
           isOperationShow: false,
           isOperationDlgShow: false,
-          billType: billType,
-          pageType: pageType,
-          ischeck: ischeck,
+          billid: Utils.getQueryString('billid'),
+          checkman: Utils.getQueryString('checkman'),
+          billType: Utils.getQueryString('pk_billtype'),
+          pageType: Utils.getQueryString('pageType'),
+          ischeck: Utils.getQueryString('ischeck'),
           formData: {
             bbje: "--",
             deptname: "--",
@@ -449,8 +464,9 @@
             spqks: [],
           },
           opinionData: {
-            state: 'Y', //'Y'批准 'R'驳回
-            content: '',
+            checkResult: 'Y', //'Y'批准 'R'驳回
+            checkNote: '同意',
+            isLoading: false,
           }
         }
       },
@@ -461,9 +477,9 @@
       },
 
       methods: {
-        getStepClass: function(state){
+        getStepClass: function(checkResult){
           var className = '';
-          switch(state) {
+          switch(checkResult) {
           case 'Y':
             className = 'weui-icon-success';
             break;
@@ -477,24 +493,25 @@
         },
 
         getDetail: function(){
-          var billid = Utils.getQueryString('billid'),
-              pk_billtype = Utils.getQueryString('pk_billtype'),
-              vm = this;
+          var vm = this;
 
-          if (billid && pk_billtype) {
+          if (this.billid && this.pageType) {
             // url参数正常 请求数据
             vm.isLoading = true;
             vm.hasError = false;
 
             $.getJSON('/modules/wechat/ydsp/BillDetail', {
-              billid: billid,
+              billid: this.billid,
               // billid: '1001A1100000000FTGOB',
-              openId: '1341311',
-              pk_billtype: pk_billtype,
+              openId: '100104042005',
+              pk_billtype: this.billType,
               // pk_billtype: '263X-01',
             }).then(function(rsp) {
               console.log(rsp);
               if (rsp.result === 'Y') {
+                rsp.rsData.details.forEach(function (item){
+                  item.isShowOther = false;
+                });
                 vm.formData = rsp.rsData;
                 vm.hasError = false; 
               } else {
@@ -509,22 +526,48 @@
           }
         },
 
-        handleOptBtnClick: function(state){
+        handleOptBtnClick: function(checkResult){
           this.isOperationShow = false;
           this.isOperationDlgShow = true;
-          this.opinionData.state = state;
-          console.log('state', state);
+          this.opinionData.checkResult = checkResult;
+          this.opinionData.checkNote = checkResult === 'Y' ? '同意' : '驳回';
+          console.log('checkResult', checkResult);
         },
 
         handleDlgBtnConfirmClick: function(){
-          console.log('this.opinionData', this.opinionData);
+          var vm = this;
+          vm.opinionData.isLoading = true;
+          $.post('/modules/wechat/ydsp/Wddb_CZ', {
+            billType: vm.billType,
+            billID: vm.billid,
+            checkman: vm.checkman,
+            checkResult: vm.opinionData.checkResult,
+            checkNote: vm.opinionData.checkNote,
+          }, function(rsp) {
+            console.log('post', rsp);
+            vm.opinionData.isLoading = false;
+            if (rsp.result === 'Y') {
+              vm.isOperationDlgShow = false;
+              vm.ischeck = 'Y';
+              $('#toast').fadeIn(0).fadeOut(500, function(){
+                window.location.href = './borrowBillList.html?pageType=' + vm.pageType;
+                //window.location.href = vm.pageType === 'employee' ? '/modules/wechat/ydsp/WfqdIndex' : '/modules/wechat/ydsp/WddbIndex';
+              });
+            } else {
+              alert(rsp.msg || '审批失败，请重试！');
+            }
+          }, 'json');
         },
 
         handleDlgBtnCancelClick: function(){
           this.isOperationDlgShow = false;
-          this.opinionData.content = '';
-          this.opinionData.state = 1;
+          this.opinionData.checkNote = '同意';
+          this.opinionData.checkResult = 'Y';
         },
+
+        handleShowOtherClick: function(item) {
+          item.isShowOther = !item.isShowOther;
+        }
       }
     });
 	</script>

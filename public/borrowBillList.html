@@ -37,7 +37,7 @@
 			<div class="w-main weui-panel__bd">
 				<div class="weui-media-box weui-media-box_small-appmsg" v-if="!isLoading && !hasError">
 					<div class="weui-cells w-borrow-list" v-if="tableData.length !== 0">
-						<a v-for="item in tableData" class="weui-cell weui-cell_access w-borrow-list-item" :href="'./borrowBillDetail.html?ischeck=' + item.ischeck + '&pageType=' + pageType + '&billid=' + item.billid + '&pk_billtype=' + item.pk_billtype">
+						<a v-for="item in tableData" class="weui-cell weui-cell_access w-borrow-list-item" :href="'./borrowBillDetail.html?checkman=' + (item.checkman || '') + '&ischeck=' + item.ischeck + '&pageType=' + pageType + '&billid=' + item.billid + '&pk_billtype=' + item.pk_billtype">
 							<div class="weui-cell__bd w-borrow-list-item-left">
 								<div class="w-borrow-list-item-dsc" flex="box:last">
 									<span>{{ item.sendermanName }}的{{ item.billtypeName }}</span>
@@ -84,7 +84,7 @@
 					pageType: pageType, // employee 我发起的  boss 我的审批
 					queryCondition: {
 						ischeck: 'N',
-						openId: '1341311',
+						openId: '100104042005',
 						startDate: '',
 						endDate: '',
 					},
