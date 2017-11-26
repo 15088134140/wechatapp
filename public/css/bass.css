@@ -60,6 +60,7 @@ label.weui-label {
 
 .w-container .w-main {
 	overflow-y: auto;
+	-webkit-overflow-scrolling:touch;
 }
 
 .w-operation{
