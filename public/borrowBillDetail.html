@@ -7,7 +7,7 @@
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<link rel="stylesheet" type="text/css" href="https://res.wx.qq.com/open/libs/weui/1.1.0/weui.min.css">
 	<link rel="stylesheet" type="text/css" href="./css/flex.css">
-	<link rel="stylesheet" type="text/css" href="./css/bass.css">
+	<link rel="stylesheet" type="text/css" href="./css/base.css">
 	<link rel="stylesheet" type="text/css" href="./css/borrowBillDetail.css">
 	<script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/base.js" type="text/javascript" charset="utf-8"></script>
@@ -560,7 +560,7 @@
         },
 
         goBackList: function(vm) {
-          window.location.href = vm.pageType === 'employee' ? '/modules/wechat/ydsp/WfqdIndex' : '/modules/wechat/ydsp/WddbIndex';
+          window.location.href = (vm.pageType === 'employee' ? '/modules/wechat/ydsp/WfqdIndex' : '/modules/wechat/ydsp/WddbIndex') + '?openId=' + vm.openId;
         },
 
         handleOptBtnClick: function(checkResult){
@@ -586,9 +586,9 @@
             if (rsp.result === 'Y') {
               vm.isOperationDlgShow = false;
               vm.ischeck = 'Y';
-              $('#toast').fadeIn(0).fadeOut(500, function(){
-                window.location.href = './borrowBillList.html?pageType=' + vm.pageType;
-                // vm.goBackList(vm);
+              $('#toast').fadeIn(0).fadeOut(2000, function(){
+                // originwindow.location.href = './borrowBillList.html?pageType=' + vm.pageType;
+                vm.origin !== 'push' ? vm.goBackList(vm) : wx.closeWindow();
               });
             } else {
               alert(rsp.msg || '审批失败，请重试！');

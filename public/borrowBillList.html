@@ -7,7 +7,7 @@
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<link rel="stylesheet" type="text/css" href="https://res.wx.qq.com/open/libs/weui/1.1.0/weui.min.css">
 	<link rel="stylesheet" type="text/css" href="./css/flex.css">
-	<link rel="stylesheet" type="text/css" href="./css/bass.css">
+	<link rel="stylesheet" type="text/css" href="./css/base.css">
 	<link rel="stylesheet" type="text/css" href="./css/borrowBillList.css">
 	<script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
 	<script src="./js/base.js" type="text/javascript" charset="utf-8"></script>
@@ -37,7 +37,7 @@
 			<div class="w-main weui-panel__bd">
 				<div class="weui-media-box weui-media-box_small-appmsg" v-if="!isLoading && !hasError">
 					<div class="weui-cells w-borrow-list" v-if="tableData.length !== 0">
-						<a v-for="item in tableData" class="weui-cell weui-cell_access w-borrow-list-item" :href="'./borrowBillDetail.html?origin=list&checkman=' + (item.checkman || '') + '&ischeck=' + item.ischeck + '&pageType=' + pageType + '&billid=' + item.billid + '&pk_billtype=' + item.pk_billtype">
+						<a v-for="item in tableData" class="weui-cell weui-cell_access w-borrow-list-item" :href="'./borrowBillDetail.html?origin=list&openId=' + queryCondition.openId + '&checkman=' + (item.checkman || '') + '&ischeck=' + item.ischeck + '&pageType=' + pageType + '&billid=' + item.billid + '&pk_billtype=' + item.pk_billtype">
 							<div class="weui-cell__bd w-borrow-list-item-left">
 								<div class="w-borrow-list-item-dsc" flex="box:last">
 									<span>{{ item.sendermanName }}的{{ item.billtypeName }}</span>
@@ -65,7 +65,7 @@
 			</div>
 			<!-- 主区域 end -->
 			<div class="w-footer weui-form-preview__ft">
-				<a class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:;" @click="wx.closeWindow()">关闭</a>
+				<a class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:;" @click="handleCloseClick">关闭</a>
 			</div>
 		</div>
 	</div>
@@ -104,8 +104,8 @@
 					var vm = this, endDate = new Date(), startDate = new Date(endDate.getTime()),
 							url = '/modules/wechat/ydsp/' + (pageType === 'employee' ? 'Wfqd_DsYs' : 'Wddb_WbYb');
 					if (vm.dateRange === 0) {
-						startDate.setMonth(0);
-						startDate.setDate(1);
+						startDate.setFullYear(endDate.getFullYear() - 1);
+						// startDate.setDate(1);
 					} else {
 						startDate.setMonth(endDate.getMonth() - vm.dateRange);
 					}
@@ -131,6 +131,10 @@
 				handleTabClick: function(ischeck){
 					this.queryCondition.ischeck = ischeck;
 					this.getMainList();
+				},
+
+				handleCloseClick: function(){
+					wx.closeWindow();
 				}
 			}
 		})
