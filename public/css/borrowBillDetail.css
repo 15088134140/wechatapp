@@ -42,5 +42,27 @@
   text-align: left;
   position: relative;
   margin-top: 5px;
-  // padding: 5px 0;
+  // background: rgba(255,255,255,0.5);
 }
+.w-borrow-list .w-borrow-list-item .w-item-loadmore:after{
+  content: " ";
+  display: inline-block;
+  height: 6px;
+  width: 6px;
+  border-width: 2px 2px 0 0;
+  border-color: #586c94;
+  border-style: solid;
+  -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+  transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+  position: relative;
+  top: -2px;
+  position: absolute;
+  top: 50%;
+  margin-top: -4px;
+  right: 2px;
+  transition: all .5s ease-in-out;
+}
+.w-borrow-list .w-borrow-list-item .w-item-loadmore.active:after{
+  transform: rotate(132deg);
+}
+

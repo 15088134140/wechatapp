@@ -81,7 +81,7 @@
                     <label class="weui-form-preview__label">价税合计</label>
                     <span class="weui-form-preview__value">¥{{ item.nsummny }}</span>
                   </div>
-                  <div class="w-item-loadmore weui-cell_link" @click="handleShowOtherClick(item)">
+                  <div :class="['w-item-loadmore', 'weui-cell_link', {active: item.isShowOther}]" @click="handleShowOtherClick(item)">
                     {{ item.isShowOther ? '收起' : '展开' }}更多
                   </div>
                 </div>
@@ -453,7 +453,7 @@
           formData: {
             bbje: "--",
             deptname: "--",
-            details: [],
+            details: [{isShowOther: false},{isShowOther: false}],
             djbh: "--",
             djrq: "--",
             fydeptid: "--",
@@ -493,37 +493,35 @@
         },
 
         getDetail: function(){
-          var vm = this;
+          // var vm = this;
 
-          if (this.billid && this.pageType) {
-            // url参数正常 请求数据
-            vm.isLoading = true;
-            vm.hasError = false;
+          // if (this.billid && this.pageType) {
+          //   // url参数正常 请求数据
+          //   vm.isLoading = true;
+          //   vm.hasError = false;
 
-            $.getJSON('/modules/wechat/ydsp/BillDetail', {
-              billid: this.billid,
-              // billid: '1001A1100000000FTGOB',
-              openId: '100104042005',
-              pk_billtype: this.billType,
-              // pk_billtype: '263X-01',
-            }).then(function(rsp) {
-              console.log(rsp);
-              if (rsp.result === 'Y') {
-                rsp.rsData.details.forEach(function (item){
-                  item.isShowOther = false;
-                });
-                vm.formData = rsp.rsData;
-                vm.hasError = false; 
-              } else {
-                vm.hasError = true; 
-              }
-              vm.isLoading = false;
-            }, function() {
-              vm.hasError = true;
-            });
-          } else {
-            vm.hasError = true;
-          }
+          //   $.getJSON('/modules/wechat/ydsp/BillDetail', {
+          //     billid: this.billid,
+          //     openId: '100104042005',
+          //     pk_billtype: this.billType,
+          //   }).then(function(rsp) {
+          //     console.log(rsp);
+          //     if (rsp.result === 'Y') {
+          //       rsp.rsData.details.forEach(function (item){
+          //         item.isShowOther = false;
+          //       });
+          //       vm.formData = rsp.rsData;
+          //       vm.hasError = false; 
+          //     } else {
+          //       vm.hasError = true; 
+          //     }
+          //     vm.isLoading = false;
+          //   }, function() {
+          //     vm.hasError = true;
+          //   });
+          // } else {
+          //   vm.hasError = true;
+          // }
         },
 
         handleOptBtnClick: function(checkResult){
