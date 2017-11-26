@@ -37,7 +37,7 @@
 			<div class="w-main weui-panel__bd">
 				<div class="weui-media-box weui-media-box_small-appmsg" v-if="!isLoading && !hasError">
 					<div class="weui-cells w-borrow-list" v-if="tableData.length !== 0">
-						<a v-for="item in tableData" class="weui-cell weui-cell_access w-borrow-list-item" :href="'./borrowBillDetail.html?checkman=' + (item.checkman || '') + '&ischeck=' + item.ischeck + '&pageType=' + pageType + '&billid=' + item.billid + '&pk_billtype=' + item.pk_billtype">
+						<a v-for="item in tableData" class="weui-cell weui-cell_access w-borrow-list-item" :href="'./borrowBillDetail.html?origin=list&checkman=' + (item.checkman || '') + '&ischeck=' + item.ischeck + '&pageType=' + pageType + '&billid=' + item.billid + '&pk_billtype=' + item.pk_billtype">
 							<div class="weui-cell__bd w-borrow-list-item-left">
 								<div class="w-borrow-list-item-dsc" flex="box:last">
 									<span>{{ item.sendermanName }}的{{ item.billtypeName }}</span>
@@ -65,7 +65,7 @@
 			</div>
 			<!-- 主区域 end -->
 			<div class="w-footer weui-form-preview__ft">
-				<a class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="/index.html">关闭</a>
+				<a class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:;" @click="wx.closeWindow()">关闭</a>
 			</div>
 		</div>
 	</div>

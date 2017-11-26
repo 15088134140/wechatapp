@@ -12,16 +12,18 @@
 	color: #000;
 }
 
-.weui-dialog__btn_primary, .weui-vcode-btn {
+.weui-dialog__btn_primary, 
+.weui-vcode-btn,
+.weui-vcode-btn:active,
+.weui-cell_link {
 	color: #092e85;
 }
 
-.weui-icon-success {
-	color: #092e85;
+.weui-icon-success{
+	// color: #10aeff;
 }
 
 .weui-vcode-btn:active {
-	color: #092e85;
 	opacity: .8;
 }
 

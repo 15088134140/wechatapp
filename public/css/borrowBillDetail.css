@@ -21,10 +21,20 @@
 }
 
 /* 借款项 */
+.w-borrow-list{
+  padding-top: 0;
+}
 .w-borrow-list .w-borrow-list-item{
   position: relative;
   padding: 5px 0;
 }
+
+.w-borrow-list-item.last-highlight .weui-form-preview__item:last-child,
+.w-borrow-list-item.last-highlight .weui-form-preview__item:last-child .weui-form-preview__label,
+.w-highlight .weui-form-preview__label, .w-highlight .weui-form-preview__value {
+  color: #092e85;
+}
+
 .w-borrow-list .w-borrow-list-item:before{
   content: " ";
   position: absolute;
@@ -38,31 +48,35 @@
   transform: scaleY(.5);
 }
 
-.w-borrow-list .w-borrow-list-item .w-item-loadmore{
-  text-align: left;
-  position: relative;
-  margin-top: 5px;
-  // background: rgba(255,255,255,0.5);
-}
-.w-borrow-list .w-borrow-list-item .w-item-loadmore:after{
+// .w-borrow-list .w-borrow-list-item .w-item-loadmore{
+//   text-align: center;
+//   position: relative;
+//   margin-top: 5px;
+//   background: #f8f8f8;
+// }
+.w-borrow-list .w-borrow-list-item.w-has-more:after{
   content: " ";
   display: inline-block;
   height: 6px;
   width: 6px;
   border-width: 2px 2px 0 0;
-  border-color: #586c94;
+  border-color: #092e85;
   border-style: solid;
-  -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
-  transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
-  position: relative;
-  top: -2px;
   position: absolute;
-  top: 50%;
+  top: 5px;
+  right: 50%;
+  transform: rotate(135deg);
   margin-top: -4px;
-  right: 2px;
+  margin-left: 4px;
   transition: all .5s ease-in-out;
 }
-.w-borrow-list .w-borrow-list-item .w-item-loadmore.active:after{
-  transform: rotate(132deg);
+.w-borrow-list .w-borrow-list-item.w-has-more.active:after{
+  transform: rotate(-45deg);
+  top: 10px;
+}
+
+.w-js-dialog .weui-textarea {
+  border: 1px solid #ccc;
+  padding: 5px;
 }
 
