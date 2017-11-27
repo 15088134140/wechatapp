@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>签收注册</title>
+	<meta id="viewport" name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" type="text/css" href="https://res.wx.qq.com/open/libs/weui/1.1.0/weui.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/flex.css">
+	<link rel="stylesheet" type="text/css" href="./css/base.css">
+	<style>
+		.w-js-dialog .weui-input {
+		  border: 1px solid #ccc;
+		  padding: 5px;
+		}
+	</style>
+  <script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/base.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/vue.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+  <div id="app" v-cloak>
+    <div class="w-js-dialog">
+      <div class="weui-mask"></div>
+      <div class="weui-dialog">
+          <div class="weui-dialog__hd"><strong class="weui-dialog__title">出库单号</strong></div>
+          <div class="weui-dialog__bd"><input v-model="billCode" class="weui-input" placeholder="请输入单号"></input></div>
+          <div class="weui-dialog__ft">
+              <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default" @click="handleDlgBtnCancelClick">取消</a>
+              <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary" @click="handleDlgBtnConfirmClick">确认</a>
+          </div>
+      </div>
+    </div>
+  </div>
+
+	<script>
+    new Vue({
+      el: '#app',
+      data: function(){
+        return {
+          isLoading: false,
+          hasError: false,
+          billCode: '',
+        }
+      },
+
+      mounted: function () {},
+
+      methods: {
+        handleDlgBtnCancelClick: function() {
+        	wx.closeWindow();
+        },
+
+        handleDlgBtnConfirmClick: function() {}
+      }
+    });
+	</script>
+</body>
+</html>
