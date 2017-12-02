@@ -55,6 +55,47 @@ label.weui-label {
 	width: 80px;
 }
 
+.w-photo-list-item {
+	flex-wrap: wrap;
+	-webkit-flex-wrap: wrap;
+}
+
+.weui-uploader__bd>div{
+  position: relative;
+  margin-bottom: 9px;
+  margin-right: 9px;
+  margin-top: 9px;
+  width: 77px;
+  height: 77px;
+}
+
+.weui-uploader__bd>div>img{
+  width: 77px;
+  height: 77px;
+}
+
+.weui-uploader__bd>div.w-uploader-item>i.w-uploader-del-img{
+  display: block;
+  box-sizing: border-box;
+  width: 15px;
+  padding: 5px;
+  height: 15px;
+  border-radius: 7.5px;
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.weui-uploader__bd>div.w-uploader-item>i.w-uploader-del-img:before{
+  display: block;
+  content: 'x';
+  position: absolute;
+  right: 4.5px;
+  top: -8px;
+  color: #ffffff;
+}
+
 /* 布局基础样式 */
 .w-container {
 	height: 100vh;
@@ -127,4 +168,18 @@ label.weui-label {
 .w-table td, th { 
   padding: 6px; 
   border: 1px solid #ccc; 
+}
+
+.w-bigimg .w-bigimg-container {
+	position: fixed;
+  width: 90%;
+  top: 50%;
+  right: 50%;
+  z-index: 1001;
+  transform: translate(50%, -50%);
+}
+
+.w-bigimg .w-bigimg-container>img {
+	width: 100%;
+  border: 1px solid #ccc;
 }

@@ -27,9 +27,9 @@
         <!-- <div class="weui-cells__title">签收注册</div> -->
         <form class="weui-cells weui-cells_form" id="signRegisterForm">
           <div class="weui-cell">
-            <div class="weui-cell__hd"><label class="weui-label" for="companyName">物流公司</label></div>
+            <div class="weui-cell__hd"><label class="weui-label" for="logisticsCompany">物流公司</label></div>
             <div class="weui-cell__bd">
-              <input v-model="formData.companyName" name="companyName" class="weui-input" placeholder="请输入物流公司">
+              <input v-model="formData.logisticsCompany" name="logisticsCompany" class="weui-input" placeholder="请输入物流公司">
             </div>
             <div class="weui-cell__ft">
               <i class="weui-icon-warn"></i>
@@ -43,10 +43,10 @@
           </div>
           <div class="weui-cell weui-cell_vcode">
             <div class="weui-cell__hd">
-              <label class="weui-label" for="mobilePhone">手机号码</label>
+              <label class="weui-label" for="userPhone">手机号码</label>
             </div>
             <div class="weui-cell__bd">
-              <input v-model="formData.mobilePhone" name="mobilePhone" class="weui-input" placeholder="请输入手机号">
+              <input v-model="formData.userPhone" name="userPhone" class="weui-input" placeholder="请输入手机号">
             </div>
             <div class="weui-cell__ft">
               <button v-if="!countDown" class="weui-vcode-btn" @click.prevent="handleVcodeBtnClick">获取验证码</button>
@@ -70,22 +70,35 @@
         <a v-else href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading"><i class="weui-loading"></i>请稍后</a>
       </div>
     </div>
+
+    <div id="toast" style="display: none;">
+      <div class="weui-mask_transparent"></div>
+      <div class="weui-toast">
+          <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+          <p class="weui-toast__content">操作成功</p>
+      </div>
+    </div>
   </div>
 
 	<script>
+    // 手机号码验证   
+    jQuery.validator.addMethod("isMobilePhone", function(value, element) {
+        return /^\d{11}$/gi.test(value);
+    }, '请正确填写正确的手机号码！');
+
     new Vue({
       el: '#app',
       data: function(){
-        var billType = Utils.getQueryString('pk_billtype');
         return {
           isLoading: false,
           hasError: false,
-          billType: billType,
           countDown: 0, // 60秒倒计时
+          openId: '100104042005',
+          targetUrl: '',
           formData: {
-            companyName: '',
+            logisticsCompany: '',
             userName: '',
-            mobilePhone: '',
+            userPhone: '',
             volidCode: '',
           }
         }
@@ -95,37 +108,93 @@
         $("#signRegisterForm").validate({
           errorClass: 'weui-cell_warn',
           rules: {
-            companyName: 'required',
+            logisticsCompany: 'required',
             userName: 'required',
-            mobilePhone: 'required',
+            userPhone: {
+              required: true,
+              isMobilePhone: true
+            },
             validCode: 'required',
           },
           messages: {
-            companyName: "请输入物流公司！",
-            userName: "请输入真实姓名！",
-            mobilePhone: "请输入手机号码！",
-            validCode: "请输入手机验证码！",
+            logisticsCompany: '请输入物流公司！',
+            userName: '请输入真实姓名！',
+            userPhone: {
+              required: '请输入手机号码！',
+              isMobilePhone: '请填写正确的手机号码！'
+            },
+            validCode: '请输入手机验证码！',
           }
         });
       },
 
       methods: {
         handleVcodeBtnClick: function() {
-          if ($("#signRegisterForm").validate().element($('input[name="mobilePhone"]'))) {
+          if ($("#signRegisterForm").validate().element($('input[name="userPhone"]'))) {
             var vm = this, intervalId;
-            this.countDown = 60;
-            intervalId = setInterval(function (){
-              vm.countDown--;
-              vm.countDown === 0 && clearInterval(intervalId);
-            }, 1000);
+            vm.countDown = 60;
+
+            $.getJSON('/modules/sms/verify_code', {
+              phone: vm.formData.userPhone,
+              type: 3
+            }).then(function(rsp) {
+              console.log(rsp);
+              if (rsp.result === 'Y') {
+                // 倒数
+                intervalId = setInterval(function (){
+                  vm.countDown--;
+                  vm.countDown === 0 && clearInterval(intervalId);
+                }, 1000);
+              } else {
+                alert('获取失败，请重试！')
+              }
+            }, function() {
+              alert('获取失败，请重试！');
+            });
           }
             
         },
 
         handleRegBtnClick: function () {
-          var $form = $('#signRegisterForm');
+          var vm = this, $form = $('#signRegisterForm');
           if ($form.valid()) {
-            console.log($form);
+            // 通过基础表单校验
+            vm.isLoading = true;
+            $.getJSON('/modules/sms/check_verify_code', {
+                phone: vm.formData.userPhone,
+                code: vm.formData.validCode
+            }).then(function(rsp) {
+              console.log(rsp);
+              // 验证校验码跟手机是否匹配
+              if (rsp.result === 'Y') {
+                $.post('/modules/wechat/saleck/signUserRegister', {
+                  openId: vm.openId,
+                  logisticsCompany: vm.formData.logisticsCompany,
+                  userName: vm.formData.userName,
+                  userPhone: vm.formData.userPhone,
+                  // volidCode: vm.volidCode
+                }, function(rsp) {
+                  console.log('post', rsp);
+                  if (rsp.result === 'Y') {
+                    // 提交输入数据完成
+                    $('#toast').fadeIn(0).fadeOut(2000, function(){
+                      vm.targetUrl && (window.location.href = vm.targetUrl);
+                    });
+                  } else {
+                    vm.hasError = true;
+                    alert(rsp.msg || '操作失败，请重试！');
+                  }
+                  vm.isLoading = false;
+                }, 'json');
+              } else {
+                alert('验证码错误！');
+                vm.isLoading = false;
+              }
+            }, function() {
+              alert('获取失败，请重试！');
+              vm.isLoading = false;
+            });
+          
           }
         }
       }

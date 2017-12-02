@@ -36,25 +36,25 @@
               <label class="weui-form-preview__label">日期</label>
               <span class="weui-form-preview__value">2017-11-19 12:11:10</span>
             </div> -->
-            <div class="weui-form-preview__item">
+            <div class="weui-form-preview__item" v-if="formData.cwarehouseName">
               <label class="weui-form-preview__label">出货仓库</label>
-              <span class="weui-form-preview__value">广州仓</span>
+              <span class="weui-form-preview__value">{{ formData.cwarehouseName }}</span>
             </div>
             <div class="weui-form-preview__item">
               <label class="weui-form-preview__label">自编订单号</label>
-              <span class="weui-form-preview__value">2323232323232323</span>
+              <span class="weui-form-preview__value">{{ formData.zbddh }}</span>
             </div>
             <div class="weui-form-preview__item">
               <label class="weui-form-preview__label">销售部门</label>
-              <span class="weui-form-preview__value">建筑部</span>
+              <span class="weui-form-preview__value">{{ formData.cdeptName }}</span>
             </div>
-            <div class="weui-form-preview__item">
+            <div class="weui-form-preview__item" v-if="formData.cwarehouseName">
               <label class="weui-form-preview__label">物流公司</label>
-              <span class="weui-form-preview__value">圆通xxxx</span>
+              <span class="weui-form-preview__value">{{ formData.wlgs }}</span>
             </div>
             <div class="weui-form-preview__item">
               <label class="weui-form-preview__label">备注</label>
-              <span class="weui-form-preview__value">快快快快快快快快快快快快快快</span>
+              <span class="weui-form-preview__value">{{ formData.vnote }}</span>
             </div>
           </div>
 
@@ -63,55 +63,84 @@
             <div class="w-borrow-list-item" v-for="item in formData.details">
               <div class="weui-form-preview__item">
                   <label class="weui-form-preview__label">存货编号</label>
-                  <span class="weui-form-preview__value">{{ item.szxmmc }}</span>
+                  <span class="weui-form-preview__value">{{ item.invcode }}</span>
               </div>
               <div class="weui-form-preview__item">
                 <label class="weui-form-preview__label">存货名称</label>
-                <span class="weui-form-preview__value">{{ item.szxmmc }}</span>
+                <span class="weui-form-preview__value">{{ item.invName }}</span>
               </div>
               <div class="weui-form-preview__item">
                 <label class="weui-form-preview__label">规格型号</label>
-                <span class="weui-form-preview__value">{{ item.szxmmc }}</span>
+                <span class="weui-form-preview__value">{{ item.invspec }}</span>
               </div>
               <div class="weui-form-preview__item">
                 <label class="weui-form-preview__label">主计</label>
-                <span class="weui-form-preview__value">{{ item.szxmmc }}</span>
-              </div>
-              <div class="weui-form-preview__item">
-                <label class="weui-form-preview__label">数量</label>
-                <span class="weui-form-preview__value">{{ item.szxmmc }}</span>
+                <span class="weui-form-preview__value">{{ item.nnumber }}{{ item.cunitName }}</span>
               </div>
               <div class="weui-form-preview__item">
                 <label class="weui-form-preview__label">辅计</label>
-                <span class="weui-form-preview__value">{{ item.szxmmc }}</span>
-              </div>
-              <div class="weui-form-preview__item">
-                <label class="weui-form-preview__label">辅数量</label>
-                <span class="weui-form-preview__value">{{ item.szxmmc }}</span>
+                <span class="weui-form-preview__value">{{ item.npacknumber }}{{ item.cpackunitName }}</span>
               </div>
               <div class="weui-form-preview__item">
                 <label class="weui-form-preview__label">批号</label>
-                <span class="weui-form-preview__value">{{ item.szxmmc }}</span>
+                <span class="weui-form-preview__value">{{ item.vbatchcode }}</span>
               </div>
               <div class="weui-form-preview__item">
                 <label class="weui-form-preview__label">色卡</label>
-                <span class="weui-form-preview__value">{{ item.szxmmc }}</span>
+                <span class="weui-form-preview__value">{{ item.seka }}</span>
               </div>
             </div>
           </div>
           <!-- 明细 e-->
+
+          <!-- 照片 s-->
+          <div class="weui-form-preview__bd w-borrow-list">
+            <div class="weui-uploader__bd w-borrow-list-item w-photo-list-item" flex="dir:left">
+              <div class="w-uploader-item" v-for="localId in formData.imagesURL">
+                <i class="w-uploader-del-img" @click="handleImgDelClick(localId)"></i>
+                <img :src="localId" @click="handleImgClick(localId)">
+              </div>
+              <div class="weui-uploader__input-box" @click="handleDlgImgChooseClick"></div>
+            </div>
+          </div>
+          <!-- 照片 e-->
         </div>
       </div>
       <!-- 主区域 end -->
-
       <div class="w-footer weui-form-preview__ft">
         <template v-if="!isLoading && !hasError">
-          <a v-if="pageType === 'confirm'" class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="isOperationShow = true">确认出库</a>
-          <a v-else class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="handleShowDlgBtnClick">确认签收</a>
+          <template v-if="pageType === 'confirm'">
+            <a v-if="formData.isCk === 'N'" class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="confirmDlgType = 1">确认出库</a>
+            <a v-else class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="confirmDlgType = 2">取消出库</a>
+          </template>
+          <template v-else>
+            <a v-if="formData.isSign === 'N'" class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="handleShowDlgBtnClick">确认签收</a>
+            <a v-else class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="confirmDlgType = 4">取消签收</a>
+          </template>
         </template>
 
         <a v-else-if="hasError" href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading" @click="getDetail"><i class="weui-icon-warn"></i>请求错误，点击这里重试</a>
         <a v-else href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading"><i class="weui-loading"></i>数据加载中</a>
+      </div>
+    </div>
+
+    <div id="toast" style="display: none;">
+      <div class="weui-mask_transparent"></div>
+      <div class="weui-toast">
+          <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+          <p class="weui-toast__content">操作成功</p>
+      </div>
+    </div>
+
+    <div class="w-js-dialog" v-if="confirmDlgType !== 0">
+      <div class="weui-mask"></div>
+      <div class="weui-dialog">
+        <div class="weui-dialog__bd">是否确认您的操作？</div>
+        <div class="weui-dialog__ft">
+          <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default" @click="confirmDlgType = 0">取消</a>
+          <a v-if="!opinionData.isLoading" href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary" @click="handleDlgConfirmClick">确认</a>
+          <a v-else href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default weui-btn_loading"><i class="weui-loading"></i>请稍等</a>
+        </div>
       </div>
     </div>
 
@@ -121,19 +150,25 @@
           <div class="weui-dialog__hd"><strong class="weui-dialog__title">图片上传</strong></div>
           <div class="weui-dialog__bd">
             <div class="weui-uploader__bd" flex="dir:left">
-              <div class="weui-uploader__input-box">
-                <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="">
-              </div>
-              <div>
-                <img src="./img/pic_160.png" width="79px" height="79px" alt="">
+              <div class="weui-uploader__input-box" @click="handleDlgImgChooseClick"></div>
+              <div class="w-uploader-item" v-for="localId in localIds">
+                <span class="w-uploader-del-img">x</span>
+                <img :src="localId">
               </div>
             </div>
-            <div class="weui-cells__tips text-left no-margin no-padding">请上传一张带客户签名的清晰照片</div>
+            <div class="weui-cells__tips text-left no-margin no-padding">请上传带客户签名的清晰照片</div>
           </div>
           <div class="weui-dialog__ft">
               <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default" @click="handleDlgBtnCancelClick">取消</a>
               <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary" @click="handleDlgBtnConfirmClick">确认</a>
           </div>
+      </div>
+    </div>
+
+    <div class="w-js-dialog w-bigimg" v-if="isBigImgDlgShow" @click="isBigImgDlgShow = false">
+      <div class="weui-mask"></div>
+      <div class="w-bigimg-container">
+        <img :src="bigImgUrl" alt="">
       </div>
     </div>
 
@@ -143,26 +178,37 @@
     new Vue({
       el: '#app',
       data: function(){
-        var pageType = Utils.getQueryString('pageType') || 'confirm';
         return {
           isLoading: false,
           hasError: false,
-          isOperationShow: false,
+          confirmDlgType: 0, // 确认框显示
           isOperationDlgShow: false,
-          pageType: pageType, // confirm 出库单出库  sign 签收
+          isBigImgDlgShow: false,
+          billId: Utils.getQueryString('billId'),
+          pageType: (Utils.getQueryString('pageType') || 'confirm'), // confirm 出库单出库  sign 签收
+          openId: '1341311',
           formData: {
-            ccustomerName: "--",
-            ccustomerid: "--",
-            cdeptName: "--",
-            cdeptid: "--",
-            cgeneralhid: "--",
-            vbillcode: "--",
+            ccustomerName: '--',
+            ccustomerid: '--',
+            cdeptName: '--',
+            cdeptid: '--',
+            cgeneralhid: '--',
+            vbillcode: '--',
+            cwarehouseName: '--',
+            zbddh: '--',
+            wlgs: '--',
+            vnote: '--',
+            isCk: 'N',
+            isSign: 'N',
             details: [],
+            imagesURL: []
           },
           opinionData: {
-            state: 'Y', //'Y'批准 'R'驳回
-            content: '',
-          }
+            confirm: 'Y', //'Y'批准 'R'取消
+            isLoading: false
+          },
+          localIds: ['./img/pic_160.png'], //微信上传后的路径
+          bigImgUrl: './img/pic_160.png',
         }
       },
 
@@ -173,18 +219,16 @@
 
       methods: {
         getDetail: function(){
-          var billid = Utils.getQueryString('billid'),
-              vm = this;
+          var vm = this;
 
-          if (billid) {
+          if (this.billId) {
             // url参数正常 请求数据
             vm.isLoading = true;
             vm.hasError = false;
 
             $.getJSON('/modules/wechat/saleck/BillDetail', {
-              billid: billid,
-              // billid: '1001A910000000002N6R',
-              openId: '1341311'
+              billId: this.billId,
+              openId: this.openId
             }).then(function(rsp) {
               console.log(rsp);
               if (rsp.result === 'Y') {
@@ -202,8 +246,77 @@
           }
         },
 
+        handleDlgConfirmClick: function(){
+          var vm = this, confirm, url, data;
+
+          vm.opinionData.isLoading = true;
+          if(vm.pageType === 'confirm') {
+            // 处理确认、取消出库 1 2
+            confirm = vm.confirmDlgType === 1 ? 'Y' : 'N';
+            url = '/modules/wechat/saleck/ckScanConfirm';
+            data = {openId: vm.openId, billId: vm.billId, confirm: confirm };
+          } else {
+            // 处理确认、取消签收 3 4
+            confirm = vm.confirmDlgType === 3 ? 'Y' : 'N';
+            url = '/modules/wechat/saleck/signScanConfirm';
+            data = {openId: vm.openId, billId: vm.billId, confirm: confirm };
+            vm.confirmDlgType === 3 && (data.imageIds = vm.formData.imagesURL.join('_'));
+          }
+
+          $.post(url, data, function(rsp) {
+            console.log('post', rsp);
+            vm.opinionData.isLoading = false;
+            if (rsp.result === 'Y') {
+              vm.opinionData.isLoading = false;
+              vm.getDetail();
+              vm.confirmDlgType = 0;
+              $('#toast').fadeIn(0).fadeOut(2000, function(){
+                wx.closeWindow();
+              });
+            } else {
+              vm.opinionData.isLoading = false;
+              alert(rsp.msg || '操作失败，请重试！');
+            }
+          }, 'json');
+        },
+
+        handleDlgImgChooseClick: function(){
+          var vm = this, times = 0;
+          wx.chooseImage({
+            count : 9, // 默认9
+            sizeType : [ 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType : [ 'album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success : function(rsp) {
+              // 返回选定照片的本地ID列表s，localId可以作为img标签的src属性显示图片
+              vm.localIds = rsp.localIds;
+              rsp.localIds.forEach(function(localId) {
+                wx.uploadImage({
+                  localId : localId, // 需要上传的图片的本地ID，由chooseImage接口获得
+                  isShowProgressTips : 1, // 默认为1，显示进度提示
+                  success : function(uploadRsp) {
+                    ++time === rsp.localIds.length && (vm.isOperationDlgShow = true);
+                  }
+                });
+              });
+            }
+          });
+        },
+
+        handleImgClick: function(imgUrl){
+          this.isBigImgDlgShow = true;
+          this.bigImgUrl = imgUrl;
+        },
+
+        handleImgDelClick: function(imgUrl){
+          var pos = this.formData.imagesURL.indexOf(imgUrl);
+          pos !== -1 && this.formData.imagesURL.splice(pos, 1);
+        },
+
         handleShowDlgBtnClick: function(){
-          this.isOperationDlgShow = true;
+          if (this.formData.imagesURL && this.formData.imagesURL.length === 0) {
+            return alert('请先上传图片！');
+          }
+          this.confirmDlgType = 3;
         },
 
         handleDlgBtnConfirmClick: function(){
