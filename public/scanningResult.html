@@ -2,12 +2,23 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>签收注册</title>
+	<title>出库签收</title>
 	<meta id="viewport" name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<link rel="stylesheet" type="text/css" href="https://res.wx.qq.com/open/libs/weui/1.1.0/weui.min.css">
 	<link rel="stylesheet" type="text/css" href="./css/flex.css">
 	<link rel="stylesheet" type="text/css" href="./css/base.css">
+  <style>
+    .w-scanning-btn {
+      padding: 15px 10px;
+      background-color: #ccc;
+      color: #000;
+    }
+    .weui-dialog input{
+      color: #000;
+      font-size: 1.3em;
+    }
+  </style>
   <script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/base.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/vue.js" type="text/javascript" charset="utf-8"></script>
@@ -19,7 +30,11 @@
       <div class="weui-mask"></div>
       <div class="weui-dialog">
           <div class="weui-dialog__hd"><strong class="weui-dialog__title">出库单号</strong></div>
-          <div class="weui-dialog__bd"><input v-model.tirm="billNo" class="weui-input" placeholder="请输入单号"></input></div>
+          <div class="weui-dialog__bd" flex="dir:left box:last">
+            <input v-model.tirm="billNo" class="weui-input" placeholder="请输入单号"></input>
+            <span class="w-scanning-btn" @click="handleScanningClick">扫一扫</span>
+          </div>
+
           <div class="weui-dialog__ft">
               <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default" @click="handleDlgBtnCancelClick">取消</a>
               <a v-if="!isLoading" href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary" @click="handleDlgBtnConfirmClick">确认</a>
@@ -45,6 +60,13 @@
       methods: {
         handleDlgBtnCancelClick: function() {
         	wx.closeWindow();
+        },
+
+        handleScanningClick: function() {
+          wx.scanQRCode({
+            needResult : 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+            scanType : [ "qrCode", "barCode" ] // 可以指定扫二维码还是一维码，默认二者都有
+          });
         },
 
         handleDlgBtnConfirmClick: function() {

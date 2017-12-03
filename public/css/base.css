@@ -3,6 +3,11 @@
   display: none;
 }
 
+.weui-cells_form .weui-cell__hd.required>label:after {
+  content: '*';
+  color: #ff0000;
+}
+
 .weui-icon-download {
 	transform: rotate(180deg);
 	color: #FFBE00;
@@ -52,7 +57,7 @@ label.weui-cell_warn {
 }
 
 label.weui-label {
-	width: 80px;
+	width: 90px;
 }
 
 .w-photo-list-item {
@@ -187,4 +192,9 @@ label.weui-label {
 .w-bigimg .w-bigimg-container>img {
 	width: 100%;
   border: 1px solid #ccc;
+}
+
+.w-tips {
+ font-size: 14px;
+ padding: 5px 15px; 
 }

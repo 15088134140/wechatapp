@@ -22,20 +22,20 @@
         <div class="weui-form-preview">
           <div class="weui-form-preview__hd">
             <div class="weui-form-preview__item">
-              <label class="weui-form-preview__label">出库单号</label>
-              <em class="weui-form-preview__value">{{ formData.vbillcode }}</em>
+              <!-- <label class="weui-form-preview__label">客户</label> -->
+              <em class="weui-form-preview__value text-center">{{ formData.ccustomerName }}</em>
             </div>
           </div>
 
           <div class="weui-form-preview__bd">
             <div class="weui-form-preview__item">
-              <label class="weui-form-preview__label">客户</label>
-              <span class="weui-form-preview__value">{{ formData.ccustomerName }}</span>
+              <label class="weui-form-preview__label">出库单号</label>
+              <span class="weui-form-preview__value">{{ formData.vbillcode }}</span>
             </div>
-            <!-- <div class="weui-form-preview__item">
-              <label class="weui-form-preview__label">日期</label>
-              <span class="weui-form-preview__value">2017-11-19 12:11:10</span>
-            </div> -->
+            <div class="weui-form-preview__item">
+              <label class="weui-form-preview__label">出库日期</label>
+              <span class="weui-form-preview__value">{{ formData.dbilldate }}</span>
+            </div>
             <div class="weui-form-preview__item" v-if="formData.cwarehouseName">
               <label class="weui-form-preview__label">出货仓库</label>
               <span class="weui-form-preview__value">{{ formData.cwarehouseName }}</span>
@@ -74,11 +74,11 @@
                 <span class="weui-form-preview__value">{{ item.invspec }}</span>
               </div>
               <div class="weui-form-preview__item">
-                <label class="weui-form-preview__label">主计</label>
+                <label class="weui-form-preview__label">主数量</label>
                 <span class="weui-form-preview__value">{{ item.nnumber }}{{ item.cunitName }}</span>
               </div>
               <div class="weui-form-preview__item">
-                <label class="weui-form-preview__label">辅计</label>
+                <label class="weui-form-preview__label">辅数量</label>
                 <span class="weui-form-preview__value">{{ item.npacknumber }}{{ item.cpackunitName }}</span>
               </div>
               <div class="weui-form-preview__item">
@@ -97,10 +97,10 @@
           <div v-if="pageType === 'sign'" class="weui-form-preview__bd w-borrow-list">
             <div class="weui-uploader__bd w-borrow-list-item w-photo-list-item" flex="dir:left">
               <div class="w-uploader-item" v-for="localId in formData.imagesURL">
-                <i class="w-uploader-del-img" @click="handleImgDelClick(localId)"></i>
+                <i v-if="formData.isSign === 'N'" class="w-uploader-del-img" @click="handleImgDelClick(localId)"></i>
                 <img :src="localId" @click="handleImgClick(localId)">
               </div>
-              <div class="weui-uploader__input-box" @click="handleDlgImgChooseClick"></div>
+              <div v-if="formData.isSign === 'N'" class="weui-uploader__input-box" @click="handleDlgImgChooseClick"></div>
             </div>
           </div>
           <div v-if="pageType === 'confirm' && formData.imagesURL.length" class="weui-form-preview__bd w-borrow-list">
@@ -142,7 +142,7 @@
     <div class="w-js-dialog" v-if="confirmDlgType !== 0">
       <div class="weui-mask"></div>
       <div class="weui-dialog">
-        <div class="weui-dialog__bd">是否确认您的操作？</div>
+        <div class="weui-dialog__bd"> {{ confirmMsg }}</div>
         <div class="weui-dialog__ft">
           <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default" @click="confirmDlgType = 0">取消</a>
           <a v-if="!opinionData.isLoading" href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary" @click="handleDlgConfirmClick">确认</a>
@@ -192,14 +192,26 @@
             confirm: 'Y', //'Y'批准 'R'取消
             isLoading: false
           },
-          localIds: ['./img/pic_160.png'], //微信上传后的路径
           bigImgUrl: '',
+          serverIds: []
         }
       },
 
       mounted: function () {
         FastClick.attach(document.body);
         this.getDetail();
+      },
+
+      computed: {
+        confirmMsg: function() {
+          return [
+            '', // 空
+            '是否确认出库？', // 确认出库
+            '是否确认取消出库？', // 取消出库
+            '请确保照片为出库单签字版！是否确认客户已签收？', // 确认签收
+            '是否确认取消客户签收？' // 取消签收
+          ][this.confirmDlgType];
+        }
       },
 
       methods: {
@@ -245,7 +257,7 @@
             confirm = vm.confirmDlgType === 3 ? 'Y' : 'N';
             url = '/modules/wechat/saleck/signScanConfirm';
             data = {openId: vm.openId, billId: vm.billId, confirm: confirm };
-            vm.confirmDlgType === 3 && (data.imageIds = vm.formData.imagesURL.join('_'));
+            vm.confirmDlgType === 3 && (data.imageIds = vm.serverIds.join('##'));
           }
 
           $.post(url, data, function(rsp) {
@@ -266,7 +278,20 @@
         },
 
         handleDlgImgChooseClick: function(){
-          var vm = this, times = 0;
+          var vm = this;
+
+          var syncUpload = function(localIds) {
+            var localId = localIds.pop();
+            wx.uploadImage({
+              localId: localId, // 需要上传的图片的本地ID，由chooseImage接口获得
+              isShowProgressTips: 1, // 默认为1，显示进度提示
+              success: function(uploadRsp) {
+                vm.serverIds.push(uploadRsp.serverId);
+                (localIds.length !== 0) && syncUpload(localIds);
+              }
+            });
+          };
+
           wx.chooseImage({
             count : 9, // 默认9
             sizeType : [ 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
@@ -274,15 +299,7 @@
             success : function(rsp) {
               // 返回选定照片的本地ID列表s，localId可以作为img标签的src属性显示图片
               vm.formData.imagesURL = rsp.localIds;
-              rsp.localIds.forEach(function(localId) {
-                wx.uploadImage({
-                  localId : localId, // 需要上传的图片的本地ID，由chooseImage接口获得
-                  isShowProgressTips : 1, // 默认为1，显示进度提示
-                  success : function(uploadRsp) {
-                    // ++time === rsp.localIds.length;
-                  }
-                });
-              });
+              syncUpload($.extend([], rsp.localIds));
             }
           });
         },

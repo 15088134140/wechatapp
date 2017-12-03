@@ -27,7 +27,7 @@
         <!-- <div class="weui-cells__title">签收注册</div> -->
         <form class="weui-cells weui-cells_form" id="signRegisterForm">
           <div class="weui-cell">
-            <div class="weui-cell__hd"><label class="weui-label" for="logisticsCompany">物流公司</label></div>
+            <div class="weui-cell__hd required"><label class="weui-label" for="logisticsCompany">物流公司</label></div>
             <div class="weui-cell__bd">
               <input v-model="formData.logisticsCompany" name="logisticsCompany" class="weui-input" placeholder="请输入物流公司">
             </div>
@@ -36,32 +36,32 @@
             </div>
           </div>
           <div class="weui-cell">
-            <div class="weui-cell__hd"><label class="weui-label" for="userName">真实姓名</label></div>
+            <div class="weui-cell__hd required"><label class="weui-label" for="userName">真实姓名</label></div>
             <div class="weui-cell__bd">
               <input v-model="formData.userName" name="userName" class="weui-input" placeholder="请输入姓名">
             </div>
           </div>
-          <div class="weui-cell weui-cell_vcode">
-            <div class="weui-cell__hd">
+          <div class="weui-cell">
+            <div class="weui-cell__hd required">
               <label class="weui-label" for="userPhone">手机号码</label>
             </div>
             <div class="weui-cell__bd">
-              <input v-model="formData.userPhone" name="userPhone" class="weui-input" placeholder="请输入手机号">
+              <input v-model="formData.userPhone" type="number" name="userPhone" class="weui-input" placeholder="请输入手机号">
+            </div>
+          </div>
+          <div class="weui-cell weui-cell_vcode">
+            <div class="weui-cell__hd required"><label class="weui-label" for="validCode">验证码</label></div>
+            <div class="weui-cell__bd">
+              <input v-model="formData.validCode" type="number" name="validCode" class="weui-input" type="number" placeholder="请输入验证码">
             </div>
             <div class="weui-cell__ft">
               <button v-if="!countDown" class="weui-vcode-btn" @click.prevent="handleVcodeBtnClick">获取验证码</button>
               <button v-else class="weui-vcode-btn weui-btn_disabled" disabled>{{ countDown }}秒后重新获取</button>
             </div>
           </div>
-          <div class="weui-cell">
-            <div class="weui-cell__hd"><label class="weui-label" for="validCode">验证码</label></div>
-            <div class="weui-cell__bd">
-              <input v-model="formData.validCode" name="validCode" class="weui-input" type="number" placeholder="请输入验证码">
-            </div>
-          </div>
         </form>
 
-        <div class="weui-cells__tips">请填写真实信息注册后再进行签收操作</div>
+        <div class="w-tips">&nbsp;&nbsp;&nbsp;&nbsp;温馨提示：请填写您所在物流公司详细信息，注册成功后再签收。</div>
       </div>
       <!-- 主区域 end -->
       <div class="w-footer weui-form-preview__ft">
