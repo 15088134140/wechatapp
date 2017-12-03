@@ -96,6 +96,11 @@ label.weui-label {
   color: #ffffff;
 }
 
+.w-js-dialog .weui-input {
+  border: 1px solid #ccc;
+  padding: 5px;
+}
+
 /* 布局基础样式 */
 .w-container {
 	height: 100vh;

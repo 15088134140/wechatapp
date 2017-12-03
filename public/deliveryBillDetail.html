@@ -94,13 +94,20 @@
           <!-- 明细 e-->
 
           <!-- 照片 s-->
-          <div class="weui-form-preview__bd w-borrow-list">
+          <div v-if="pageType === 'sign'" class="weui-form-preview__bd w-borrow-list">
             <div class="weui-uploader__bd w-borrow-list-item w-photo-list-item" flex="dir:left">
               <div class="w-uploader-item" v-for="localId in formData.imagesURL">
                 <i class="w-uploader-del-img" @click="handleImgDelClick(localId)"></i>
                 <img :src="localId" @click="handleImgClick(localId)">
               </div>
               <div class="weui-uploader__input-box" @click="handleDlgImgChooseClick"></div>
+            </div>
+          </div>
+          <div v-if="pageType === 'confirm' && formData.imagesURL.length" class="weui-form-preview__bd w-borrow-list">
+            <div class="weui-uploader__bd w-borrow-list-item w-photo-list-item" flex="dir:left">
+              <div class="w-uploader-item" v-for="localId in formData.imagesURL">
+                <img :src="localId" @click="handleImgClick(localId)">
+              </div>
             </div>
           </div>
           <!-- 照片 e-->
@@ -144,27 +151,6 @@
       </div>
     </div>
 
-    <div class="w-js-dialog" v-if="isOperationDlgShow">
-      <div class="weui-mask"></div>
-      <div class="weui-dialog">
-          <div class="weui-dialog__hd"><strong class="weui-dialog__title">图片上传</strong></div>
-          <div class="weui-dialog__bd">
-            <div class="weui-uploader__bd" flex="dir:left">
-              <div class="weui-uploader__input-box" @click="handleDlgImgChooseClick"></div>
-              <div class="w-uploader-item" v-for="localId in localIds">
-                <span class="w-uploader-del-img">x</span>
-                <img :src="localId">
-              </div>
-            </div>
-            <div class="weui-cells__tips text-left no-margin no-padding">请上传带客户签名的清晰照片</div>
-          </div>
-          <div class="weui-dialog__ft">
-              <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default" @click="handleDlgBtnCancelClick">取消</a>
-              <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary" @click="handleDlgBtnConfirmClick">确认</a>
-          </div>
-      </div>
-    </div>
-
     <div class="w-js-dialog w-bigimg" v-if="isBigImgDlgShow" @click="isBigImgDlgShow = false">
       <div class="weui-mask"></div>
       <div class="w-bigimg-container">
@@ -182,7 +168,6 @@
           isLoading: false,
           hasError: false,
           confirmDlgType: 0, // 确认框显示
-          isOperationDlgShow: false,
           isBigImgDlgShow: false,
           billId: Utils.getQueryString('billId'),
           pageType: (Utils.getQueryString('pageType') || 'confirm'), // confirm 出库单出库  sign 签收
@@ -208,7 +193,7 @@
             isLoading: false
           },
           localIds: ['./img/pic_160.png'], //微信上传后的路径
-          bigImgUrl: './img/pic_160.png',
+          bigImgUrl: '',
         }
       },
 
@@ -227,8 +212,8 @@
             vm.hasError = false;
 
             $.getJSON('/modules/wechat/saleck/BillDetail', {
-              billId: this.billId,
-              openId: this.openId
+              billId: vm.billId,
+              openId: vm.openId
             }).then(function(rsp) {
               console.log(rsp);
               if (rsp.result === 'Y') {
@@ -288,13 +273,13 @@
             sourceType : [ 'album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
             success : function(rsp) {
               // 返回选定照片的本地ID列表s，localId可以作为img标签的src属性显示图片
-              vm.localIds = rsp.localIds;
+              vm.formData.imagesURL = rsp.localIds;
               rsp.localIds.forEach(function(localId) {
                 wx.uploadImage({
                   localId : localId, // 需要上传的图片的本地ID，由chooseImage接口获得
                   isShowProgressTips : 1, // 默认为1，显示进度提示
                   success : function(uploadRsp) {
-                    ++time === rsp.localIds.length && (vm.isOperationDlgShow = true);
+                    // ++time === rsp.localIds.length;
                   }
                 });
               });
@@ -321,13 +306,7 @@
 
         handleDlgBtnConfirmClick: function(){
           console.log('this.opinionData', this.opinionData);
-        },
-
-        handleDlgBtnCancelClick: function(){
-          this.isOperationDlgShow = false;
-          this.opinionData.content = '';
-          this.opinionData.state = 1;
-        },
+        }
       }
     });
 	</script>
