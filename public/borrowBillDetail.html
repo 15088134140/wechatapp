@@ -379,6 +379,10 @@
                 <label class="weui-form-preview__label">借款人</label>
                 <span class="weui-form-preview__value">{{ formData.psnname }}</span>
               </div>
+              <div class="weui-form-preview__item" v-if="formData.sum_jkye">
+                <label class="weui-form-preview__label">借款余额</label>
+                <span class="weui-form-preview__value">¥{{ formData.sum_jkye }}</span>
+              </div>
             </div>
             <!-- 借款项 s-->
             <div class="weui-form-preview__bd w-borrow-list" v-if="formData.details.length">

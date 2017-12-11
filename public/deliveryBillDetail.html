@@ -116,7 +116,10 @@
       <!-- 主区域 end -->
       <div class="w-footer weui-form-preview__ft">
         <template v-if="!isLoading && !hasError">
-          <template v-if="pageType === 'confirm'">
+          <template v-if="ckType">
+            <a class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:;" @click="handlePageCloseClick">关闭</a>
+          </template>
+          <template v-else-if="pageType === 'confirm'">
             <a v-if="formData.isCk === 'N'" class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="confirmDlgType = 1">确认出库</a>
             <a v-else class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="confirmDlgType = 2">取消出库</a>
           </template>
@@ -170,6 +173,7 @@
           confirmDlgType: 0, // 确认框显示
           isBigImgDlgShow: false,
           billId: Utils.getQueryString('billId'),
+          ckType: Utils.getQueryString('ckType'), // 用来判断客服
           pageType: (Utils.getQueryString('pageType') || 'confirm'), // confirm 出库单出库  sign 签收
           openId: '1341311',
           formData: {
@@ -323,6 +327,10 @@
 
         handleDlgBtnConfirmClick: function(){
           console.log('this.opinionData', this.opinionData);
+        },
+
+        handlePageCloseClick: function() {
+          wx.closeWindow();
         }
       }
     });
