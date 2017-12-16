@@ -23,19 +23,23 @@
           <!-- 单据 s -->
           <div class="weui-form-preview__hd">
             <div class="weui-form-preview__item">
-              <label class="weui-form-preview__label">实发工资金额合计</label>
-              <em class="weui-form-preview__value">¥{{ formData.f_3 }}</em>
+              <!-- <label class="weui-form-preview__label">
+                {{ formData.cnestyear }} 年 {{ formData.cnestperiod }} 月工资条
+              </label> -->
+              <em class="weui-form-preview__value text-center">
+                {{ formData.cnestyear }}年{{ formData.cnestperiod }}月工资条
+              </em>
             </div>
           </div>
           <div class="weui-form-preview__bd">
-            <div class="weui-form-preview__item">
+            <!-- <div class="weui-form-preview__item">
               <label class="weui-form-preview__label">薪资类别</label>
               <span class="weui-form-preview__value">{{ formData.xzlb }}</span>
             </div>
             <div class="weui-form-preview__item">
               <label class="weui-form-preview__label">人员类别</label>
               <span class="weui-form-preview__value">{{ formData.rylbmc }}</span>
-            </div>
+            </div> -->
             <div class="weui-form-preview__item">
               <label class="weui-form-preview__label">人员编码</label>
               <span class="weui-form-preview__value">{{ formData.psncode }}</span>
@@ -48,85 +52,93 @@
               <label class="weui-form-preview__label">归属部门</label>
               <span class="weui-form-preview__value">{{ formData.deptname }}</span>
             </div>
-            <div class="weui-form-preview__item">
-              <label class="weui-form-preview__label">归属期间</label>
-              <span class="weui-form-preview__value">{{ formData.cnestperiod }}</span>
-            </div>
-            <div class="weui-form-preview__item">
+            <!-- <div class="weui-form-preview__item">
               <label class="weui-form-preview__label">归属年度</label>
               <span class="weui-form-preview__value">{{ formData.cnestyear }}</span>
             </div>
             <div class="weui-form-preview__item">
-              <label class="weui-form-preview__label">岗位基本工资</label>
+              <label class="weui-form-preview__label">归属期间</label>
+              <span class="weui-form-preview__value">{{ formData.cnestperiod }}</span>
+            </div> -->
+            <div class="weui-form-preview__item" v-if="formData.f_15">
+              <label class="weui-form-preview__label">基本工资</label>
               <span class="weui-form-preview__value">¥{{ formData.f_15 }}</span>
             </div>
-            <div class="weui-form-preview__item">
+            <div class="weui-form-preview__item" v-if="formData.f_30">
               <label class="weui-form-preview__label">岗位津贴</label>
               <span class="weui-form-preview__value">¥{{ formData.f_30 }}</span>
             </div>
-            <div class="weui-form-preview__item">
+            <div class="weui-form-preview__item" v-if="formData.f_31">
               <label class="weui-form-preview__label">职务津贴</label>
               <span class="weui-form-preview__value">¥{{ formData.f_31 }}</span>
             </div>
-            <div class="weui-form-preview__item">
+            <div class="weui-form-preview__item" v-if="formData.f_32">
               <label class="weui-form-preview__label">技术保密费</label>
               <span class="weui-form-preview__value">¥{{ formData.f_32 }}</span>
             </div>
-            <div class="weui-form-preview__item">
+            <div class="weui-form-preview__item" v-if="formData.f_33">
               <label class="weui-form-preview__label">加班津贴</label>
               <span class="weui-form-preview__value">¥{{ formData.f_33 }}</span>
             </div>
-            <div class="weui-form-preview__item">
+            <div class="weui-form-preview__item" v-if="formData.f_26">
               <label class="weui-form-preview__label">业绩奖</label>
               <span class="weui-form-preview__value">¥{{ formData.f_26 }}</span>
             </div>
-            <div class="weui-form-preview__item">
+            <div class="weui-form-preview__item" v-if="formData.f_40">
               <label class="weui-form-preview__label">中餐补贴</label>
               <span class="weui-form-preview__value">¥{{ formData.f_40 }}</span>
             </div>
-            <div class="weui-form-preview__item">
+            <div class="weui-form-preview__item" v-if="formData.f_41">
               <label class="weui-form-preview__label">住宿补贴</label>
               <span class="weui-form-preview__value">¥{{ formData.f_41 }}</span>
             </div>
-            <div class="weui-form-preview__item">
+            <div class="weui-form-preview__item" v-if="formData.f_42">
               <label class="weui-form-preview__label">离职补贴</label>
               <span class="weui-form-preview__value">¥{{ formData.f_42 }}</span>
             </div>
-            <div class="weui-form-preview__item">
+            <div class="weui-form-preview__item" v-if="formData.f_43">
               <label class="weui-form-preview__label">高温补贴</label>
               <span class="weui-form-preview__value">¥{{ formData.f_43 }}</span>
             </div>
-            <div class="weui-form-preview__item">
+            <div class="weui-form-preview__item" v-if="formData.f_44">
               <label class="weui-form-preview__label">其他</label>
               <span class="weui-form-preview__value">¥{{ formData.f_44 }}</span>
             </div>
-            <div class="weui-form-preview__item">
-              <label class="weui-form-preview__label">合计</label>
+            <div class="weui-form-preview__item w-highlight" v-if="formData.f_52">
+              <label class="weui-form-preview__label">应发合计</label>
               <span class="weui-form-preview__value">¥{{ formData.f_52 }}</span>
             </div>
-            <div class="weui-form-preview__item">
+            <div class="weui-form-preview__item" v-if="formData.f_46">
               <label class="weui-form-preview__label">社保</label>
-              <span class="weui-form-preview__value">¥{{ formData.f_46 }}</span>
+              <span class="weui-form-preview__value">-¥{{ formData.f_46 }}</span>
             </div>
-            <div class="weui-form-preview__item">
+            <div class="weui-form-preview__item" v-if="formData.f_47">
               <label class="weui-form-preview__label">公积金</label>
-              <span class="weui-form-preview__value">¥{{ formData.f_47 }}</span>
+              <span class="weui-form-preview__value">-¥{{ formData.f_47 }}</span>
             </div>
-            <div class="weui-form-preview__item">
+            <div class="weui-form-preview__item" v-if="formData.f_4">
               <label class="weui-form-preview__label">本次扣税</label>
-              <span class="weui-form-preview__value">¥{{ formData.f_4 }}</span>
+              <span class="weui-form-preview__value">-¥{{ formData.f_4 }}</span>
             </div>
-            <div class="weui-form-preview__item">
+            <div class="weui-form-preview__item" v-if="formData.f_49">
               <label class="weui-form-preview__label">房租水电</label>
-              <span class="weui-form-preview__value">¥{{ formData.f_49 }}</span>
+              <span class="weui-form-preview__value">-¥{{ formData.f_49 }}</span>
             </div>
-            <div class="weui-form-preview__item">
+            <div class="weui-form-preview__item" v-if="formData.f_50">
               <label class="weui-form-preview__label">借款</label>
-              <span class="weui-form-preview__value">¥{{ formData.f_50 }}</span>
+              <span class="weui-form-preview__value">-¥{{ formData.f_50 }}</span>
             </div>
-            <div class="weui-form-preview__item">
+            <div class="weui-form-preview__item" v-if="formData.f_51">
               <label class="weui-form-preview__label">其他扣项</label>
-              <span class="weui-form-preview__value">¥{{ formData.f_51 }}</span>
+              <span class="weui-form-preview__value">-¥{{ formData.f_51 }}</span>
+            </div>
+            <div class="weui-form-preview__item" v-if="formData.f_99">
+              <label class="weui-form-preview__label w-warn">扣款合计</label>
+              <span class="weui-form-preview__value w-warn">-¥{{ formData.f_99 }}</span>
+            </div>
+            <div class="weui-form-preview__item w-highlight" v-if="formData.f_3">
+              <label class="weui-form-preview__label">实发工资</label>
+              <span class="weui-form-preview__value">¥{{ formData.f_3 }}</span>
             </div>
           </div>
 
@@ -184,7 +196,8 @@
             f_49: '--',
             f_50: '--',
             f_51: '--',
-            f_3: '--'
+            f_3: '--',
+            f_99: '--'
           }
         }
       },

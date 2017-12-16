@@ -26,10 +26,15 @@
   padding: 5px 0;
 }
 
+.w-highlight,
 .w-borrow-list-item.last-highlight .weui-form-preview__item:last-child,
 .w-borrow-list-item.last-highlight .weui-form-preview__item:last-child .weui-form-preview__label,
 .w-highlight .weui-form-preview__label, .w-highlight .weui-form-preview__value {
   color: #092e85;
+}
+
+.w-warn {
+  color: #F43530 !important;
 }
 
 .w-borrow-list .w-borrow-list-item:before{

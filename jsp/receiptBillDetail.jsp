@@ -15,7 +15,7 @@
           <!-- 单据 s -->
           <div class="weui-form-preview__hd">
             <div class="weui-form-preview__item">
-              <label class="weui-form-preview__label">收款单金额合计</label>
+              <label class="weui-form-preview__label">收款金额合计</label>
               <em class="weui-form-preview__value">¥{{ formData.sumBbje }}</em>
             </div>
           </div>
@@ -26,7 +26,7 @@
             </div>
             <div class="weui-form-preview__item">
               <label class="weui-form-preview__label">日期</label>
-              <span class="weui-form-preview__value">{{ formData.djrq }}</span>
+              <span class="weui-form-preview__value">{{ formData.shrq }}</span>
             </div>
             <div class="weui-form-preview__item">
               <label class="weui-form-preview__label">客户</label>
@@ -73,7 +73,7 @@
     </div>
   </div>
 
-	<script>
+  <script>
     new Vue({
       el: '#app',
       data: function(){
@@ -140,6 +140,6 @@
         }
       }
     });
-	</script>
+  </script>
 </body>
 </html>
