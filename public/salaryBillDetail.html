@@ -104,6 +104,10 @@
               <label class="weui-form-preview__label">其他</label>
               <span class="weui-form-preview__value">¥{{ formData.f_44 }}</span>
             </div>
+            <div class="weui-form-preview__item" v-if="formData.f_67">
+              <label class="weui-form-preview__label">福利费用</label>
+              <span class="weui-form-preview__value">¥{{ formData.f_67 }}</span>
+            </div>
             <div class="weui-form-preview__item w-highlight" v-if="formData.f_52">
               <label class="weui-form-preview__label">应发合计</label>
               <span class="weui-form-preview__value">¥{{ formData.f_52 }}</span>
@@ -190,6 +194,7 @@
             f_43: '--',
             f_44: '--',
             f_52: '--',
+            f_67: '--',
             f_46: '--',
             f_47: '--',
             f_4: '--',
