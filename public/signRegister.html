@@ -27,9 +27,9 @@
         <!-- <div class="weui-cells__title">签收注册</div> -->
         <form class="weui-cells weui-cells_form" id="signRegisterForm">
           <div class="weui-cell">
-            <div class="weui-cell__hd required"><label class="weui-label" for="logisticsCompany">物流公司</label></div>
+            <div class="weui-cell__hd required"><label class="weui-label" for="logisticsCompany">公司名称</label></div>
             <div class="weui-cell__bd">
-              <input v-model="formData.logisticsCompany" name="logisticsCompany" class="weui-input" placeholder="请输入物流公司">
+              <input v-model="formData.logisticsCompany" name="logisticsCompany" class="weui-input" placeholder="请输入公司名称">
             </div>
             <div class="weui-cell__ft">
               <i class="weui-icon-warn"></i>
@@ -61,7 +61,7 @@
           </div>
         </form>
 
-        <div class="w-tips">&nbsp;&nbsp;&nbsp;&nbsp;温馨提示：请填写您所在物流公司详细信息，注册成功后再签收。</div>
+        <div class="w-tips">&nbsp;&nbsp;&nbsp;&nbsp;温馨提示：请填写您所在公司详细信息，注册成功后再签收。</div>
       </div>
       <!-- 主区域 end -->
       <div class="w-footer weui-form-preview__ft">
@@ -117,7 +117,7 @@
             validCode: 'required',
           },
           messages: {
-            logisticsCompany: '请输入物流公司！',
+            logisticsCompany: '请输入公司名称！',
             userName: '请输入真实姓名！',
             userPhone: {
               required: '请输入手机号码！',

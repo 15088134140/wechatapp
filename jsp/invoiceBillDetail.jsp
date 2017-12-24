@@ -1,18 +1,10 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
   <title>单据详情</title>
-  <meta id="viewport" name="viewport"
-  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <link rel="stylesheet" type="text/css" href="https://res.wx.qq.com/open/libs/weui/1.1.0/weui.min.css">
-  <link rel="stylesheet" type="text/css" href="./css/flex.css">
-  <link rel="stylesheet" type="text/css" href="./css/base.css">
-  <link rel="stylesheet" type="text/css" href="./css/borrowBillDetail.css">
-  <script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
-  <script src="./js/base.js" type="text/javascript" charset="utf-8"></script>
-  <script src="./js/vue.js" type="text/javascript" charset="utf-8"></script>
-  <script src="./js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+  <link rel="stylesheet" type="text/css" href="${ctx}/statics/ydsp/css/borrowBillDetail.css">
+  <%@ include file="/WEB-INF/views/modules/wechat/ydsp/ydspInclude.jsp"%>
 </head>
 <body>
   <div id="app" v-cloak>
@@ -186,10 +178,10 @@
           hasError: false,
           confirmDlgType: 0, // 确认框显示
           isBigImgDlgShow: false,
-          billId: Utils.getQueryString('billId'),
-          billType: (Utils.getQueryString('billType') || 'F'), // F 发票签收单  D 对账单
-          origin: (Utils.getQueryString('origin') || 'list'), // push 推送 list 其它
-          openId: '1341311',
+          billId: '${billId}',
+          billType: ('${billType}' || 'F'), // F 发票签收单  D 对账单
+          origin: '${origin}', // push 推送 list 其它
+          openId: '${openId}',
           formData: {
             vbillno: '--',
             dbilldate: '--',
