@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>审批</title>
+	<meta id="viewport" name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" type="text/css" href="https://res.wx.qq.com/open/libs/weui/1.1.0/weui.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/flex.css">
+	<link rel="stylesheet" type="text/css" href="./css/base.css">
+	<link rel="stylesheet" type="text/css" href="./css/borrowBillDetail.css">
+	<script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/base.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/vue.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+  <div id="app" v-cloak>
+    <div class="w-container" flex="box:last dir:top">
+      <!-- 主区域 start -->
+      <div class="w-main">
+        <div class="weui-form-preview">
+
+          <!-- 销售订单 -->
+          <div class="weui-form-preview__hd">
+            <div class="weui-form-preview__item">
+              <label class="weui-form-preview__label">销售订单金额合计</label>
+              <em class="weui-form-preview__value">¥{{ formData.ddzje || 0 }}</em>
+            </div>
+          </div>
+
+          <div class="weui-form-preview__bd">
+            <div class="weui-form-preview__item">
+              <label class="weui-form-preview__label">单号</label>
+              <span class="weui-form-preview__value">{{ formData.vreceiptcode }}</span>
+            </div>
+            <div class="weui-form-preview__item">
+              <label class="weui-form-preview__label">客户</label>
+              <span class="weui-form-preview__value">{{ formData.ccustomerName }}</span>
+            </div>
+            <div class="weui-form-preview__item">
+              <label class="weui-form-preview__label">部门</label>
+              <span class="weui-form-preview__value">{{ formData.cdeptName }}</span>
+            </div>
+            <div class="weui-form-preview__item">
+              <label class="weui-form-preview__label">业务员</label>
+              <span class="weui-form-preview__value">{{ formData.cemployeeName }}</span>
+            </div>
+            <div class="weui-form-preview__item" v-if="formData.vnote">
+              <label class="weui-form-preview__label">备注</label>
+              <span class="weui-form-preview__value">{{ formData.vnote }}</span>
+            </div>
+          </div>
+
+          <!-- 明细 s-->
+          <div class="weui-form-preview__bd w-borrow-list" v-if="formData.details.length">
+            <div v-for="item in formData.details">
+              <div :class="['w-borrow-list-item', 'w-has-more', {active: item.isShowOther}]" @click="handleShowOtherClick(item)">
+                <div class="w-borrow-list-item-main">
+                  <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">存货名称</label>
+                    <span class="weui-form-preview__value">{{ item.invName }}</span>
+                  </div>
+                  <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">主数量</label>
+                    <span class="weui-form-preview__value">
+                      {{ item.nnumber }} {{ item.cunitName }}
+                    </span>
+                  </div>
+                  <div class="weui-form-preview__item w-highlight">
+                    <label class="weui-form-preview__label">价税合计</label>
+                    <span class="weui-form-preview__value">¥{{ item.nsummny }}</span>
+                  </div>
+                </div>
+                <div class="w-borrow-list-item-other" v-show="item.isShowOther">
+                  <div class="weui-form-preview__item">
+                      <label class="weui-form-preview__label">存货编码</label>
+                      <span class="weui-form-preview__value">{{ item.invcode }}</span>
+                  </div>
+                  <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">规格</label>
+                    <span class="weui-form-preview__value">{{ item.invspec }}</span>
+                  </div>
+                  <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">辅数量</label>
+                    <span class="weui-form-preview__value">
+                    {{ item.npacknumber }} {{ item.cpackunitName }}
+                    </span>
+                  </div>
+                  <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">税率</label>
+                    <span class="weui-form-preview__value">{{ item.ntaxrate }}%</span>
+                  </div>
+                  <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">含税净价</label>
+                    <span class="weui-form-preview__value">¥{{ item.ntaxnetprice }}</span>
+                  </div>
+                  <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">无税金额</label>
+                    <span class="weui-form-preview__value">¥{{ item.nmny }}</span>
+                  </div>
+                  <div class="weui-form-preview__item" v-if="item.seka">
+                    <label class="weui-form-preview__label">色卡</label>
+                    <span class="weui-form-preview__value">{{ item.seka }}</span>
+                  </div>
+                  <div class="weui-form-preview__item" v-if="item.frownote">
+                    <label class="weui-form-preview__label">行备注</label>
+                    <span class="weui-form-preview__value">{{ item.frownote }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 明细 e-->
+          
+          <!-- 审批流程 s-->
+          <div class="weui-form-preview__ft w-step" flex="dir:top">
+            <div class="icon-box w-step-item" flex="dir:left box:first" v-for="item in formData.spqks">
+              <div class="w-step-item-left">
+                <i :class="getStepClass(item.approveresult)"></i>
+              </div>
+              <div class="w-step-item-right">
+                <div class="icon-box__desc" flex="dir:left main:justify">
+                  <span>{{ item.checkmanName }}</span><span>{{ item.dealdate }}</span>
+                </div>
+                <div class="icon-box__title">{{ item.checknote || '未审批' }}</div>
+              </div>
+            </div>
+          </div>
+          <!-- 审批流程 s-->
+        </div>
+      </div>
+      <!-- 主区域 end -->
+      <div class="w-footer weui-form-preview__ft">
+        <template v-if="!isLoading && !hasError">
+          <a v-if="pageType === 'boss' && ischeck === 'N'" class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="isOperationShow = true">操作</a>
+
+          <a v-else class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:;" @click="handlePageCloseClick">关闭</a>
+        </template>
+        <a v-else-if="hasError" href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading" @click="getDetail"><i class="weui-icon-warn"></i>请求错误，点击这里重试</a>
+        <a v-else href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading"><i class="weui-loading"></i>数据加载中</a>
+      </div>
+    </div>
+
+    <div class="w-operation-panel" v-if="isOperationShow">
+        <div class="weui-mask" id="iosMask"></div>
+        <div class="weui-actionsheet weui-actionsheet_toggle" id="iosActionsheet">
+            <div class="weui-actionsheet__menu">
+              <div class="weui-actionsheet__cell" @click="handleOptBtnClick('Y')">批准</div>
+              <div class="weui-actionsheet__cell" @click="handleOptBtnClick('R')">驳回</div>
+            </div>
+            <div class="weui-actionsheet__action">
+                <div class="weui-actionsheet__cell" @click="isOperationShow = false">关闭</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-js-dialog" v-if="isOperationDlgShow">
+      <div class="weui-mask"></div>
+      <div class="weui-dialog">
+          <div class="weui-dialog__hd"><strong class="weui-dialog__title">审批意见</strong></div>
+          <div class="weui-dialog__bd"><textarea v-model="opinionData.checkNote" class="weui-textarea" placeholder="请输入意见" rows="2"></textarea></div>
+          <div class="weui-dialog__ft">
+              <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default" @click="handleDlgBtnCancelClick">取消</a>
+              <a v-if="!opinionData.isLoading" href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary" @click="handleDlgBtnConfirmClick">确认</a>
+              <a v-else href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default weui-btn_loading"><i class="weui-loading"></i>审核中</a>
+          </div>
+      </div>
+    </div>
+
+    <div id="toast" style="display: none;">
+      <div class="weui-mask_transparent"></div>
+      <div class="weui-toast">
+          <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+          <p class="weui-toast__content">审批成功</p>
+      </div>
+    </div>
+  </div>
+
+	<script>
+    new Vue({
+      el: '#app',
+      data: function(){
+        return {
+          isLoading: false,
+          hasError: false,
+          isOperationShow: false,
+          isOperationDlgShow: false,
+          billid: Utils.getQueryString('billid'),
+          checkman: Utils.getQueryString('checkman'),
+          billType: Utils.getQueryString('pk_billtype'),
+          pageType: Utils.getQueryString('pageType'),
+          ischeck: Utils.getQueryString('ischeck'),
+          origin: Utils.getQueryString('origin'),
+          openId: '100104042005',
+          formData: {
+            bbje: "--",
+            deptname: "--",
+            details: [],
+            djbh: "--",
+            djrq: "--",
+            fydeptid: "--",
+            fydwbm: "--",
+            fydwmc: "--",
+            jkbxr: "--",
+            psnname: "--",
+            spqks: [],
+            credits: []
+          },
+          opinionData: {
+            checkResult: 'Y', //'Y'批准 'R'驳回
+            checkNote: '批准',
+            isLoading: false,
+          }
+        }
+      },
+
+      mounted: function () {
+        FastClick.attach(document.body);
+        this.getDetail();
+      },
+
+      methods: {
+        getStepClass: function(checkResult){
+          var className = '';
+          switch(checkResult) {
+          case 'Y':
+            className = 'weui-icon-success';
+            break;
+          case 'R':
+            className = 'weui-icon-download';
+            break;
+          default:
+            className = 'weui-icon-waiting';
+          }
+          return className;
+        },
+
+        getDetail: function(){
+          var vm = this;
+
+          if (this.billid && this.pageType) {
+            // url参数正常 请求数据
+            vm.isLoading = true;
+            vm.hasError = false;
+
+            $.getJSON('/modules/wechat/ydsp/BillDetail', {
+              billid: this.billid,
+              openId: this.openId,
+              pk_billtype: this.billType,
+            }).then(function(rsp) {
+              console.log(rsp);
+              if (rsp.result === 'Y') {
+                rsp.rsData.details.forEach(function (item){
+                  item.isShowOther = false;
+                });
+                vm.formData = rsp.rsData;
+                vm.hasError = false; 
+              } else {
+                vm.hasError = true; 
+              }
+              vm.isLoading = false;
+            }, function() {
+              vm.hasError = true;
+            });
+          } else {
+            vm.hasError = true;
+          }
+        },
+
+        goBackList: function(vm) {
+          window.location.href = (vm.pageType === 'employee' ? '/modules/wechat/ydsp/WfqdIndex' : '/modules/wechat/ydsp/WddbIndex') + '?openId=' + vm.openId;
+        },
+
+        handleOptBtnClick: function(checkResult){
+          this.isOperationShow = false;
+          this.isOperationDlgShow = true;
+          this.opinionData.checkResult = checkResult;
+          this.opinionData.checkNote = checkResult === 'Y' ? '批准' : '驳回到制单人';
+          console.log('checkResult', checkResult);
+        },
+
+        handleDlgBtnConfirmClick: function(){
+          var vm = this;
+          vm.opinionData.isLoading = true;
+          $.post('/modules/wechat/ydsp/Wddb_CZ', {
+            billType: vm.billType,
+            billID: vm.billid,
+            checkman: vm.checkman,
+            checkResult: vm.opinionData.checkResult,
+            checkNote: vm.opinionData.checkNote,
+          }, function(rsp) {
+            console.log('post', rsp);
+            vm.opinionData.isLoading = false;
+            if (rsp.result === 'Y') {
+              vm.isOperationDlgShow = false;
+              vm.ischeck = 'Y';
+              $('#toast').fadeIn(0).fadeOut(2000, function(){
+                // originwindow.location.href = './borrowBillList.html?pageType=' + vm.pageType;
+                vm.origin !== 'push' ? vm.goBackList(vm) : wx.closeWindow();
+              });
+            } else {
+              alert(rsp.msg || '审批失败，请重试！');
+            }
+          }, 'json');
+        },
+
+        handleDlgBtnCancelClick: function(){
+          this.isOperationDlgShow = false;
+          this.opinionData.checkNote = '批准';
+          this.opinionData.checkResult = 'Y';
+        },
+
+        handleShowOtherClick: function(item) {
+          item.isShowOther = !item.isShowOther;
+        },
+
+        handlePageCloseClick: function() {
+          this.origin === 'list' ? this.goBackList(this) : wx.closeWindow();
+        }
+      }
+    });
+	</script>
+</body>
+</html>

@@ -2,14 +2,23 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>审批</title>
+	<title>填写借款单</title>
 	<meta id="viewport" name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-	<link rel="stylesheet" type="text/css" href="https://res.wx.qq.com/open/libs/weui/1.1.0/weui.min.css">
-	<link rel="stylesheet" type="text/css" href="./css/flex.css">
-	<link rel="stylesheet" type="text/css" href="./css/base.css">
-	<link rel="stylesheet" type="text/css" href="./css/borrowBillDetail.css">
-	<script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <link rel="stylesheet" type="text/css" href="https://res.wx.qq.com/open/libs/weui/1.1.0/weui.min.css">
+  <link rel="stylesheet" type="text/css" href="./css/flex.css">
+  <link rel="stylesheet" type="text/css" href="./css/base.css">
+  <link rel="stylesheet" type="text/css" href="./css/borrowBillDetail.css">
+  <style>
+    .canvas-container {
+      width: 100%;
+      height: 300px;
+    }
+    .weui-cells:before{
+      display: none;
+    }
+  </style>
+  <script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/base.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/vue.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/fastclick.js" type="text/javascript" charset="utf-8"></script>
@@ -19,143 +28,103 @@
     <div class="w-container" flex="box:last dir:top">
       <!-- 主区域 start -->
       <div class="w-main">
-        <div class="weui-form-preview">
-
-          <!-- 销售订单 -->
-          <div class="weui-form-preview__hd">
-            <div class="weui-form-preview__item">
-              <label class="weui-form-preview__label">销售订单金额合计</label>
-              <em class="weui-form-preview__value">¥{{ formData.ddzje || 0 }}</em>
+        <form class="weui-cells weui-cells_form" id="signRegisterForm">
+          <div class="weui-cell">
+            <div class="weui-cell__hd required"><label for="" class="weui-label">单据日期</label></div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" type="date" v-model="formData.djrq">
             </div>
           </div>
 
-          <div class="weui-form-preview__bd">
-            <div class="weui-form-preview__item">
-              <label class="weui-form-preview__label">单号</label>
-              <span class="weui-form-preview__value">{{ formData.vreceiptcode }}</span>
+          <div class="weui-cell weui-cell_select weui-cell_select-after">
+            <div class="weui-cell__hd required">
+              <label for="" class="weui-label">银行账号</label>
             </div>
-            <div class="weui-form-preview__item">
-              <label class="weui-form-preview__label">客户</label>
-              <span class="weui-form-preview__value">{{ formData.ccustomerName }}</span>
-            </div>
-            <div class="weui-form-preview__item">
-              <label class="weui-form-preview__label">部门</label>
-              <span class="weui-form-preview__value">{{ formData.cdeptName }}</span>
-            </div>
-            <div class="weui-form-preview__item">
-              <label class="weui-form-preview__label">业务员</label>
-              <span class="weui-form-preview__value">{{ formData.cemployeeName }}</span>
-            </div>
-            <div class="weui-form-preview__item" v-if="formData.vnote">
-              <label class="weui-form-preview__label">备注</label>
-              <span class="weui-form-preview__value">{{ formData.vnote }}</span>
+            <div class="weui-cell__bd">
+              <select class="weui-select" name="select2" v-model="formData.bankaccount">
+                <option value="1">广发 0817</option>
+                <option value="2">农业 9770</option>
+              </select>
             </div>
           </div>
 
-          <!-- 明细 s-->
-          <div class="weui-form-preview__bd w-borrow-list" v-if="formData.details.length">
-            <div v-for="item in formData.details">
-              <div :class="['w-borrow-list-item', 'w-has-more', {active: item.isShowOther}]" @click="handleShowOtherClick(item)">
-                <div class="w-borrow-list-item-main">
-                  <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">存货名称</label>
-                    <span class="weui-form-preview__value">{{ item.invName }}</span>
-                  </div>
-                  <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">主数量</label>
-                    <span class="weui-form-preview__value">
-                      {{ item.nnumber }} {{ item.cunitName }}
-                    </span>
-                  </div>
-                  <div class="weui-form-preview__item w-highlight">
-                    <label class="weui-form-preview__label">价税合计</label>
-                    <span class="weui-form-preview__value">¥{{ item.nsummny }}</span>
-                  </div>
-                </div>
-                <div class="w-borrow-list-item-other" v-show="item.isShowOther">
-                  <div class="weui-form-preview__item">
-                      <label class="weui-form-preview__label">存货编码</label>
-                      <span class="weui-form-preview__value">{{ item.invcode }}</span>
-                  </div>
-                  <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">规格</label>
-                    <span class="weui-form-preview__value">{{ item.invspec }}</span>
-                  </div>
-                  <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">辅数量</label>
-                    <span class="weui-form-preview__value">
-                    {{ item.npacknumber }} {{ item.cpackunitName }}
-                    </span>
-                  </div>
-                  <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">税率</label>
-                    <span class="weui-form-preview__value">{{ item.ntaxrate }}%</span>
-                  </div>
-                  <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">含税净价</label>
-                    <span class="weui-form-preview__value">¥{{ item.ntaxnetprice }}</span>
-                  </div>
-                  <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">无税金额</label>
-                    <span class="weui-form-preview__value">¥{{ item.nmny }}</span>
-                  </div>
-                  <div class="weui-form-preview__item" v-if="item.seka">
-                    <label class="weui-form-preview__label">色卡</label>
-                    <span class="weui-form-preview__value">{{ item.seka }}</span>
-                  </div>
-                  <div class="weui-form-preview__item" v-if="item.frownote">
-                    <label class="weui-form-preview__label">行备注</label>
-                    <span class="weui-form-preview__value">{{ item.frownote }}</span>
-                  </div>
-                </div>
-              </div>
+          <div class="weui-cell">
+            <div class="weui-cell__hd required"><label class="weui-label">借款人</label></div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" :value="formData.psnname" readonly>
             </div>
           </div>
-          <!-- 明细 e-->
-          
-          <!-- 审批流程 s-->
-          <div class="weui-form-preview__ft w-step" flex="dir:top">
-            <div class="icon-box w-step-item" flex="dir:left box:first" v-for="item in formData.spqks">
-              <div class="w-step-item-left">
-                <i :class="getStepClass(item.approveresult)"></i>
-              </div>
-              <div class="w-step-item-right">
-                <div class="icon-box__desc" flex="dir:left main:justify">
-                  <span>{{ item.checkmanName }}</span><span>{{ item.dealdate }}</span>
-                </div>
-                <div class="icon-box__title">{{ item.checknote || '未审批' }}</div>
-              </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd required"><label class="weui-label">借款部门</label></div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" :value="formData.jdeptname" readonly>
             </div>
           </div>
-          <!-- 审批流程 s-->
-        </div>
+
+          <div class="weui-cell weui-cell_select weui-cell_select-after">
+            <div class="weui-cell__hd required">
+              <label for="" class="weui-label">承担部门</label>
+            </div>
+            <div class="weui-cell__bd">
+              <select class="weui-select" name="select2" v-model="formData.deptname">
+                <option value="工程部">工程部</option>
+                <option value="财务部">财务部</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd required"><label class="weui-label">借款事由</label></div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" v-model="formData.defitem2">
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd required"><label class="weui-label">借款金额</label></div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" v-model="formData.amount">
+            </div>
+          </div>
+          <div class="weui-cell">
+            <div class="weui-cell__hd required">
+              <label class="weui-label">借款签名</label>
+            </div>
+            <div class="weui-cell__bd"></div>
+            <div class="weui-cell__ft">
+              <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_default"  @click.stop="handleClearClick()">重签</a>
+            </div>
+          </div>
+          <div class="canvas-container">
+            <canvas id="canvas"></canvas>
+          </div>
+        </form>
+        <img :src="signBase64" alt="">
       </div>
       <!-- 主区域 end -->
       <div class="w-footer weui-form-preview__ft">
         <template v-if="!isLoading && !hasError">
-          <a v-if="pageType === 'boss' && ischeck === 'N'" class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="isOperationShow = true">操作</a>
-
-          <a v-else class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:;" @click="handlePageCloseClick">关闭</a>
+          <a class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="isOperationShow = true">提交</a>
         </template>
         <a v-else-if="hasError" href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading" @click="getDetail"><i class="weui-icon-warn"></i>请求错误，点击这里重试</a>
         <a v-else href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading"><i class="weui-loading"></i>数据加载中</a>
       </div>
     </div>
 
-    <div class="w-operation-panel" v-if="isOperationShow">
+    <!-- <div class="w-operation-panel" v-if="isOperationShow">
         <div class="weui-mask" id="iosMask"></div>
         <div class="weui-actionsheet weui-actionsheet_toggle" id="iosActionsheet">
             <div class="weui-actionsheet__menu">
-              <div class="weui-actionsheet__cell" @click="handleOptBtnClick('Y')">批准</div>
-              <div class="weui-actionsheet__cell" @click="handleOptBtnClick('R')">驳回</div>
+              <div class="weui-actionsheet__cell" @click="handleOptBtnClick('Y')">提交</div>
             </div>
             <div class="weui-actionsheet__action">
                 <div class="weui-actionsheet__cell" @click="isOperationShow = false">关闭</div>
             </div>
         </div>
-    </div>
+    </div> -->
 
-    <div class="w-js-dialog" v-if="isOperationDlgShow">
+    <!-- <div class="w-js-dialog" v-if="isOperationDlgShow">
       <div class="weui-mask"></div>
       <div class="weui-dialog">
           <div class="weui-dialog__hd"><strong class="weui-dialog__title">审批意见</strong></div>
@@ -166,7 +135,7 @@
               <a v-else href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default weui-btn_loading"><i class="weui-loading"></i>审核中</a>
           </div>
       </div>
-    </div>
+    </div> -->
 
     <div id="toast" style="display: none;">
       <div class="weui-mask_transparent"></div>
@@ -176,6 +145,120 @@
       </div>
     </div>
   </div>
+  <script>
+    var draw;
+    var preHandler = function(e){e.preventDefault();}
+    class Draw {
+      constructor(el, width, height) {
+        this.el = el
+        this.width = width;
+        this.height = height;
+        this.canvas = document.getElementById(this.el);
+
+        this.canvas.setAttribute('width', this.width);
+        this.canvas.setAttribute('height', this.height);
+
+        this.markCanvas = document.createElement('canvas');
+        this.markCanvas.setAttribute('width', 130);
+        this.markCanvas.setAttribute('height', 80);
+        this.markCanvas.style.display = 'none';
+
+        document.getElementsByTagName('body')[0].appendChild(this.markCanvas);
+
+        var mctx = this.markCanvas.getContext('2d');
+
+        mctx.font = '20px 黑体';  
+        mctx.rotate(-20 * Math.PI / 180);
+        mctx.fillStyle = 'rgba(100, 100, 100, 0.1)';
+        mctx.fillText('众星软件', -10, 60);
+        mctx.rotate(20 * Math.PI / 180);
+
+        this.cxt = this.canvas.getContext('2d');
+
+        this.stage_info = this.canvas.getBoundingClientRect();
+
+        // console.log('stage_info', this.stage_info);
+        this.path = {
+          beginX: 0,
+          beginY: 0,
+          endX: 0,
+          endY: 0
+        }
+      }
+
+      renderMark() {
+
+        this.cxt.fillStyle = this.cxt.createPattern(this.markCanvas, 'repeat');
+        this.cxt.rect(0, 0, this.width, this.height);
+        this.cxt.fill();
+      }
+
+      init(btn) {
+        var that = this;
+
+        this.canvas.addEventListener('touchstart', function(event) {
+          document.addEventListener('touchstart', preHandler, false);
+          that.drawBegin(event)
+        })
+        this.canvas.addEventListener('touchend', function(event) {
+          document.addEventListener('touchend', preHandler, false);
+          that.drawEnd();
+        });
+        this.clear(btn);
+      }
+
+      drawBegin(e) {
+        var that = this;
+        window.getSelection() ? window.getSelection().removeAllRanges() : document.selection.empty();
+        this.stage_info = this.canvas.getBoundingClientRect();
+        this.cxt.strokeStyle = "#000";
+        this.cxt.lineWidth = 3;
+        this.cxt.beginPath();
+        this.cxt.moveTo(
+          e.changedTouches[0].clientX - this.stage_info.left,
+          e.changedTouches[0].clientY - this.stage_info.top
+        );
+        this.path.beginX = e.changedTouches[0].clientX - this.stage_info.left;
+        this.path.beginY = e.changedTouches[0].clientY - this.stage_info.top;
+
+        // console.log('start', e.changedTouches, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+        // console.log(this.path.beginX, e.changedTouches[0].clientX, this.stage_info.left);
+        // console.log(this.path.beginY, e.changedTouches[0].clientY, this.stage_info.top);
+        this.canvas.addEventListener("touchmove", function(event) {
+          event.preventDefault();
+          that.drawing(event)
+        });
+      }
+
+      drawing(e) {
+        this.stage_info = this.canvas.getBoundingClientRect();
+        this.cxt.lineTo(
+          e.changedTouches[0].clientX - this.stage_info.left,
+          e.changedTouches[0].clientY - this.stage_info.top
+        )
+        this.path.endX = e.changedTouches[0].clientX - this.stage_info.left
+        this.path.endY = e.changedTouches[0].clientY - this.stage_info.top
+        // console.log('drawing', e.changedTouches, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+        this.cxt.stroke()
+      }
+
+      drawEnd() {
+        document.removeEventListener('touchstart', preHandler, false);
+        document.removeEventListener('touchend', preHandler, false);
+        document.removeEventListener('touchmove', preHandler, false);
+        //canvas.ontouchmove = canvas.ontouchend = null
+      }
+
+      clear(btn) {
+        this.cxt.clearRect(0, 0, this.width, this.height);
+        this.renderMark();
+      }
+      
+      save() {
+        return this.canvas.toDataURL("image/png");
+      }
+    }
+  </script>
 
 	<script>
     new Vue({
@@ -193,19 +276,15 @@
           ischeck: Utils.getQueryString('ischeck'),
           origin: Utils.getQueryString('origin'),
           openId: '100104042005',
+          signBase64: '',
           formData: {
-            bbje: "--",
-            deptname: "--",
-            details: [],
-            djbh: "--",
-            djrq: "--",
-            fydeptid: "--",
-            fydwbm: "--",
-            fydwmc: "--",
-            jkbxr: "--",
-            psnname: "--",
-            spqks: [],
-            credits: []
+            djrq: new Date().Format('yyyy-MM-dd'),
+            bankaccount: '1',
+            psnname: '张三',
+            jdeptname: '工程部',
+            deptname: '财务部',
+            defitem2: '工程施工',
+            amount: '1000',
           },
           opinionData: {
             checkResult: 'Y', //'Y'批准 'R'驳回
@@ -217,7 +296,16 @@
 
       mounted: function () {
         FastClick.attach(document.body);
-        this.getDetail();
+
+        this.$nextTick(() => {
+          var container = document.querySelector('.canvas-container');
+          var canvas = container.querySelector('canvas');
+          var width = container.offsetWidth;
+          var height = container.offsetHeight;
+          // alert(height);
+          draw = new Draw('canvas', width, height);
+          draw.init();
+        });
       },
 
       methods: {
@@ -317,6 +405,16 @@
 
         handlePageCloseClick: function() {
           this.origin === 'list' ? this.goBackList(this) : wx.closeWindow();
+        },
+
+        handleClearClick: function() {
+          draw.clear();
+        },
+
+        handleSaveClick: function() {
+          var data = draw.save();
+          this.signBase64 = data;
+          console.log(data)
         }
       }
     });
