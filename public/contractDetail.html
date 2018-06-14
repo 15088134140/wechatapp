@@ -24,94 +24,46 @@
           <!-- 销售订单 -->
           <div class="weui-form-preview__hd">
             <div class="weui-form-preview__item">
+              <em class="weui-form-preview__value text-center">{{ formData.custname }}</em>
+            </div>
+          </div>
+          <!-- <div class="weui-form-preview__hd">
+            <div class="weui-form-preview__item">
               <label class="weui-form-preview__label">销售订单金额合计</label>
               <em class="weui-form-preview__value">¥{{ formData.ddzje || 0 }}</em>
             </div>
-          </div>
+          </div> -->
 
           <div class="weui-form-preview__bd">
             <div class="weui-form-preview__item">
-              <label class="weui-form-preview__label">单号</label>
-              <span class="weui-form-preview__value">{{ formData.vreceiptcode }}</span>
+              <label class="weui-form-preview__label">法人代表</label>
+              <span class="weui-form-preview__value">{{ formData.vdef21 }}</span>
             </div>
             <div class="weui-form-preview__item">
-              <label class="weui-form-preview__label">客户</label>
-              <span class="weui-form-preview__value">{{ formData.ccustomerName }}</span>
+              <label class="weui-form-preview__label">办公/通信地址</label>
+              <span class="weui-form-preview__value">{{ formData.vdef12 }}</span>
             </div>
             <div class="weui-form-preview__item">
-              <label class="weui-form-preview__label">部门</label>
-              <span class="weui-form-preview__value">{{ formData.cdeptName }}</span>
+              <label class="weui-form-preview__label">联系电话1</label>
+              <span class="weui-form-preview__value">{{ formData.vdef15 }}</span>
             </div>
             <div class="weui-form-preview__item">
-              <label class="weui-form-preview__label">业务员</label>
-              <span class="weui-form-preview__value">{{ formData.cemployeeName }}</span>
+              <label class="weui-form-preview__label">联系电话2</label>
+              <span class="weui-form-preview__value">{{ formData.vdef24 }}</span>
+            </div>
+            <div class="weui-form-preview__item">
+              <label class="weui-form-preview__label">业务关键人</label>
+              <span class="weui-form-preview__value">{{ formData.vdef22 }}</span>
+            </div>
+            <div class="weui-form-preview__item">
+              <label class="weui-form-preview__label">职位</label>
+              <span class="weui-form-preview__value">{{ formData.vdef23 }}</span>
             </div>
             <div class="weui-form-preview__item" v-if="formData.vnote">
               <label class="weui-form-preview__label">备注</label>
               <span class="weui-form-preview__value">{{ formData.vnote }}</span>
             </div>
           </div>
-
-          <!-- 明细 s-->
-          <div class="weui-form-preview__bd w-borrow-list" v-if="formData.details.length">
-            <div v-for="item in formData.details">
-              <div :class="['w-borrow-list-item', 'w-has-more', {active: item.isShowOther}]" @click="handleShowOtherClick(item)">
-                <div class="w-borrow-list-item-main">
-                  <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">存货名称</label>
-                    <span class="weui-form-preview__value">{{ item.invName }}</span>
-                  </div>
-                  <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">主数量</label>
-                    <span class="weui-form-preview__value">
-                      {{ item.nnumber }} {{ item.cunitName }}
-                    </span>
-                  </div>
-                  <div class="weui-form-preview__item w-highlight">
-                    <label class="weui-form-preview__label">价税合计</label>
-                    <span class="weui-form-preview__value">¥{{ item.nsummny }}</span>
-                  </div>
-                </div>
-                <div class="w-borrow-list-item-other" v-show="item.isShowOther">
-                  <div class="weui-form-preview__item">
-                      <label class="weui-form-preview__label">存货编码</label>
-                      <span class="weui-form-preview__value">{{ item.invcode }}</span>
-                  </div>
-                  <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">规格</label>
-                    <span class="weui-form-preview__value">{{ item.invspec }}</span>
-                  </div>
-                  <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">辅数量</label>
-                    <span class="weui-form-preview__value">
-                    {{ item.npacknumber }} {{ item.cpackunitName }}
-                    </span>
-                  </div>
-                  <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">税率</label>
-                    <span class="weui-form-preview__value">{{ item.ntaxrate }}%</span>
-                  </div>
-                  <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">含税净价</label>
-                    <span class="weui-form-preview__value">¥{{ item.ntaxnetprice }}</span>
-                  </div>
-                  <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">无税金额</label>
-                    <span class="weui-form-preview__value">¥{{ item.nmny }}</span>
-                  </div>
-                  <div class="weui-form-preview__item" v-if="item.seka">
-                    <label class="weui-form-preview__label">色卡</label>
-                    <span class="weui-form-preview__value">{{ item.seka }}</span>
-                  </div>
-                  <div class="weui-form-preview__item" v-if="item.frownote">
-                    <label class="weui-form-preview__label">行备注</label>
-                    <span class="weui-form-preview__value">{{ item.frownote }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- 明细 e-->
           
           <!-- 审批流程 s-->
           <div class="weui-form-preview__ft w-step" flex="dir:top">
@@ -194,18 +146,41 @@
           origin: Utils.getQueryString('origin'),
           openId: '100104042005',
           formData: {
-            bbje: "--",
-            deptname: "--",
-            details: [],
-            djbh: "--",
-            djrq: "--",
-            fydeptid: "--",
-            fydwbm: "--",
-            fydwmc: "--",
-            jkbxr: "--",
-            psnname: "--",
-            spqks: [],
-            credits: []
+            spqks: [], // 审批流程
+            custcode: "--", // 合作单位编码 
+            custname: "--", // 合作单位名称 
+            vdef21: "--", // 法人代表 
+            vdef12: "--", //办公/ 通信地址 
+            vdef15: "--", // 联系电话1 
+            vdef22: "--", // 业务关键人 
+            vdef23: "--", // 职位 
+            vdef24: "--", // 联系电话2 
+            vdef6: "--", //负责业务员/ 采购人员 
+            vdef5: "--", //业务部门/ 采购部门 
+            pk_areacl: "--", // 所属地区 
+            vdef9: "--", // 销售人员 
+            vdef8: "--", // 销售部门 
+            vdef25: "--", // 发票类型 
+            taxpayerid: "--", // 纳税识别号 
+            vdef27: "--", // 开户银行
+            vdef28: "--", // 开票银行账号
+            vdef29: "--", // 是否有法人授权委托书
+            vdef30: "--", // 合同预计签回日期
+            vdef31: "--", // 合同信用额度
+            vdef10: "--", // 合同账期
+            vdef32: "--", // 付款方式
+            vdef33: "--", // 清款时间
+            vdef18: "--", // 免息天数
+            vdef16: "--", // 免息金额
+            vdef34: "--", // 估计月销量／年销量
+            vdef11: "--", // 价格分组
+            vdef35: "--", // 产品成交价格
+            vdef36: "--", // 产品成交价格是否有折让
+            vdef37: "--", // 产品成交价格折让备注
+            vdef38: "--", // 交货周期
+            vdef39: "--", // 客户情况简述（业务员）
+            vdef41: "--", // 客户类型
+            vdef42: "--"  // 客户合同类型
           },
           opinionData: {
             checkResult: 'Y', //'Y'批准 'R'驳回
@@ -244,25 +219,25 @@
             vm.isLoading = true;
             vm.hasError = false;
 
-            $.getJSON('/modules/wechat/ydsp/BillDetail', {
-              billid: this.billid,
-              openId: this.openId,
-              pk_billtype: this.billType,
-            }).then(function(rsp) {
-              console.log(rsp);
-              if (rsp.result === 'Y') {
-                rsp.rsData.details.forEach(function (item){
-                  item.isShowOther = false;
-                });
-                vm.formData = rsp.rsData;
-                vm.hasError = false; 
-              } else {
-                vm.hasError = true; 
-              }
+            // $.getJSON('/modules/wechat/ydsp/BillDetail', {
+            //   billid: this.billid,
+            //   openId: this.openId,
+            //   pk_billtype: this.billType,
+            // }).then(function(rsp) {
+            //   console.log(rsp);
+            //   if (rsp.result === 'Y') {
+            //     rsp.rsData.details.forEach(function (item){
+            //       item.isShowOther = false;
+            //     });
+            //     vm.formData = rsp.rsData;
+            //     vm.hasError = false; 
+            //   } else {
+            //     vm.hasError = true; 
+            //   }
               vm.isLoading = false;
-            }, function() {
-              vm.hasError = true;
-            });
+            // }, function() {
+            //   vm.hasError = true;
+            // });
           } else {
             vm.hasError = true;
           }
