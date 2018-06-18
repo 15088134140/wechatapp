@@ -9,7 +9,7 @@ var tData = {
  
 app.use(express.static('public'));
 app.use('/modules', proxy({
-	target: 'http://182.61.28.147:8080',
+	target: 'http://182.61.28.147:80',
 	changeOrigin: true,
 	pathRewrite: {
     '^/modules' : '/modules'
