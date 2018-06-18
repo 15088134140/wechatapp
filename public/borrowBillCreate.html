@@ -12,7 +12,12 @@
   <style>
     .canvas-container {
       width: 100%;
+      padding: 5px 15px;
+      box-sizing: border-box;
       height: 200px;
+    }
+    .canvas-container canvas {
+      background-color: #f8f8f8;
     }
     .weui-cells .weui-cells__title {
       /*background-color: #f8f8f8;
@@ -28,6 +33,7 @@
   <script src="./js/base.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/vue.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/draw.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
   <div id="app" v-cloak>
@@ -39,7 +45,7 @@
           <div class="weui-cell">
             <div class="weui-cell__hd required"><label for="" class="weui-label">单据日期</label></div>
             <div class="weui-cell__bd">
-              <input class="weui-input" :value="formData.djrq" readonly>
+              <input class="weui-input" :value="formData.billDate" readonly>
             </div>
           </div>
 
@@ -53,7 +59,7 @@
           <div class="weui-cell">
             <div class="weui-cell__hd required"><label class="weui-label">借款部门</label></div>
             <div class="weui-cell__bd">
-              <input class="weui-input" :value="formData.jdeptname" readonly>
+              <input class="weui-input" :value="formData.deptname" readonly>
             </div>
           </div>
 
@@ -78,14 +84,14 @@
           <div class="weui-cell">
             <div class="weui-cell__hd required"><label class="weui-label">借款金额</label></div>
             <div class="weui-cell__bd">
-              <input type="number" class="weui-input" v-model="formData.amount">
+              <input type="number" class="weui-input" v-model="formData.jkMoney">
             </div>
           </div>
 
           <div class="weui-cell">
             <div class="weui-cell__hd required"><label class="weui-label">借款事由</label></div>
             <div class="weui-cell__bd">
-              <textarea class="weui-textarea" placeholder="请输入借款事由" v-model="formData.defitem2" rows="2"></textarea>
+              <textarea class="weui-textarea" placeholder="请输入借款事由" v-model="formData.content" rows="2"></textarea>
             </div>
           </div>
 
@@ -110,126 +116,11 @@
         <template v-if="!isLoading && !hasError">
           <a class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="handleConfirmClick()">确认借款</a>
         </template>
-        <a v-else-if="hasError" href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading" @click="getDetail"><i class="weui-icon-warn"></i>请求错误，点击这里重试</a>
+        <a v-else-if="hasError" href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading" @click="init()"><i class="weui-icon-warn"></i>请求错误，点击这里重试</a>
         <a v-else href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading"><i class="weui-loading"></i>数据加载中</a>
       </div>
     </div>
   </div>
-  <script>
-    var draw;
-    var preHandler = function(e){e.preventDefault();}
-    class Draw {
-      constructor(el, width, height) {
-        this.el = el
-        this.width = width;
-        this.height = height;
-        this.canvas = document.getElementById(this.el);
-
-        this.canvas.setAttribute('width', this.width);
-        this.canvas.setAttribute('height', this.height);
-
-        this.markCanvas = document.createElement('canvas');
-        this.markCanvas.setAttribute('width', 130);
-        this.markCanvas.setAttribute('height', 80);
-        this.markCanvas.style.display = 'none';
-
-        document.getElementsByTagName('body')[0].appendChild(this.markCanvas);
-
-        var mctx = this.markCanvas.getContext('2d');
-
-        mctx.font = '20px 黑体';  
-        mctx.rotate(-20 * Math.PI / 180);
-        mctx.fillStyle = 'rgba(100, 100, 100, 0.1)';
-        mctx.fillText('众星软件', -10, 60);
-        mctx.rotate(20 * Math.PI / 180);
-
-        this.cxt = this.canvas.getContext('2d');
-
-        this.stage_info = this.canvas.getBoundingClientRect();
-
-        // console.log('stage_info', this.stage_info);
-        this.path = {
-          beginX: 0,
-          beginY: 0,
-          endX: 0,
-          endY: 0
-        }
-      }
-
-      renderMark() {
-
-        this.cxt.fillStyle = this.cxt.createPattern(this.markCanvas, 'repeat');
-        this.cxt.rect(0, 0, this.width, this.height);
-        this.cxt.fill();
-      }
-
-      init(btn) {
-        var that = this;
-
-        this.canvas.addEventListener('touchstart', function(event) {
-          document.addEventListener('touchstart', preHandler, false);
-          that.drawBegin(event)
-        })
-        this.canvas.addEventListener('touchend', function(event) {
-          document.addEventListener('touchend', preHandler, false);
-          that.drawEnd();
-        });
-        this.clear(btn);
-      }
-
-      drawBegin(e) {
-        var that = this;
-        window.getSelection() ? window.getSelection().removeAllRanges() : document.selection.empty();
-        this.stage_info = this.canvas.getBoundingClientRect();
-        this.cxt.strokeStyle = "#000";
-        this.cxt.lineWidth = 3;
-        this.cxt.beginPath();
-        this.cxt.moveTo(
-          e.changedTouches[0].clientX - this.stage_info.left,
-          e.changedTouches[0].clientY - this.stage_info.top
-        );
-        this.path.beginX = e.changedTouches[0].clientX - this.stage_info.left;
-        this.path.beginY = e.changedTouches[0].clientY - this.stage_info.top;
-
-        // console.log('start', e.changedTouches, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-        // console.log(this.path.beginX, e.changedTouches[0].clientX, this.stage_info.left);
-        // console.log(this.path.beginY, e.changedTouches[0].clientY, this.stage_info.top);
-        this.canvas.addEventListener("touchmove", function(event) {
-          event.preventDefault();
-          that.drawing(event)
-        });
-      }
-
-      drawing(e) {
-        this.stage_info = this.canvas.getBoundingClientRect();
-        this.cxt.lineTo(
-          e.changedTouches[0].clientX - this.stage_info.left,
-          e.changedTouches[0].clientY - this.stage_info.top
-        )
-        this.path.endX = e.changedTouches[0].clientX - this.stage_info.left
-        this.path.endY = e.changedTouches[0].clientY - this.stage_info.top
-        // console.log('drawing', e.changedTouches, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-        this.cxt.stroke()
-      }
-
-      drawEnd() {
-        document.removeEventListener('touchstart', preHandler, false);
-        document.removeEventListener('touchend', preHandler, false);
-        document.removeEventListener('touchmove', preHandler, false);
-        //canvas.ontouchmove = canvas.ontouchend = null
-      }
-
-      clear(btn) {
-        this.cxt.clearRect(0, 0, this.width, this.height);
-        this.renderMark();
-      }
-      
-      save() {
-        return this.canvas.toDataURL("image/png");
-      }
-    }
-  </script>
-
 	<script>
     new Vue({
       el: '#app',
@@ -241,14 +132,16 @@
           openId: '100104042005',
           signBase64: '',
           formData: {
-            djrq: new Date().Format('yyyy-MM-dd'),
-            bankaccount: '1',
-            psnname: '张三',
-            jdeptname: '工程部',
-            deptname: '财务部',
-            defitem2: '工程施工',
+            billDate: '',
+            pk_bankaccbas: '',
+            bankaccount: '',
+            pk_psndoc: '',
+            psnname: '',
+            pk_deptdoc: '',
+            deptname: '',
             sumJkye: '',
-            amount: '1000',
+            jkMoney: '',
+            content: '',
           }
         }
       },
@@ -260,9 +153,8 @@
         this.$nextTick(() => {
           var container = document.querySelector('.canvas-container');
           var canvas = container.querySelector('canvas');
-          var width = container.offsetWidth;
-          var height = container.offsetHeight;
-          // alert(height);
+          var width = $(container).width();
+          var height = $(container).height();
           draw = new Draw('canvas', width, height);
           draw.init();
         });
@@ -282,8 +174,21 @@
           }).then(function(rsp) {
             console.log(rsp);
             if (rsp.result === 'Y') {
-              // vm.formData = rsp.rsData;
-              vm.hasError = false; 
+              var data = rsp.rsData;
+              if (data) {
+                vm.formData.billDate = data.billDate || new Date().Format('yyyy-MM-dd');
+
+                vm.formData.pk_psndoc = data.psndoc && data.psndoc.pk_psndoc;
+                vm.formData.psnname = data.psndoc && data.psndoc.psnname;
+
+                vm.formData.pk_deptdoc = data.deptdoc && data.deptdoc.pk_deptdoc;
+                vm.formData.deptname = data.deptdoc && data.deptdoc.deptname;
+
+                vm.formData.pk_bankaccbas = data.account && data.account[0].pk_bankaccbas;
+                vm.formData.bankaccount = data.account && data.account[0].accountname;
+                vm.formData.sumJkye = data.sumJkye;
+              }
+              vm.hasError = false;
             } else {
               vm.hasError = true; 
             }
@@ -295,9 +200,12 @@
 
         handleConfirmClick: function(){
           var vm = this;
+          var billData = Object.assign({}, vm.formData, { content : window.encodeURI('你好') });
           vm.isLoading = true;
-          $.post('/modules/wechat/ydsp/Wddb_CZ', {
+          $.post('/modules/wechat/ydsp/xjlc/xjlc_Submit', {
             billType: vm.billType,
+            openId: vm.openId,
+            billData: JSON.stringify(billData)
           }, function(rsp) {
             console.log('post', rsp);
             vm.isLoading = false;
@@ -307,6 +215,7 @@
               });
             } else {
               alert(rsp.msg || '提交失败，请重试！');
+              vm.hasError = true;
             }
           }, 'json');
         },

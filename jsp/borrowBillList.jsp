@@ -1,0 +1,135 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="${ctx}/statics/ydsp/css/borrowBillList.css">
+	<%@ include file="/WEB-INF/views/modules/wechat/ydsp/ydspInclude.jsp"%>
+</head>
+<body>
+	<div id="app" v-cloak>
+		<div class="w-container" flex="box:justify dir:top">
+			<div class="w-top">
+				<div class="w-top-panel" flex="main:left">
+					<div :class="['panel-item', 'panel-left', {active: (queryCondition.ischeck == 'N')}]" @click="handleTabClick('N')">{{ pageType === 'employee' ? '待审' : '未办' }}</div>
+					<div :class="['panel-item', 'panel-right', {active: (queryCondition.ischeck == 'Y')}]" @click="handleTabClick('Y')">{{ pageType === 'employee' ? '已审' : '已办' }}</div>
+				</div>
+				<div class="w-top-search" flex="main:left">
+					<div class="w-select-label w-bold">日期区间：</div>
+					<select class="w-select" v-model="dateRange" @change="getMainList">
+            <option :value="1">近一个月</option>
+            <option :value="2">近两个月</option>
+            <option :value="3">近三个月</option>
+            <option :value="0">全部</option>
+          </select>
+					<!-- <i class="weui-icon-search"></i> -->
+				</div>
+			</div>
+			<!-- 主区域 start -->
+			<div class="w-main weui-panel__bd">
+				<div class="weui-media-box weui-media-box_small-appmsg" v-if="!isLoading && !hasError">
+					<div class="weui-cells w-borrow-list" v-if="tableData.length !== 0">
+						<a v-for="item in tableData" class="weui-cell weui-cell_access w-borrow-list-item" :href="'/modules/wechat/ydsp/borrowBillDetail?origin=list&openId=' + queryCondition.openId + '&checkman=' + (item.checkman || '') + '&ischeck=' + item.ischeck + '&pageType=' + pageType + '&billid=' + item.billid + '&pk_billtype=' + item.pk_billtype">
+							<div class="weui-cell__bd w-borrow-list-item-left">
+								<div class="w-borrow-list-item-dsc" flex="box:last">
+									<span>{{ item.sendermanName }}的{{ item.billtypeName }}</span>
+									<span>{{ item.billno }}</span>
+								</div>
+								<div class="w-borrow-list-item-title">{{ item.senddate }}</div>
+							</div>
+							<div class="weui-cell__ft"></div>
+						</a>
+					</div>
+					<div v-else class="weui-loadmore weui-loadmore_line">
+            <span class="weui-loadmore__tips">暂无数据</span>
+        	</div>
+				</div>
+
+				<div class="weui-loadmore" v-else-if="hasError">
+          <i class="weui-icon-warn"></i>
+          <span class="weui-loadmore__tips" @click="getMainList">请求错误，点击这里重试</span>
+        </div>
+        
+				<div class="weui-loadmore" v-else>
+          <i class="weui-loading"></i>
+          <span class="weui-loadmore__tips">正在加载</span>
+        </div>
+			</div>
+			<!-- 主区域 end -->
+			<div class="w-footer weui-form-preview__ft">
+				<a class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:;" @click="handleCloseClick">关闭</a>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		//var pageType = Utils.getQueryString('pageType');
+		var pageType = '${pageType}'
+		$('head title').text(pageType === 'employee' ? '我发起的' : '我的待办');
+
+		new Vue({
+			el: '#app',
+			data: function(){
+				return {
+					isLoading: false,
+					hasError: false,
+					dateRange: 1,
+					pageType: pageType, // employee 我发起的  boss 我的审批
+					queryCondition: {
+						ischeck: 'N',
+						openId: '${openId}',
+						startDate: '',
+						endDate: '',
+					},
+					tableData: [],
+				}
+			},
+
+			mounted: function () {
+				FastClick.attach(document.body);
+				this.getMainList();
+			},
+
+			methods: {
+				getMainList: function() {
+					// 员工接口地址 /modules/wechat/ydsp/Wfqd_DsYs
+					// 老板接口地址 /modules/wechat/ydsp/Wddb_WbYb
+					var vm = this, endDate = new Date(), startDate = new Date(endDate.getTime()),
+							url = '/modules/wechat/ydsp/' + (pageType === 'employee' ? 'Wfqd_DsYs' : 'Wddb_WbYb');
+					if (vm.dateRange === 0) {
+						startDate.setFullYear(endDate.getFullYear() - 1);
+					} else {
+						startDate.setMonth(endDate.getMonth() - vm.dateRange);
+					}
+
+					vm.queryCondition.startDate = startDate.Format('yyyy-MM-dd');
+					vm.queryCondition.endDate = endDate.Format('yyyy-MM-dd');
+					vm.isLoading = true;
+					vm.hasError = false;
+
+					$.getJSON(url, this.queryCondition).then(function(rsp) {
+						if (rsp.result === 'Y') {
+							vm.tableData = rsp.rsData || [];
+							vm.hasError = false;	
+						} else {
+							vm.hasError = true;	
+						}
+						vm.isLoading = false;
+					}, function() {
+						vm.hasError = true;
+					});
+				},
+
+				handleTabClick: function(ischeck){
+					this.queryCondition.ischeck = ischeck;
+					this.getMainList();
+				},
+				
+				handleCloseClick: function(){
+					wx.closeWindow();
+				}
+			}
+		})
+	</script>
+</body>
+</html>

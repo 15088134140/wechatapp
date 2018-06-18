@@ -206,3 +206,8 @@ label.weui-label {
 .page__hd h1 {
   font-size: 1em;
 }
+
+.weui-panel__hd {
+  font-weight: bold;
+  color: #092e85;
+}
