@@ -13,12 +13,16 @@
       <div class="w-main" style="background-color: #f8f8f8;">
         <!-- 销售订单 -->
         <div class="page__hd">
-          <h1 class="page__title text-center">{{ formData.custname }}</h1>
+          <h1 class="page__title text-center">客户合同评审表</h1>
         </div>
         <!-- 基本信息 s -->
         <div class="weui-panel weui-panel_access">
           <div class="weui-panel__hd">基本信息</div>
           <div class="weui-panel__bd weui-form-preview__bd">
+            <div class="weui-form-preview__item" v-if="formData.vdef41">
+              <label class="weui-form-preview__label">客户类型</label>
+              <span class="weui-form-preview__value">{{ formData.vdef41 }}</span>
+            </div>
             <div class="weui-form-preview__item" v-if="formData.custname">
               <label class="weui-form-preview__label">合作单位</label>
               <span class="weui-form-preview__value">{{ formData.custname }}</span>
@@ -32,25 +36,39 @@
               <span class="weui-form-preview__value">{{ formData.vdef12 }}</span>
             </div>
             <div class="weui-form-preview__item" v-if="formData.vdef15">
-              <label class="weui-form-preview__label">联系电话1</label>
+              <label class="weui-form-preview__label">联系电话</label>
               <span class="weui-form-preview__value">{{ formData.vdef15 }}</span>
             </div>
+          </div>
+        </div>
+        <!-- 基本信息 e -->
 
+        <!-- 业务关键人 s -->
+        <div class="weui-panel weui-panel_access">
+          <div class="weui-panel__hd">业务关键人</div>
+          <div class="weui-panel__bd weui-form-preview__bd">
             <div class="weui-form-preview__item" v-if="formData.vdef22">
-              <label class="weui-form-preview__label">业务关键人</label>
+              <label class="weui-form-preview__label">姓名</label>
               <span class="weui-form-preview__value">{{ formData.vdef22 }}</span>
-            </div>
-            <div class="weui-form-preview__item" v-if="formData.vdef24">
-              <label class="weui-form-preview__label">联系电话2</label>
-              <span class="weui-form-preview__value">{{ formData.vdef24 }}</span>
             </div>
             <div class="weui-form-preview__item" v-if="formData.vdef23">
               <label class="weui-form-preview__label">职位</label>
               <span class="weui-form-preview__value">{{ formData.vdef23 }}</span>
             </div>
+            <div class="weui-form-preview__item" v-if="formData.vdef24">
+              <label class="weui-form-preview__label">联系电话</label>
+              <span class="weui-form-preview__value">{{ formData.vdef24 }}</span>
+            </div>
+          </div>
+        </div>
+        <!-- 业务关键人 e -->
 
+        <!-- 负责业务员 s -->
+        <div class="weui-panel weui-panel_access">
+          <div class="weui-panel__hd">负责业务员</div>
+          <div class="weui-panel__bd weui-form-preview__bd">
             <div class="weui-form-preview__item" v-if="formData.vdef6">
-              <label class="weui-form-preview__label">负责业务员</label>
+              <label class="weui-form-preview__label">姓名</label>
               <span class="weui-form-preview__value">{{ formData.vdef6 }}</span>
             </div>
             <div class="weui-form-preview__item" v-if="formData.vdef5">
@@ -61,14 +79,9 @@
               <label class="weui-form-preview__label">所属地区</label>
               <span class="weui-form-preview__value">{{ formData.pk_areacl }}</span>
             </div>
-
-            <div class="weui-form-preview__item" v-if="formData.vnote">
-              <label class="weui-form-preview__label">备注</label>
-              <span class="weui-form-preview__value">{{ formData.vnote }}</span>
-            </div>
           </div>
         </div>
-        <!-- 基本信息 e -->
+        <!-- 负责业务员 e -->
 
         <!-- 开票信息 s -->
         <div class="weui-panel weui-panel_access">
@@ -98,16 +111,20 @@
         <div class="weui-panel weui-panel_access">
           <div class="weui-panel__hd">合同信息</div>
           <div class="weui-panel__bd weui-form-preview__bd">
+            <div class="weui-form-preview__item" v-if="formData.vdef42">
+              <label class="weui-form-preview__label">合同类型</label>
+              <span class="weui-form-preview__value">{{ formData.vdef42 }}</span>
+            </div>
             <div class="weui-form-preview__item" v-if="formData.vdef29">
-              <label class="weui-form-preview__label">是否有法人授权委托书</label>
+              <label class="weui-form-preview__label">是否法人授权</label>
               <span class="weui-form-preview__value">{{ formData.vdef29 }}</span>
             </div>
             <div class="weui-form-preview__item" v-if="formData.vdef30">
-              <label class="weui-form-preview__label">合同预计签回日期</label>
+              <label class="weui-form-preview__label">合同签回日期</label>
               <span class="weui-form-preview__value">{{ formData.vdef30 }}</span>
             </div>
             <div class="weui-form-preview__item" v-if="formData.vdef31">
-              <label class="weui-form-preview__label">合同信用额度</label>
+              <label class="weui-form-preview__label">信用额度</label>
               <span class="weui-form-preview__value">{{ formData.vdef31 }}</span>
             </div>
             <div class="weui-form-preview__item" v-if="formData.vdef10">
@@ -131,7 +148,7 @@
               <span class="weui-form-preview__value">{{ formData.vdef16 }}</span>
             </div>
             <div class="weui-form-preview__item" v-if="formData.vdef34">
-              <label class="weui-form-preview__label">估计月销量／年销量</label>
+              <label class="weui-form-preview__label">月／年销量</label>
               <span class="weui-form-preview__value">{{ formData.vdef34 }}</span>
             </div>
             <div class="weui-form-preview__item" v-if="formData.vdef11">
@@ -139,11 +156,11 @@
               <span class="weui-form-preview__value">{{ formData.vdef11 }}</span>
             </div>
             <div class="weui-form-preview__item" v-if="formData.vdef35">
-              <label class="weui-form-preview__label">产品成交价格</label>
+              <label class="weui-form-preview__label">成交价格</label>
               <span class="weui-form-preview__value">{{ formData.vdef35 }}</span>
             </div>
             <div class="weui-form-preview__item" v-if="formData.vdef36">
-              <label class="weui-form-preview__label">产品成交价格是否有折让</label>
+              <label class="weui-form-preview__label">是否有折让</label>
               <span class="weui-form-preview__value">{{ formData.vdef36 }}</span>
             </div>
             <div class="weui-form-preview__item" v-if="formData.vdef38">
@@ -151,7 +168,7 @@
               <span class="weui-form-preview__value">{{ formData.vdef38 }}</span>
             </div>
             <div class="weui-form-preview__item" v-if="formData.vdef39">
-              <label class="weui-form-preview__label">客户情况简述（业务员）</label>
+              <label class="weui-form-preview__label">客户情况</label>
               <span class="weui-form-preview__value">{{ formData.vdef39 }}</span>
             </div>
           </div>
@@ -163,10 +180,10 @@
           <div class="weui-panel__hd">附件信息</div>
           <div class="weui-panel__bd weui-form-preview__bd">
             <div class="weui-form-preview__item" v-for="(item, index) in formData.ncFile">
-              <label class="weui-form-preview__label">{{ item.fileName }}</label>
-              <span class="weui-form-preview__value">
-                <a class="w-highlight" :href="item.fileUrl" download>下载/浏览</a>
-              </span>
+              <label class="weui-form-preview__label">
+                <a class="w-highlight" :href="item.fileUrl">{{ item.fileName }}</a>
+              </label>
+              <span class="weui-form-preview__value"> </span>
             </div>
           </div>
         </div>
@@ -235,7 +252,7 @@
     </div>
   </div>
 
-	<script>
+  <script>
     new Vue({
       el: '#app',
       data: function(){
@@ -400,6 +417,6 @@
         }
       }
     });
-	</script>
+  </script>
 </body>
 </html>
