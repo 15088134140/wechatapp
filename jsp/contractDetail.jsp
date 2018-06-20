@@ -75,10 +75,6 @@
               <label class="weui-form-preview__label">业务部门</label>
               <span class="weui-form-preview__value">{{ formData.vdef5 }}</span>
             </div>
-            <div class="weui-form-preview__item" v-if="formData.pk_areacl">
-              <label class="weui-form-preview__label">所属地区</label>
-              <span class="weui-form-preview__value">{{ formData.pk_areacl }}</span>
-            </div>
           </div>
         </div>
         <!-- 负责业务员 e -->
@@ -120,7 +116,7 @@
               <span class="weui-form-preview__value">{{ formData.vdef29 }}</span>
             </div>
             <div class="weui-form-preview__item" v-if="formData.vdef30">
-              <label class="weui-form-preview__label">合同签回日期</label>
+              <label class="weui-form-preview__label">合同预计签回日期</label>
               <span class="weui-form-preview__value">{{ formData.vdef30 }}</span>
             </div>
             <div class="weui-form-preview__item" v-if="formData.vdef31">

@@ -1,14 +1,9 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>填写借款单</title>
-	<meta id="viewport" name="viewport"
-	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <link rel="stylesheet" type="text/css" href="https://res.wx.qq.com/open/libs/weui/1.1.0/weui.min.css">
-  <link rel="stylesheet" type="text/css" href="./css/flex.css">
-  <link rel="stylesheet" type="text/css" href="./css/base.css">
-  <link rel="stylesheet" type="text/css" href="./css/borrowBillDetail.css">
+  <title>填写借款单</title>
+  <link rel="stylesheet" type="text/css" href="${ctx}/statics/ydsp/css/borrowBillDetail.css">
   <style>
     .canvas-container {
       width: 100%;
@@ -24,11 +19,8 @@
       display: none;
     }
   </style>
-  <script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
-  <script src="./js/base.js" type="text/javascript" charset="utf-8"></script>
-  <script src="./js/vue.js" type="text/javascript" charset="utf-8"></script>
-  <script src="./js/fastclick.js" type="text/javascript" charset="utf-8"></script>
-  <script src="./js/draw.js" type="text/javascript" charset="utf-8"></script>
+  <%@ include file="/WEB-INF/views/modules/wechat/ydsp/ydspInclude.jsp"%>
+  <script src="${ctx}/statics/ydsp/js/draw.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
   <div id="app" v-cloak>
@@ -132,7 +124,7 @@
           isLoading: false,
           hasError: false,
           billType: Utils.getQueryString('pk_billtype'),
-          openId: '100104042005',
+          openId: '${openId}',
           signBase64: '',
           formData: {
             billDate: '',
