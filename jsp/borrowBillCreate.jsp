@@ -5,14 +5,21 @@
   <title>填写借款单</title>
   <link rel="stylesheet" type="text/css" href="${ctx}/statics/ydsp/css/borrowBillDetail.css">
   <style>
+    .weui-panel__hd, .weui-cells__title.canvas-title {
+      color: #ff0000;
+      font-weight: normal;
+    }
+    .canvas-container:before {
+      display: none;
+    }
     .canvas-container {
       width: 100%;
-      padding: 5px 15px;
+      padding: 0 15px;
       box-sizing: border-box;
-      height: 200px;
+      height: 160px;
     }
     .canvas-container canvas {
-      background-color: #f8f8f8;
+      background-color: #ccc;
     }
 
     .weui-cells:before{
@@ -27,31 +34,30 @@
     <div class="w-container" flex="box:last dir:top">
       <!-- 主区域 start -->
       <div class="w-main">
-        <form class="weui-cells weui-cells_form" id="signRegisterForm">
-          <div class="weui-cells__title">借款信息</div>
+        <form class="weui-cells weui-cells_form" id="signRegisterForm" style="margin-top: 0;">
           <div class="weui-cell">
-            <div class="weui-cell__hd required"><label for="" class="weui-label">单据日期</label></div>
+            <div class="weui-cell__hd"><label for="" class="weui-label">单据日期</label></div>
             <div class="weui-cell__bd">
               <input class="weui-input" :value="formData.billDate" readonly>
             </div>
           </div>
 
           <div class="weui-cell">
-            <div class="weui-cell__hd required"><label class="weui-label">借款人</label></div>
+            <div class="weui-cell__hd"><label class="weui-label">借款人</label></div>
             <div class="weui-cell__bd">
               <input class="weui-input" :value="formData.psnname" readonly>
             </div>
           </div>
 
           <div class="weui-cell">
-            <div class="weui-cell__hd required"><label class="weui-label">借款部门</label></div>
+            <div class="weui-cell__hd"><label class="weui-label">借款部门</label></div>
             <div class="weui-cell__bd">
               <input class="weui-input" :value="formData.deptname" readonly>
             </div>
           </div>
 
           <div class="weui-cell">
-            <div class="weui-cell__hd required">
+            <div class="weui-cell__hd">
               <label for="" class="weui-label">银行账号</label>
             </div>
             <div class="weui-cell__bd">
@@ -60,7 +66,7 @@
           </div>
 
           <div class="weui-cell">
-            <div class="weui-cell__hd required">
+            <div class="weui-cell__hd">
               <label for="" class="weui-label">借款余额</label>
             </div>
             <div class="weui-cell__bd">
@@ -82,16 +88,9 @@
             </div>
           </div>
 
-          <div class="weui-cells__title">签名区</div>
-          <!-- <div class="weui-cell">
-            <div class="weui-cell__hd required">
-              <label class="weui-label" style="width: 95px;">借款人签名</label>
-            </div>
-            <div class="weui-cell__bd"></div>
-            <div class="weui-cell__ft">
-              <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_default"  @click.stop="handleClearClick()">重签</a>
-            </div>
-          </div> -->
+          <div class="weui-cell no-padding"></div>
+
+          <div class="weui-cells__title canvas-title">确认前在下方灰色区域手写签名<a class="w-highlight fr" href="javascript:;" @click.stop="handleClearClick()">重签</a></div>
           <div class="weui-cell canvas-container">
             <canvas id="canvas"></canvas>
           </div>
@@ -116,15 +115,15 @@
       </div>
     </div>
   </div>
-	<script>
+  <script>
     new Vue({
       el: '#app',
       data: function(){
         return {
           isLoading: false,
           hasError: false,
-          billType: Utils.getQueryString('pk_billtype'),
-          openId: '${openId}',
+          billType: '263X-01',
+          openId: '100104042005',
           signBase64: '',
           formData: {
             billDate: '',
@@ -151,6 +150,7 @@
           var width = $(container).width();
           var height = $(container).height();
           draw = new Draw('canvas', width, height);
+          console.log('draw', draw);
           draw.init();
         });
       },
@@ -203,6 +203,10 @@
           if (!vm.formData.content.trim()) {
             return alert('借款事由不能为空！');
           }
+
+          if (!draw.isStart) {
+            return alert('签名不能为空！');
+          }
           var billData = Object.assign({}, vm.formData, { 
             content : window.encodeURI(vm.formData.content), 
             signImage: draw.save() 
@@ -238,6 +242,6 @@
         }
       }
     });
-	</script>
+  </script>
 </body>
 </html>

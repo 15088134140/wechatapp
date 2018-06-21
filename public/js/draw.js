@@ -1,5 +1,6 @@
 var draw;
 var preHandler = function(e){e.preventDefault();}
+
 class Draw {
   constructor(el, width, height) {
     this.el = el
@@ -14,6 +15,8 @@ class Draw {
     this.markCanvas.setAttribute('width', 130);
     this.markCanvas.setAttribute('height', 80);
     this.markCanvas.style.display = 'none';
+
+    this.isStart = false;
 
     document.getElementsByTagName('body')[0].appendChild(this.markCanvas);
 
@@ -80,6 +83,8 @@ class Draw {
       event.preventDefault();
       that.drawing(event)
     });
+
+    this.isStart = true;
   }
 
   drawing(e) {
@@ -104,6 +109,7 @@ class Draw {
   clear(btn) {
     this.cxt.clearRect(0, 0, this.width, this.height);
     this.renderMark();
+    this.isStart = false;
   }
   
   save() {

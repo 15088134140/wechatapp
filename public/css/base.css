@@ -8,6 +8,10 @@
   color: #ff0000;
 }
 
+.weui-cell__hd .weui-label {
+  color: #999;
+}
+
 .weui-icon-download {
 	transform: rotate(180deg);
 	color: #FFBE00;
@@ -207,7 +211,11 @@ label.weui-label {
   font-size: 1em;
 }
 
-.weui-panel__hd {
+.weui-panel__hd, .weui-cells__title {
   font-weight: bold;
   color: #092e85;
+}
+
+.fr {
+  float: right;
 }
