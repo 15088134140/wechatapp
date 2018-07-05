@@ -43,8 +43,9 @@ class Draw {
 
   renderMark() {
 
-    this.cxt.fillStyle = this.cxt.createPattern(this.markCanvas, 'repeat');
+    // this.cxt.fillStyle = this.cxt.createPattern(this.markCanvas, 'repeat');
     this.cxt.rect(0, 0, this.width, this.height);
+    this.cxt.fillStyle = '#d9d9d9';
     this.cxt.fill();
   }
 
@@ -107,6 +108,7 @@ class Draw {
   }
 
   clear(btn) {
+    this.cxt.beginPath();
     this.cxt.clearRect(0, 0, this.width, this.height);
     this.renderMark();
     this.isStart = false;
