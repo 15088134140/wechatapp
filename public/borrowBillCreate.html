@@ -24,7 +24,7 @@
       height: 160px;
     }
     .canvas-container canvas {
-      background-color: #ccc;
+      /*background-color: #ccc;*/
     }
 
     .weui-cells:before{
@@ -98,7 +98,7 @@
 
           <div class="weui-cell no-padding"></div>
 
-          <div class="weui-cells__title canvas-title">确认前在下方灰色区域手写签名<a class="w-highlight fr" href="javascript:;" @click.stop="handleClearClick()">重签</a></div>
+          <div class="weui-cells__title canvas-title">确认前在下方灰色区域手写签名<a class="w-highlight fr" href="javascript:;" @click.stop="handleClearClick()">重签</a><a class="w-highlight fr" href="javascript:;" @click.stop="handleSaveClick()">保存</a></div>
           <div class="weui-cell canvas-container">
             <canvas id="canvas"></canvas>
           </div>
