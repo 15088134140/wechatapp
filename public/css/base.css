@@ -219,3 +219,20 @@ label.weui-label {
 .fr {
   float: right;
 }
+
+textarea, input[type="date" i], input[type="datetime-local" i], input[type="month" i], input[type="time" i], input[type="week" i] {
+  font-family: -apple-system-font,Helvetica Neue,sans-serif;
+}
+
+.weui-cells__title.bk {
+  margin-bottom: 0;
+  margin-top: 0;
+  padding-top: .77em;
+  padding-bottom: .3em;
+  background: #eee;
+  color: #808080;
+}
+.weui-cell_link.bk {
+  background: #eee;
+  text-align: center;
+}

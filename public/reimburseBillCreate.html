@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>填写报销单</title>
+	<meta id="viewport" name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" type="text/css" href="https://res.wx.qq.com/open/libs/weui/1.1.0/weui.min.css">
+  <link rel="stylesheet" type="text/css" href="./css/flex.css">
+  <link rel="stylesheet" type="text/css" href="./css/base.css">
+  <link rel="stylesheet" type="text/css" href="./css/borrowBillDetail.css">
+  <style>
+    .weui-panel__hd, .weui-cells__title.canvas-title {
+      color: #ff0000;
+      font-weight: normal;
+    }
+    .canvas-container:before {
+      display: none;
+    }
+    .canvas-container {
+      width: 100%;
+      padding: 5px 15px;
+      box-sizing: border-box;
+      height: 160px;
+    }
+    .canvas-container canvas {
+      background-color: #d9d9d9;
+    }
+
+    .weui-cells:before{
+      display: none;
+    }
+  </style>
+  <script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/base.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/vue.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/draw.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+  <div id="app" v-cloak>
+    <div class="w-container" flex="box:last dir:top">
+      <!-- 主区域 start -->
+      <div class="w-main">
+        <form class="weui-cells weui-cells_form" id="signRegisterForm" style="margin-top: 0;">
+          <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">报销人</label></div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" :value="formData.jkbxr" readonly>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">报销部门</label></div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" :value="formData.deptid" readonly>
+            </div>
+          </div>
+          
+          <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="" class="weui-label">日期</label></div>
+            <div class="weui-cell__bd">
+              <input class="weui-input" :value="formData.djrq" readonly>
+            </div>
+          </div>
+          <template v-if="pageType === 'fy'">
+            <div class="weui-cell">
+              <div class="weui-cell__hd required"><label class="weui-label">差旅费</label></div>
+              <div class="weui-cell__bd">
+                <input type="number" class="weui-input" placeholder="请输入差旅费" v-model="formData.clf">
+              </div>
+            </div>
+
+            <div class="weui-cell">
+              <div class="weui-cell__hd required"><label class="weui-label">会议费</label></div>
+              <div class="weui-cell__bd">
+                <input type="number" class="weui-input" placeholder="请输入会议费" v-model="formData.hyf">
+              </div>
+            </div>
+
+            <div class="weui-cell">
+              <div class="weui-cell__hd required"><label class="weui-label">交通费</label></div>
+              <div class="weui-cell__bd">
+                <input type="number" class="weui-input" placeholder="请输入交通费" v-model="formData.jtf">
+              </div>
+            </div>
+
+            <div class="weui-cell">
+              <div class="weui-cell__hd required"><label class="weui-label">汽车费</label></div>
+              <div class="weui-cell__bd">
+                <input type="number" class="weui-input" placeholder="请输入汽车费" v-model="formData.qcf">
+              </div>
+            </div>
+
+            <div class="weui-cell">
+              <div class="weui-cell__hd required"><label class="weui-label">电话费</label></div>
+              <div class="weui-cell__bd">
+                <input type="number" class="weui-input" placeholder="请输入电话费" v-model="formData.dhf">
+              </div>
+            </div>
+
+            <div class="weui-cell">
+              <div class="weui-cell__hd required"><label class="weui-label">运费</label></div>
+              <div class="weui-cell__bd">
+                <input type="number" class="weui-input" placeholder="请输入运费" v-model="formData.yf">
+              </div>
+            </div>
+
+            <div class="weui-cell">
+              <div class="weui-cell__hd required"><label class="weui-label">快递费</label></div>
+              <div class="weui-cell__bd">
+                <input type="number" class="weui-input" placeholder="请输入快递费" v-model="formData.kdf">
+              </div>
+            </div>
+
+            <div class="weui-cell">
+              <div class="weui-cell__hd required"><label class="weui-label">会务费</label></div>
+              <div class="weui-cell__bd">
+                <input type="number" class="weui-input" placeholder="请输入会务费" v-model="formData.hwf">
+              </div>
+            </div>
+
+            <div class="weui-cell">
+              <div class="weui-cell__hd required"><label class="weui-label">其他费用</label></div>
+              <div class="weui-cell__bd">
+                <input type="number" class="weui-input" placeholder="请输入其他费用" v-model="formData.qtfy">
+              </div>
+            </div>
+          </template>
+
+          <template v-else-if="pageType === 'clf'">
+            <template v-for="(item, index) in formData.items">
+              <div class="weui-cells__title bk">项{{ index + 1 }}<a href="javascript:;" v-if="index !== 0" @click="handleDelItemClick(item)" class="w-highlight fr">删除该项</a></div>
+              <div class="weui-cell">
+                  <div class="weui-cell__hd required"><label for="" class="weui-label">日期</label></div>
+                  <div class="weui-cell__bd">
+                      <input class="weui-input" type="date" value="">
+                  </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd required"><label class="weui-label">出发地点</label></div>
+                <div class="weui-cell__bd">
+                  <input class="weui-input" placeholder="请输入出发地点" v-model="formData.kdf">
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd required"><label class="weui-label">到达地点</label></div>
+                <div class="weui-cell__bd">
+                  <input class="weui-input" placeholder="请输入到达地点" v-model="formData.kdf">
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd required"><label class="weui-label">天数</label></div>
+                <div class="weui-cell__bd">
+                  <input type="number" class="weui-input" placeholder="请输入天数" v-model="formData.cxje">
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">机票费</label></div>
+                <div class="weui-cell__bd">
+                  <input type="number" class="weui-input" placeholder="请输入机票费" v-model="formData.cxje">
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">车船费</label></div>
+                <div class="weui-cell__bd">
+                  <input type="number" class="weui-input" placeholder="请输入车船费" v-model="formData.cxje">
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">市内交通费</label></div>
+                <div class="weui-cell__bd">
+                  <input type="number" class="weui-input" placeholder="请输入市内交通费" v-model="formData.cxje">
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">住宿费</label></div>
+                <div class="weui-cell__bd">
+                  <input type="number" class="weui-input" placeholder="请输入住宿费" v-model="formData.cxje">
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">出差补助</label></div>
+                <div class="weui-cell__bd">
+                  <input type="number" class="weui-input" placeholder="请输入出差补助" v-model="formData.cxje">
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">其他费用</label></div>
+                <div class="weui-cell__bd">
+                  <input type="number" class="weui-input" placeholder="请输入其他费用" v-model="formData.cxje">
+                </div>
+              </div>
+            </template>
+            <a href="javascript:void(0);" @click="handleAddMoreClick" class="weui-cell weui-cell_link bk">
+              <div class="weui-cell__bd">添加更多</div>
+            </a>
+          </template>
+
+          <!-- 未知类型 -->
+          <template v-else>
+            <div>
+              未知类型
+            </div>
+          </template>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd required"><label class="weui-label">备注</label></div>
+            <div class="weui-cell__bd">
+              <textarea class="weui-textarea" placeholder="请输入备注" v-model="formData.bz" rows="2"></textarea>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">总费用</label></div>
+            <div class="weui-cell__bd">
+              <input type="number" class="weui-input" :value="zfy" readonly>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">借款总余额</label></div>
+            <div class="weui-cell__bd">
+              <input type="number" class="weui-input" :value="formData.jkzye" readonly>
+            </div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd required"><label class="weui-label">冲销金额</label></div>
+            <div class="weui-cell__bd">
+              <input type="number" class="weui-input" placeholder="请输入冲销金额" v-model="formData.cxje">
+            </div>
+          </div>
+
+          <div class="weui-cell no-padding"></div>
+
+          <div class="weui-cells__title canvas-title">确认前在下方灰色区域手写签名<a class="w-highlight fr" href="javascript:;" @click.stop="handleClearClick()">重签</a></div>
+          <div class="weui-cell canvas-container">
+            <canvas id="canvas"></canvas>
+          </div>
+        </form>
+        <img :src="signBase64" alt="">
+      </div>
+      <!-- 主区域 end -->
+      <div class="w-footer weui-form-preview__ft">
+        <template v-if="!isLoading && !hasError">
+          <a class="weui-form-preview__btn weui-form-preview__btn_primary w-operation-btn" href="javascript:void(0)" @click="handleConfirmClick()">确认借款</a>
+        </template>
+        <a v-else-if="hasError" href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading" @click="init()"><i class="weui-icon-warn"></i>请求错误，点击这里重试</a>
+        <a v-else href="javascript:void(0)" class="weui-btn weui-btn_default weui-btn_loading"><i class="weui-loading"></i>数据加载中</a>
+      </div>
+    </div>
+
+    <div id="toast" style="display: none;">
+      <div class="weui-mask_transparent"></div>
+      <div class="weui-toast">
+          <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+          <p class="weui-toast__content">提交成功</p>
+      </div>
+    </div>
+  </div>
+	<script>
+    new Vue({
+      el: '#app',
+      data: function(){
+        return {
+          isLoading: false,
+          hasError: false,
+          pageType: Utils.getQueryString('pageType'),
+          billType: '263X-01',
+          openId: '100104042005',
+          signBase64: '',
+          formData: {
+            jkbxr: '',
+            deptid: '',
+            djrq: '',
+            clf: '',
+            hyf: '',
+            jtf: '',
+            qcf: '',
+            dhf: '',
+            yf: '',
+            kdf: '',
+            hwf: '',
+            qtfy: '',
+            bz: '',
+            jkzye: '',
+            cxje: '',
+            items: [{}]
+          }
+        }
+      },
+
+      computed: {
+        zfy: function() {
+          var vm = this;
+          var zfy = 0;
+          ['clf', 'hyf', 'jtf', 'qcf', 'dhf', 'yf', 'kdf', 'hwf', 'qtfy'].forEach(function (key) {
+            zfy += Number(vm.formData[key] || 0);
+          });
+          return zfy;
+        }
+      },
+
+      mounted: function () {
+        FastClick.attach(document.body);
+
+        this.init();
+        this.$nextTick(() => {
+          var container = document.querySelector('.canvas-container');
+          var canvas = container.querySelector('canvas');
+          var width = $(container).width();
+          var height = $(container).height();
+          draw = new Draw('canvas', width, height);
+          console.log('draw', draw);
+          draw.init();
+        });
+      },
+
+      methods: {
+        init: function(){
+          var vm = this;
+
+          // url参数正常 请求数据
+          vm.isLoading = true;
+          vm.hasError = false;
+
+          $.getJSON('/modules/wechat/ydsp/xjlc/xjlc_Init', {
+            openId: this.openId,
+            billType: this.billType,
+          }).then(function(rsp) {
+            console.log(rsp);
+            if (rsp.result === 'Y') {
+              var data = rsp.rsData;
+              if (data) {
+                vm.formData.djrq = data.djrq || new Date().Format('yyyy-MM-dd');
+
+                vm.formData.pk_psndoc = data.psndoc && data.psndoc.pk_psndoc;
+                vm.formData.jkbxr = data.psndoc && data.psndoc.jkbxr;
+
+                vm.formData.pk_deptdoc = data.deptdoc && data.deptdoc.pk_deptdoc;
+                vm.formData.deptid = data.deptdoc && data.deptdoc.deptid;
+
+                vm.formData.pk_bankaccbas = data.account && data.account[0].pk_bankaccbas;
+                vm.formData.bankaccount = data.account && data.account[0].accountname;
+                vm.formData.sumJkye = data.sumJkye;
+              }
+              vm.hasError = false;
+            } else {
+              vm.hasError = true; 
+            }
+            vm.isLoading = false;
+          }, function() {
+            vm.hasError = true;
+          });
+        },
+
+        handleConfirmClick: function(){
+          var vm = this;
+
+          if (!vm.formData.jkMoney) {
+            return alert('借款金额不能为空！');
+          }
+
+          if (!vm.formData.content.trim()) {
+            return alert('借款事由不能为空！');
+          }
+
+          if (!draw.isStart) {
+            return alert('签名不能为空！');
+          }
+          var billData = Object.assign({}, vm.formData, { 
+            content : window.encodeURI(vm.formData.content), 
+            signImage: draw.save() 
+          });
+
+          vm.isLoading = true;
+
+          $.post('/modules/wechat/ydsp/xjlc/xjlc_Submit', {
+            billType: vm.billType,
+            openId: vm.openId,
+            billData: JSON.stringify(billData)
+          }, function(rsp) {
+            console.log('post', rsp);
+            vm.isLoading = false;
+            if (rsp.result === 'Y') {
+              $('#toast').fadeIn(0).fadeOut(2000, function(){
+                wx.closeWindow();
+              });
+            } else {
+              alert(rsp.msg || '提交失败，请重试！');
+            }
+          }, 'json');
+        },
+
+        handleAddMoreClick: function() {
+          this.formData.items.push({});
+        },
+
+        handleDelItemClick: function(item) {
+          var index = this.formData.items.indexOf(item);
+          if (index !== -1) {
+            this.formData.items.splice(index, 1);
+          }
+        },
+
+        handleClearClick: function() {
+          draw.clear();
+        },
+
+        handleSaveClick: function() {
+          var data = draw.save();
+          this.signBase64 = data;
+          console.log(data)
+        }
+      }
+    });
+	</script>
+</body>
+</html>
